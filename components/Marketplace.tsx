@@ -146,15 +146,64 @@ export function ProductDetail({product}:{product:Product}){
          <section className="detail-section related-section"><div className="detail-section-title"><h2>Related products</h2><span>More sourcing options</span></div><div className="related-grid">{alternatives.map(p=><ProductCard key={p.id} product={p} onInquiry={setSelected}/>)}</div></section>
          <section className="detail-section"><h2>Product Specifications</h2><div className="detail-specifications">{[["Minimum Order Quantity",product.moq],["Product",product.name],["Trade Term","To be confirmed"],["Supplier Country",product.country],["Payment Term","By agreement"],...product.specifications].map(([k,v],i)=><div key={i}><span>{k}</span><strong>{v}</strong></div>)}</div></section>
          <section className="detail-section"><h2>Product Certificates</h2><div className="certificate-placeholder"><FileText size={28}/><strong>No certificates uploaded</strong><p>Certification claims will appear here only after documents have been reviewed.</p></div></section>
-         <section className="supplier-profile-section"><div className="supplier-profile-header"><div className="supplier-avatar"><Building2 size={27}/></div><div><h2>{product.supplier}</h2><div className="supplier-subline"><span>{product.country}</span><span>•</span><span>Business verification pending</span></div></div></div>
-           <div className="supplier-profile-body"><h3>Business information</h3><div className="supplier-stats"><div><span>Inquiries received</span><strong>Not available</strong></div><div><span>Last active</span><strong>Not available</strong></div><div><span>Established</span><strong>Not provided</strong></div><div><span>Employees</span><strong>Not provided</strong></div></div><div className="profile-two-col"><div><h3>Export Markets</h3><p>Supplier has not provided verified export market information.</p></div><div><h3>Verification information</h3><div className="verification-pending"><ShieldCheck size={17}/> Company documentation not verified</div><p>Verification levels will be shown after a documented review process.</p></div></div></div>
+         <section className="supplier-profile-section">
+           <div className="supplier-profile-header">
+             <div className="supplier-avatar supplier-avatar-large"><Building2 size={29}/></div>
+             <div className="supplier-heading-details">
+               <h2>{product.supplier}</h2>
+               <div className="supplier-subline">
+                 <span className="verification-label"><ShieldCheck size={14}/> Verification pending</span>
+                 <span className="supplier-separator">•</span>
+                 <span className="supplier-country"><span className="supplier-country-flag">{product.flag}</span> {product.country}</span>
+                 <span className="supplier-separator">•</span>
+                 <span>Supplier profile — demonstration</span>
+               </div>
+             </div>
+           </div>
+           <div className="supplier-profile-body">
+             <div className="activity-section">
+               <h3>Activity signals</h3>
+               <div className="supplier-stats">
+                 <div><span>Total inquiries received</span><strong>Not available</strong></div>
+                 <div><span>Last supplier active</span><strong>Not available</strong></div>
+                 <div><span>Year Established</span><strong>Not provided</strong></div>
+                 <div><span>Number of Employees</span><strong>Not provided</strong></div>
+               </div>
+             </div>
+             <div className="supplier-insights-grid">
+               <div className="export-markets">
+                 <h3>Export Markets</h3>
+                 <p>Markets must be supplied by the business and verified before publication.</p>
+                 <div className="export-market-empty"><Globe2 size={20}/><span>No confirmed export markets for this supplier</span></div>
+                 <div className="market-sample-caption">Country flags appear automatically when a real market is available.</div>
+               </div>
+               <div className="verification-information">
+                 <h3>Verification information</h3>
+                 <div className="verification-info-grid">
+                   <div>
+                     <h4>Verification status</h4>
+                     <div className="verification-item"><span className="verification-status-icon"><ShieldCheck size={15}/></span><span><strong>Business documents</strong><small>Awaiting review</small></span></div>
+                     <div className="verification-item"><span className="verification-status-icon"><ShieldCheck size={15}/></span><span><strong>Phone number</strong><small>Not confirmed</small></span></div>
+                     <div className="verification-item"><span className="verification-status-icon"><ShieldCheck size={15}/></span><span><strong>Account email</strong><small>Not confirmed</small></span></div>
+                     <div className="verification-item"><span className="verification-status-icon"><ShieldCheck size={15}/></span><span><strong>Work email</strong><small>Not confirmed</small></span></div>
+                   </div>
+                   <div>
+                     <h4>External validation</h4>
+                     <div className="external-validation-row"><span>Company registration</span><strong>Not validated</strong></div>
+                     <div className="external-validation-row"><span>Business address</span><strong>Not validated</strong></div>
+                     <p className="external-validation-note">SYLUTION will only show Verified status once checks are completed.</p>
+                   </div>
+                 </div>
+               </div>
+             </div>
+           </div>
          </section>
          <section className="detail-section reviews-section"><h2>Reviews of this Product</h2><div className="reviews-empty"><MessageSquare size={23}/><strong>No reviews yet</strong><p>Buyer reviews will appear here after verified transactions are supported.</p></div></section>
          <section className="detail-section"><h2>Product description from the supplier</h2><p className="long-description">{product.description}</p><p className="disclaimer">The current page uses example product data. SYLUTION has not independently verified supplier claims, pricing or availability.</p></section>
          <section className="detail-section"><div className="detail-section-title"><h2>Products of this Supplier</h2></div><div className="related-grid">{supplierProducts.map(p=><ProductCard key={p.id} product={p} onInquiry={setSelected}/>)}</div></section>
        </div>
        <aside className="product-detail-aside">
-         <div className="detail-supplier-card"><div className="aside-heading"><h3>Contact this Supplier</h3><span className="unverified-tag">Not verified</span></div><div className="aside-supplier-heading"><div className="supplier-avatar"><Building2 size={24}/></div><div><strong>{product.supplier}</strong><p>{product.flag} {product.country}</p></div></div><div className="aside-attributes"><div><span>Company type</span><strong>Supplier (demo)</strong></div><div><span>Location</span><strong>{product.country}</strong></div><div><span>Business registration</span><strong>Not reviewed</strong></div></div><button className="aside-chat" onClick={()=>setSelected(product)}><MessageSquare size={17}/> Contact supplier</button><button className="detail-action-green" onClick={()=>setSelected(product)}><Send size={17}/> Inquiry now</button></div>
+         <div className="detail-supplier-card"><div className="aside-heading"><h3>Contact this Supplier</h3><span className="unverified-tag">Not verified</span></div><div className="aside-supplier-heading"><div className="supplier-avatar"><Building2 size={24}/></div><div><strong>{product.supplier}</strong><p><span className="supplier-country-flag">{product.flag}</span> {product.country}</p></div></div><div className="aside-attributes"><div><span>Company type</span><strong>Supplier (demo)</strong></div><div><span>Location</span><strong>{product.country}</strong></div><div><span>Business registration</span><strong>Not reviewed</strong></div></div><button className="aside-chat" onClick={()=>setSelected(product)}><MessageSquare size={17}/> Contact supplier</button><button className="detail-action-green" onClick={()=>setSelected(product)}><Send size={17}/> Inquiry now</button></div>
          <div className="aside-products"><h3><span className="ad-label">Explore</span> Top Products</h3>{products.filter(p=>p.id!==product.id).slice(0,6).map(p=><Link className="aside-product-row" key={p.id} href={"/products/"+p.slug}><img src={p.image} alt="" loading="lazy" onError={e=>e.currentTarget.style.display="none"}/><div><strong>{p.name}</strong><b>{p.price}</b><small>Min. order: {p.moq}</small><span>{p.country}</span></div></Link>)}</div>
        </aside>
      </div>
