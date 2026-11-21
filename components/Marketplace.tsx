@@ -42,40 +42,54 @@ export function ProductCard({product,onInquiry}:{product:Product;onInquiry:(p:Pr
  </article>;
 }
 export function HomePage(){
- const [query,setQuery]=useState("");const [category,setCategory]=useState("All Categories");const [selected,setSelected]=useState<Product|null>(null);const [searchMode,setSearchMode]=useState<"Products"|"Suppliers">("Products");
- const filtered=useMemo(()=>products.filter(p=>(category==="All Categories"||p.category===category)&&([p.name,p.supplier,p.country,p.category].join(" ").toLowerCase().includes(query.toLowerCase()))),[category,query]);
+ const [query,setQuery]=useState("");
+ const [category,setCategory]=useState("All Categories");
+ const [selected,setSelected]=useState<Product|null>(null);
+ const [searchMode,setSearchMode]=useState<"Products"|"Suppliers">("Products");
+ const [showCategories,setShowCategories]=useState(false);
+ const [sort,setSort]=useState<"featured"|"name">("featured");
+ const filtered=useMemo(()=>{
+   const matched=products.filter(p=>(category==="All Categories"||p.category===category)&&([p.name,p.supplier,p.country,p.category].join(" ").toLowerCase().includes(query.trim().toLowerCase())));
+   return sort==="name"?[...matched].sort((a,b)=>a.name.localeCompare(b.name)):matched;
+ },[category,query,sort]);
+ const goProducts=()=>document.getElementById("products")?.scrollIntoView({behavior:"smooth"});
+ const quickSearch=(phrase:string)=>{setCategory("All Categories");setQuery(phrase);goProducts();};
  return <><Header search={query} setSearch={setQuery}/><main>
-   <section className="fresh-hero">
-     <div className="fresh-hero-inner container">
-       <div className="hero-top-row">
-         <div className="hero-copy">
-           <div className="hero-eyebrow"><Globe2 size={15}/> GLOBAL B2B MARKETPLACE <span className="eyebrow-dot"/> TRADE WORLDWIDE</div>
-           <h1><span className="headline-primary">{searchMode==="Products"?"Discover wholesale products.":"Find global suppliers."}</span><span className="headline-secondary">{searchMode==="Products"?"Connect with trusted businesses.":"Grow your sourcing network."}</span></h1>
-           <p className="hero-description">Search products, explore suppliers and request wholesale quotations — all in one marketplace.</p>
+  <section className="fresh-hero reference-hero">
+   <div className="fresh-hero-inner container">
+     <span className="hero-eyebrow">SYLUTION • GLOBAL TRADE PLATFORM</span>
+     <h1>{searchMode==="Products"?"Explore a world of wholesale opportunities":"Connect with suppliers worldwide"}</h1>
+     <p className="hero-description">Discover products, source new opportunities and grow your business across borders.</p>
+     <div className="hero-search-panel">
+       <div className="hero-search">
+         <div className="hero-search-category-wrap"><button className="hero-search-category" type="button" aria-expanded={showCategories} onClick={()=>setShowCategories(!showCategories)}>{searchMode==="Products"?"Find Products":"Find Suppliers"} <ChevronDown size={15}/></button>
+           {showCategories&&<div className="hero-search-menu"><button onClick={()=>{setSearchMode("Products");setShowCategories(false);}}>Find Products</button><button onClick={()=>{setSearchMode("Suppliers");setShowCategories(false);}}>Find Suppliers</button></div>}
          </div>
-         
+         <div className="hero-search-input"><Search size={20}/><input aria-label="Search global wholesale products" placeholder={searchMode==="Products"?"What products are you looking for?":"Find suppliers, products or countries"} value={query} onChange={e=>setQuery(e.target.value)} onKeyDown={e=>{if(e.key==="Enter")goProducts();}}/></div>
+         <button className="hero-search-button" onClick={goProducts}><Search size={18}/> Search</button>
        </div>
-       <div className="hero-search-panel">
-         <div className="hero-mode-tabs" role="tablist" aria-label="Search type">
-           {(["Products","Suppliers"] as const).map(mode=><button role="tab" aria-selected={searchMode===mode} className={searchMode===mode?"active":""} key={mode} onClick={()=>setSearchMode(mode)}>{mode}</button>)}
-         </div>
-         <div className="hero-search">
-           <span className="hero-search-category"><Menu size={19}/> All categories <ChevronDown size={14}/></span>
-           <input aria-label={searchMode==="Products"?"Search products":"Search suppliers"} value={query} onChange={e=>setQuery(e.target.value)} placeholder={searchMode==="Products"?"Search products, commodities, equipment...":"Search suppliers, countries or products..."} onKeyDown={e=>{if(e.key==="Enter")document.getElementById("products")?.scrollIntoView({behavior:"smooth"});}}/>
-           <button onClick={()=>document.getElementById("products")?.scrollIntoView({behavior:"smooth"})}><Search size={20}/> Search</button>
-         </div>
-       </div>
+       <div className="popular-searches"><strong>Popular searches:</strong>{["Sesame Seeds","Ginger","Solar Pumps","Almonds","Electronics"].map(x=><button key={x} onClick={()=>quickSearch(x)}>{x}</button>)}</div>
      </div>
-   </section>
-   <section className="quick-actions container"><span>Welcome to SYLUTION</span><div><a href="#how-it-works">◎ Post Buying Request</a><a href="#products">♧ Good Deals</a><a href="#products">◇ New Products</a></div></section>
-   <section className="container browse-heading"><div className="browse-title"><strong>Suggested Products <span className="popular-tab">Bean, Nut & Seed</span> <span className="popular-tab">Agriculture, Food & Beverage</span></strong><span>Illustrative listings</span></div><div className="browse-filterbar"><span><SlidersHorizontal size={15}/> All filters</span><span>Country <ChevronDown size={13}/></span><span>Main markets <ChevronDown size={13}/></span><span>Supplier trust <ChevronDown size={13}/></span><span>Trade terms <ChevronDown size={13}/></span><span className="sort-option">Sort: Latest</span></div></section>
-   <section className="container marketplace-layout" id="products"><div className="market-main"><div className="section-head"><div><div className="section-kicker">TOP QUALITY PRODUCTS</div><h2>Top Quality Products</h2></div><div className="result-count">{filtered.length} products</div></div>
-   <div className="listing-toolbar"><div className="category-tabs">{categories.map(c=><button key={c} className={category===c?"selected":""} onClick={()=>setCategory(c)}>{c}</button>)}</div><div className="grid-indicator"><Grid2X2 size={19}/><ListFilter size={19}/></div></div>
-   <div className="product-grid">{filtered.map(p=><ProductCard key={p.id} product={p} onInquiry={setSelected}/>)}</div>{filtered.length===0&&<div className="empty-state">No products match your search. Try another keyword or category.</div>}</div>
-</section>
-   <section id="how-it-works" className="steps container"><div className="section-kicker">HOW SYLUTION TRADE WORKS</div><h2>From discovery to quotation</h2><div className="steps-grid"><div><Search size={25}/><strong>1. Discover</strong><p>Find wholesale products by keyword and category.</p></div><div><ClipboardList size={25}/><strong>2. Request</strong><p>Share quantities, destination and trade terms.</p></div><div><MessageSquare size={25}/><strong>3. Negotiate</strong><p>Compare supplier offers once messaging is connected.</p></div></div></section>
-   </main><footer><div className="container footer-inner"><div><strong>SYLUTION TRADE</strong><p>Global wholesale sourcing marketplace.</p></div><span>© 2026 SYLUTION • Demo build</span></div></footer>
-   {selected&&<InquiryModal product={selected} close={()=>setSelected(null)}/>}
+     <div className="hero-benefits"><span><Globe2 size={17}/> International sourcing</span><span><Building2 size={17}/> Business suppliers</span><span><MessageSquare size={17}/> Direct enquiries</span></div>
+   </div>
+  </section>
+  <section className="quick-actions container"><strong>Welcome to SYLUTION</strong><div><a href="#how-it-works">Post Buying Request</a><a href="#products">Top Products</a><a href="#category-explorer">Categories</a></div></section>
+  <section className="container discovery-row" id="category-explorer">
+    <div className="discovery-column category-directory"><h3>All Categories</h3>{categories.slice(1).map(c=><button key={c} onClick={()=>{setCategory(c);goProducts();}}><span>{c}</span><ChevronDown size={15}/></button>)}</div>
+    <div className="discovery-column"><div className="discovery-heading"><h3>Frequently searched</h3><span>Agriculture</span></div><div className="discovery-feature"><img src="https://images.unsplash.com/photo-1509358271058-acd22cc93898?w=550&q=80" alt="Wholesale seeds and agricultural commodities" loading="lazy"/><div><strong>Seeds & Grains</strong><button onClick={()=>quickSearch("Sesame")}>Explore products</button></div></div></div>
+    <div className="discovery-column"><div className="discovery-heading"><h3>Frequently searched</h3><span>Food & Beverage</span></div><div className="discovery-feature"><img src="https://images.unsplash.com/photo-1615485500704-8e990f9900f0?w=550&q=80" alt="Agricultural food products" loading="lazy"/><div><strong>Food Commodities</strong><button onClick={()=>quickSearch("Ginger")}>Explore products</button></div></div></div>
+    <div className="discovery-column"><div className="discovery-heading"><h3>Frequently searched</h3><span>Equipment</span></div><div className="discovery-feature"><img src="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?w=550&q=80" alt="Solar and industrial equipment" loading="lazy"/><div><strong>Energy & Machinery</strong><button onClick={()=>{setCategory("Energy");goProducts();}}>Explore products</button></div></div></div>
+    <div className="discovery-promo"><div className="promo-kicker">SOURCE SMARTER</div><h3>Connect with more business opportunities.</h3><p>Explore suppliers and request wholesale quotations in one place.</p><button onClick={goProducts}>Browse products <span>→</span></button></div>
+  </section>
+  <section className="container marketplace-layout" id="products"><div className="market-main">
+    <div className="section-head"><div><h2>Top Products</h2><p>Explore wholesale sourcing opportunities</p></div><div className="result-count">{filtered.length} example products</div></div>
+    <div className="listing-toolbar"><div className="category-tabs">{categories.map(c=><button key={c} className={category===c?"selected":""} onClick={()=>setCategory(c)}>{c}</button>)}</div><select className="product-sort" aria-label="Sort products" value={sort} onChange={e=>setSort(e.target.value as "featured"|"name")}><option value="featured">Featured</option><option value="name">Name A–Z</option></select></div>
+    <div className="product-grid">{filtered.map(p=><ProductCard key={p.id} product={p} onInquiry={setSelected}/>)}</div>
+    {!filtered.length&&<div className="empty-state">No matching products yet. Try a different keyword or category. <button onClick={()=>{setQuery("");setCategory("All Categories");}}>Clear search</button></div>}
+  </div></section>
+  <section className="container why-section" id="how-it-works"><div className="why-copy"><div className="why-label">WHY SYLUTION</div><h2>A simpler way to source and connect.</h2><p>Explore product opportunities, compare details and send structured requests for quotations.</p></div><div className="why-item"><Search size={24}/><strong>Discover</strong><span>Find products fast</span></div><div className="why-item"><MessageSquare size={24}/><strong>Enquire</strong><span>Send clear RFQs</span></div><div className="why-item"><Globe2 size={24}/><strong>Connect</strong><span>Explore global markets</span></div></section>
+  </main><footer><div className="container footer-inner"><div><strong>SYLUTION</strong><p>Global B2B Marketplace</p></div><span>© 2026 SYLUTION • Demo marketplace</span></div></footer>
+  {selected&&<InquiryModal product={selected} close={()=>setSelected(null)}/>}
  </>;
 }
 export function ProductDetail({product}:{product:Product}){
