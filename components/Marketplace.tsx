@@ -53,11 +53,7 @@ export function HomePage(){
            <h1><span className="headline-primary">{searchMode==="Products"?"Discover wholesale products.":"Find global suppliers."}</span><span className="headline-secondary">{searchMode==="Products"?"Connect with trusted businesses.":"Grow your sourcing network."}</span></h1>
            <p className="hero-description">Search products, explore suppliers and request wholesale quotations — all in one marketplace.</p>
          </div>
-         <div className="hero-visual-cluster" aria-label="Global logistics imagery">
-           <div className="logistics-photo photo-ship"><img src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=700&q=85" alt="Container ship at a port" onError={e=>{e.currentTarget.src="https://images.unsplash.com/photo-1494412519320-aa613dfb7738?w=700&q=85";}}/><span>Cargo & shipping</span></div>
-           <div className="logistics-photo photo-port"><img src="https://images.unsplash.com/photo-1494412519320-aa613dfb7738?w=650&q=85" alt="Container logistics terminal"/><span>Global logistics</span></div>
-           <div className="logistics-photo photo-freight"><img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=600&q=85" alt="Freight warehouse and distribution" onError={e=>{e.currentTarget.src="https://images.unsplash.com/photo-1494412519320-aa613dfb7738?w=600&q=85";}}/><span>Trade & supply</span></div>
-         </div>
+         
        </div>
        <div className="hero-search-panel">
          <div className="hero-mode-tabs" role="tablist" aria-label="Search type">
