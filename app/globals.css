@@ -341,3 +341,56 @@ body{background:#ebedf1;color:var(--market-ink)}
 .external-validation-note{font-size:11px;color:#8796a7;line-height:1.5;margin:11px 0 0}
 @media(max-width:1050px){.supplier-insights-grid{grid-template-columns:1fr;gap:20px}}
 @media(max-width:660px){.supplier-stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}.supplier-profile-header h2{font-size:18px!important}.supplier-insights-grid{margin-top:18px}.verification-info-grid{grid-template-columns:1fr;gap:15px}.supplier-avatar-large{width:44px!important;height:44px!important}}
+
+/* SYLUTION shared semantic visual tokens: verified=green, pending=amber,
+   unverified/unknown=neutral, rejected=red; avoid invented status or metrics */
+:root{
+  --primary-green:#0a9f49;--primary-green-dark:#07833c;--soft-green:#eefaf3;
+  --primary-blue:#dfe9ff;--soft-blue:#f4f8ff;--border-blue:#cfdcf1;
+  --text-dark:#10253e;--text-mid:#5f7388;--text-light:#8a99aa;
+  --card-bg:#fff;--page-bg:#eef2f5;--soft-gray:#f3f5f7;--border-light:#e2e8ef;
+  --warning-yellow:#f4b400;--danger-red:#e25555;
+}
+.product-page{background:var(--page-bg)!important}
+.supplier-profile-section{background:linear-gradient(145deg,#dce7ff,#e6efff)!important;border:1px solid #ccdbf7!important;box-shadow:0 3px 12px rgba(27,66,111,.06);padding:15px!important}
+.supplier-profile-header{padding:3px 4px 16px!important}
+.supplier-profile-header h2{font-size:clamp(21px,2vw,27px)!important;letter-spacing:-.4px!important;color:var(--text-dark)!important}
+.supplier-avatar-large{background:linear-gradient(135deg,#fff,#d5e6fa)!important;border:1px solid #c9d8ed!important;color:#2766a2!important;box-shadow:0 2px 7px #2b649012}
+.supplier-country{border:1px solid #d5e3f0!important;background:#fff!important;padding:5px 9px!important;border-radius:5px!important;gap:7px!important;font-weight:650}
+.country-flag-image{display:inline-block;width:23px;height:15px;object-fit:cover;border:1px solid #dce5eb;border-radius:2px;vertical-align:middle;flex-shrink:0}
+.verification-label{background:#fff6dc!important;border:1px solid #f0dba0!important;color:#986a13!important;padding:5px 9px!important;font-weight:750!important}
+.verification-label svg{color:#c68d1d!important}
+.supplier-profile-body{background:#fff!important;padding:19px!important;box-shadow:0 1px 5px #2746650a}
+.activity-section h3,.export-markets h3,.verification-information h3{font-size:19px!important;color:#112a43!important;letter-spacing:-.2px;margin-bottom:14px!important}
+.supplier-stats{gap:12px!important}
+.supplier-stats>div.signal-card{min-height:111px!important;gap:6px!important;padding:13px 9px!important;background:#f3f6f9!important;border:1px solid #e7ecf2;border-radius:10px!important;transition:box-shadow .15s}
+.supplier-stats>div.signal-card:hover{box-shadow:0 4px 14px #15385112}
+.supplier-stats .signal-icon{display:grid;place-items:center;width:27px;height:27px;border-radius:8px;background:#e3edff;color:#2b69a0;margin-bottom:2px}
+.supplier-stats .signal-activity .signal-icon{background:#e2f8ed;color:#0d9450}
+.supplier-stats .signal-founded .signal-icon{background:#fff3dc;color:#bd8114}
+.supplier-stats .signal-team .signal-icon{background:#ece9ff;color:#6a5fc4}
+.supplier-stats .signal-card>span:not(.signal-icon){font-size:12px!important;color:#526b83!important;font-weight:550}
+.supplier-stats .signal-card strong{font-size:14px!important;color:#12263b!important;line-height:1.2}
+.supplier-insights-grid{gap:28px!important;margin-top:28px!important}
+.export-markets,.verification-information{min-width:0}
+.export-market-empty{background:linear-gradient(105deg,#f4f9ff,#f4fbf7)!important;border:1px solid #d7e6ed!important;min-height:96px;padding:17px!important;gap:12px!important;color:#24445e!important;border-radius:10px!important}
+.export-market-empty svg{color:#0a9f49!important}
+.export-market-empty div{display:flex;flex-direction:column;gap:7px;min-width:0}
+.export-market-empty strong{font-size:13px;color:#1c4259}
+.export-market-empty span{font-size:12px;line-height:1.45;color:#60768b}
+.market-sample-caption{color:#6c8194!important;margin-top:10px!important}
+.verification-info-grid{gap:22px!important}
+.verification-info-grid h4{font-size:13px!important;margin-bottom:15px!important}
+.verification-item{gap:9px!important;align-items:center!important;margin-bottom:13px!important;min-width:0}
+.verification-item>span:nth-child(2){min-width:0;flex:1}
+.verification-status-icon{width:25px!important;height:25px!important}
+.verification-status-icon.status-pending{background:#fff2d7!important;color:#b97b00!important}
+.verification-status-icon.status-unchecked{background:#edf1f5!important;color:#7c8fa4!important}
+.verification-item strong{color:#233d59!important;font-size:12px!important}
+.verification-item small{color:#687f96!important}
+.verify-mini-tag{font-size:10px;border:1px solid #f5dba0;border-radius:20px;background:#fff8e7;color:#986b14;font-weight:700;padding:3px 7px}
+.external-validation-row{padding:12px 0!important}
+.external-validation-row strong{color:#8794a5!important}
+.external-validation-note{background:#f2f7fc;border-left:3px solid #3a85c4;padding:10px!important;border-radius:0 6px 6px 0;color:#516c84!important}
+.detail-supplier-card .unverified-tag{background:#fff6df;color:#996f18;border:1px solid #f1d99b}
+@media(max-width:700px){.supplier-profile-section{padding:10px!important}.supplier-profile-body{padding:12px!important}.supplier-stats{gap:8px!important}.supplier-stats>div.signal-card{min-height:100px!important;padding:9px!important}.supplier-profile-header{padding:4px 0 13px!important}}

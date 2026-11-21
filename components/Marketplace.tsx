@@ -154,7 +154,7 @@ export function ProductDetail({product}:{product:Product}){
                <div className="supplier-subline">
                  <span className="verification-label"><ShieldCheck size={14}/> Verification pending</span>
                  <span className="supplier-separator">•</span>
-                 <span className="supplier-country"><span className="supplier-country-flag">{product.flag}</span> {product.country}</span>
+                 <span className="supplier-country">{({Nigeria:"ng",China:"cn",USA:"us",UAE:"ae",Türkiye:"tr"} as Record<string,string>)[product.country] ? <img className="country-flag-image" src={`https://flagcdn.com/w40/${({Nigeria:"ng",China:"cn",USA:"us",UAE:"ae",Türkiye:"tr"} as Record<string,string>)[product.country]}.png`} alt={`${product.country} flag`} onError={e=>{e.currentTarget.style.display="none";}}/> : <span className="supplier-country-flag">{product.flag}</span>} {product.country}</span>
                  <span className="supplier-separator">•</span>
                  <span>Supplier profile — demonstration</span>
                </div>
@@ -174,7 +174,7 @@ export function ProductDetail({product}:{product:Product}){
                <div className="export-markets">
                  <h3>Export Markets</h3>
                  <p>Markets must be supplied by the business and verified before publication.</p>
-                 <div className="export-market-empty"><Globe2 size={20}/><span>No confirmed export markets for this supplier</span></div>
+                 <div className="export-market-empty"><Globe2 size={22}/><div><strong>Awaiting export-market information</strong><span>No confirmed destinations have been submitted yet.</span></div></div>
                  <div className="market-sample-caption">Country flags appear automatically when a real market is available.</div>
                </div>
                <div className="verification-information">
@@ -182,10 +182,10 @@ export function ProductDetail({product}:{product:Product}){
                  <div className="verification-info-grid">
                    <div>
                      <h4>Verification status</h4>
-                     <div className="verification-item"><span className="verification-status-icon"><ShieldCheck size={15}/></span><span><strong>Business documents</strong><small>Awaiting review</small></span></div>
-                     <div className="verification-item"><span className="verification-status-icon"><ShieldCheck size={15}/></span><span><strong>Phone number</strong><small>Not confirmed</small></span></div>
-                     <div className="verification-item"><span className="verification-status-icon"><ShieldCheck size={15}/></span><span><strong>Account email</strong><small>Not confirmed</small></span></div>
-                     <div className="verification-item"><span className="verification-status-icon"><ShieldCheck size={15}/></span><span><strong>Work email</strong><small>Not confirmed</small></span></div>
+                     <div className="verification-item"><span className="verification-status-icon status-pending"><ShieldCheck size={15}/></span><span><strong>Business documents</strong><small>Awaiting review</small></span><span className="verify-mini-tag">Pending</span></div>
+                     <div className="verification-item"><span className="verification-status-icon status-unchecked"><ShieldCheck size={15}/></span><span><strong>Phone number</strong><small>Not confirmed</small></span></div>
+                     <div className="verification-item"><span className="verification-status-icon status-unchecked"><ShieldCheck size={15}/></span><span><strong>Account email</strong><small>Not confirmed</small></span></div>
+                     <div className="verification-item"><span className="verification-status-icon status-unchecked"><ShieldCheck size={15}/></span><span><strong>Work email</strong><small>Not confirmed</small></span></div>
                    </div>
                    <div>
                      <h4>External validation</h4>
@@ -203,7 +203,7 @@ export function ProductDetail({product}:{product:Product}){
          <section className="detail-section"><div className="detail-section-title"><h2>Products of this Supplier</h2></div><div className="related-grid">{supplierProducts.map(p=><ProductCard key={p.id} product={p} onInquiry={setSelected}/>)}</div></section>
        </div>
        <aside className="product-detail-aside">
-         <div className="detail-supplier-card"><div className="aside-heading"><h3>Contact this Supplier</h3><span className="unverified-tag">Not verified</span></div><div className="aside-supplier-heading"><div className="supplier-avatar"><Building2 size={24}/></div><div><strong>{product.supplier}</strong><p><span className="supplier-country-flag">{product.flag}</span> {product.country}</p></div></div><div className="aside-attributes"><div><span>Company type</span><strong>Supplier (demo)</strong></div><div><span>Location</span><strong>{product.country}</strong></div><div><span>Business registration</span><strong>Not reviewed</strong></div></div><button className="aside-chat" onClick={()=>setSelected(product)}><MessageSquare size={17}/> Contact supplier</button><button className="detail-action-green" onClick={()=>setSelected(product)}><Send size={17}/> Inquiry now</button></div>
+         <div className="detail-supplier-card"><div className="aside-heading"><h3>Contact this Supplier</h3><span className="unverified-tag">Not verified</span></div><div className="aside-supplier-heading"><div className="supplier-avatar"><Building2 size={24}/></div><div><strong>{product.supplier}</strong><p><span className="supplier-country">{({Nigeria:"ng",China:"cn",USA:"us",UAE:"ae",Türkiye:"tr"} as Record<string,string>)[product.country] ? <img className="country-flag-image" src={`https://flagcdn.com/w40/${({Nigeria:"ng",China:"cn",USA:"us",UAE:"ae",Türkiye:"tr"} as Record<string,string>)[product.country]}.png`} alt={`${product.country} flag`} onError={e=>{e.currentTarget.style.display="none";}}/> : <span className="supplier-country-flag">{product.flag}</span>} {product.country}</span></p></div></div><div className="aside-attributes"><div><span>Company type</span><strong>Supplier (demo)</strong></div><div><span>Location</span><strong>{product.country}</strong></div><div><span>Business registration</span><strong>Not reviewed</strong></div></div><button className="aside-chat" onClick={()=>setSelected(product)}><MessageSquare size={17}/> Contact supplier</button><button className="detail-action-green" onClick={()=>setSelected(product)}><Send size={17}/> Inquiry now</button></div>
          <div className="aside-products"><h3><span className="ad-label">Explore</span> Top Products</h3>{products.filter(p=>p.id!==product.id).slice(0,6).map(p=><Link className="aside-product-row" key={p.id} href={"/products/"+p.slug}><img src={p.image} alt="" loading="lazy" onError={e=>e.currentTarget.style.display="none"}/><div><strong>{p.name}</strong><b>{p.price}</b><small>Min. order: {p.moq}</small><span>{p.country}</span></div></Link>)}</div>
        </aside>
      </div>
