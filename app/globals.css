@@ -527,3 +527,13 @@ body{background:#ebedf1;color:var(--market-ink)}
 .checklist-progress{color:#158449;font-weight:700;font-size:11px}
 .buyer-checklist button{display:flex;align-items:center;justify-content:center;gap:7px;background:#008d3d;border:0;border-radius:7px;color:#fff;font-weight:700;padding:10px}
 @media(max-width:650px){.buyer-tools-heading{flex-direction:column}.buyer-toolkit-trigger{align-items:start}.offer-quick-actions{grid-template-columns:1fr}.buyer-compare-controls{align-items:stretch}.buyer-compare-controls label{width:100%}}
+
+/* Demo catalog expansion: concise controls with responsive loading */
+.listing-extra-filters{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin:1px 0 12px;padding:10px 12px;background:#f8fbfe;border:1px solid #d5e5f0;border-radius:8px}
+.listing-extra-filters label{display:inline-flex;align-items:center;gap:9px;font-size:12px;font-weight:700;color:#2b5166}
+.listing-extra-filters select{border:1px solid #bdd6c5;border-radius:6px;background:#fff;color:#1f3d50;padding:7px 10px;max-width:170px}
+.listing-extra-filters>span{font-size:11px;color:#647a89}
+.load-more-listings{display:flex;justify-content:center;padding:21px 10px 9px}
+.load-more-listings button{border-radius:8px;border:1px solid #008b3f;background:#fff;color:#047c39;padding:12px 22px;font-weight:800;font-size:13px;cursor:pointer}
+.load-more-listings button:hover{background:#e7f7ec}.load-more-listings span{font-weight:500;color:#617789}
+@media(max-width:450px){.listing-extra-filters{align-items:flex-start}.listing-extra-filters label{flex-wrap:wrap}.listing-extra-filters>span{width:100%}}

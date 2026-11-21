@@ -50,10 +50,13 @@ export function HomePage(){
  const [searchMode,setSearchMode]=useState<"Products"|"Suppliers">("Products");
  const [showCategories,setShowCategories]=useState(false);
  const [sort,setSort]=useState<"featured"|"name">("featured");
+ const [visibleCount,setVisibleCount]=useState(24);
+ const [countryFilter,setCountryFilter]=useState("All Countries");
+ const countryOptions=["All Countries",...Array.from(new Set(products.map(p=>p.country))).sort()];
  const filtered=useMemo(()=>{
-   const matched=products.filter(p=>(category==="All Categories"||p.category===category)&&([p.name,p.supplier,p.country,p.category].join(" ").toLowerCase().includes(query.trim().toLowerCase())));
+   const matched=products.filter(p=>(category==="All Categories"||p.category===category)&&(countryFilter==="All Countries"||p.country===countryFilter)&&([p.name,p.supplier,p.country,p.category].join(" ").toLowerCase().includes(query.trim().toLowerCase())));
    return sort==="name"?[...matched].sort((a,b)=>a.name.localeCompare(b.name)):matched;
- },[category,query,sort]);
+ },[category,query,sort,countryFilter]);
  const goProducts=()=>document.getElementById("products")?.scrollIntoView({behavior:"smooth"});
  const quickSearch=(phrase:string)=>{setCategory("All Categories");setQuery(phrase);goProducts();};
  return <><Header search={query} setSearch={setQuery}/><main>
@@ -85,8 +88,10 @@ export function HomePage(){
   </section>
   <section className="container marketplace-layout" id="products"><div className="market-main">
     <div className="section-head"><div><h2>Top Products</h2><p>Explore wholesale sourcing opportunities</p></div><div className="result-count">{filtered.length} example products</div></div>
-    <div className="listing-toolbar"><div className="category-tabs">{categories.map(c=><button key={c} className={category===c?"selected":""} onClick={()=>setCategory(c)}>{c}</button>)}</div><select className="product-sort" aria-label="Sort products" value={sort} onChange={e=>setSort(e.target.value as "featured"|"name")}><option value="featured">Featured</option><option value="name">Name A–Z</option></select></div>
-    <div className="product-grid">{filtered.map(p=><ProductCard key={p.id} product={p} onInquiry={setSelected}/>)}</div>
+    <div className="listing-toolbar"><div className="category-tabs">{categories.map(c=><button key={c} className={category===c?"selected":""} onClick={()=>setCategory(c);setVisibleCount(24);}}>{c}</button>)}</div><select className="product-sort" aria-label="Sort products" value={sort} onChange={e=>setSort(e.target.value as "featured"|"name")}><option value="featured">Featured</option><option value="name">Name A–Z</option></select></div>
+    <div className="listing-extra-filters"><label>Supplier country <select value={countryFilter} onChange={e=>{setCountryFilter(e.target.value);setVisibleCount(24);}}>{countryOptions.map(c=><option key={c} value={c}>{c}</option>)}</select></label><span>{filtered.length} sample listings · {countryOptions.length-1} countries</span></div>
+    <div className="product-grid">{filtered.slice(0,visibleCount).map(p=><ProductCard key={p.id} product={p} onInquiry={setSelected}/>)}</div>
+    {filtered.length>visibleCount&&<div className="load-more-listings"><button onClick={()=>setVisibleCount(v=>v+24)}>Load more products <span>({filtered.length-visibleCount} remaining)</span></button></div>}
     {!filtered.length&&<div className="empty-state">No matching products yet. Try a different keyword or category. <button onClick={()=>{setQuery("");setCategory("All Categories");}}>Clear search</button></div>}
   </div></section>
   <section className="container why-section" id="how-it-works"><div className="why-copy"><div className="why-label">WHY SYLUTION</div><h2>A simpler way to source and connect.</h2><p>Explore product opportunities, compare details and send structured requests for quotations.</p></div><div className="why-item"><Search size={24}/><strong>Discover</strong><span>Find products fast</span></div><div className="why-item"><MessageSquare size={24}/><strong>Enquire</strong><span>Send clear RFQs</span></div><div className="why-item"><Globe2 size={24}/><strong>Connect</strong><span>Explore global markets</span></div></section>
