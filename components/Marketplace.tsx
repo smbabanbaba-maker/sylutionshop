@@ -46,22 +46,29 @@ export function HomePage(){
  const filtered=useMemo(()=>products.filter(p=>(category==="All Categories"||p.category===category)&&([p.name,p.supplier,p.country,p.category].join(" ").toLowerCase().includes(query.toLowerCase()))),[category,query]);
  return <><Header search={query} setSearch={setQuery}/><main>
    <section className="fresh-hero">
-     <div className="hero-background-decoration" aria-hidden="true"><div className="hero-orbit orbit-one"/><div className="hero-orbit orbit-two"/></div>
      <div className="fresh-hero-inner container">
-       <div className="hero-eyebrow"><Globe2 size={15}/> THE GLOBAL B2B SOURCING NETWORK <span className="eyebrow-dot"/> CONNECTING MARKETS</div>
-       <h1>{searchMode==="Products"?"Find the right products.":"Discover trusted opportunities."}<br/><span>{searchMode==="Products"?"Connect with global suppliers.":"Connect with global businesses."}</span></h1>
-       <p className="hero-description">Explore wholesale products, compare offers and send enquiries to suppliers across global markets.</p>
+       <div className="hero-top-row">
+         <div className="hero-copy">
+           <div className="hero-eyebrow"><Globe2 size={15}/> GLOBAL B2B MARKETPLACE <span className="eyebrow-dot"/> TRADE WORLDWIDE</div>
+           <h1><span className="headline-primary">{searchMode==="Products"?"Discover wholesale products.":"Find global suppliers."}</span><span className="headline-secondary">{searchMode==="Products"?"Connect with trusted businesses.":"Grow your sourcing network."}</span></h1>
+           <p className="hero-description">Search products, explore suppliers and request wholesale quotations — all in one marketplace.</p>
+         </div>
+         <div className="hero-visual-cluster" aria-label="Global logistics imagery">
+           <div className="logistics-photo photo-ship"><img src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=700&q=85" alt="Container ship at a port" onError={e=>{e.currentTarget.src="https://images.unsplash.com/photo-1494412519320-aa613dfb7738?w=700&q=85";}}/><span>Cargo & shipping</span></div>
+           <div className="logistics-photo photo-port"><img src="https://images.unsplash.com/photo-1494412519320-aa613dfb7738?w=650&q=85" alt="Container logistics terminal"/><span>Global logistics</span></div>
+           <div className="logistics-photo photo-freight"><img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=600&q=85" alt="Freight warehouse and distribution" onError={e=>{e.currentTarget.src="https://images.unsplash.com/photo-1494412519320-aa613dfb7738?w=600&q=85";}}/><span>Trade & supply</span></div>
+         </div>
+       </div>
        <div className="hero-search-panel">
          <div className="hero-mode-tabs" role="tablist" aria-label="Search type">
            {(["Products","Suppliers"] as const).map(mode=><button role="tab" aria-selected={searchMode===mode} className={searchMode===mode?"active":""} key={mode} onClick={()=>setSearchMode(mode)}>{mode}</button>)}
          </div>
          <div className="hero-search">
            <span className="hero-search-category"><Menu size={19}/> All categories <ChevronDown size={14}/></span>
-           <input aria-label={searchMode==="Products"?"Search products":"Search suppliers"} value={query} onChange={e=>setQuery(e.target.value)} placeholder={searchMode==="Products"?"Search products, raw materials, machines & more":"Search suppliers by company, product or country"} onKeyDown={e=>{if(e.key==="Enter")document.getElementById("products")?.scrollIntoView({behavior:"smooth"});}}/>
+           <input aria-label={searchMode==="Products"?"Search products":"Search suppliers"} value={query} onChange={e=>setQuery(e.target.value)} placeholder={searchMode==="Products"?"Search products, commodities, equipment...":"Search suppliers, countries or products..."} onKeyDown={e=>{if(e.key==="Enter")document.getElementById("products")?.scrollIntoView({behavior:"smooth"});}}/>
            <button onClick={()=>document.getElementById("products")?.scrollIntoView({behavior:"smooth"})}><Search size={20}/> Search</button>
          </div>
        </div>
-       <div className="hero-footnote"><span><ShieldCheck size={15}/> Business-first discovery</span><span><Globe2 size={15}/> International sourcing</span><span><MessageSquare size={15}/> Direct enquiries</span></div>
      </div>
    </section>
    <section className="quick-actions container"><span>Welcome to SYLUTION</span><div><a href="#how-it-works">◎ Post Buying Request</a><a href="#products">♧ Good Deals</a><a href="#products">◇ New Products</a></div></section>
