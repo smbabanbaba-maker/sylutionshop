@@ -106,6 +106,19 @@ export function ProductDetail({product}:{product:Product}){
  const related=products.filter(p=>p.id!==product.id&&(p.category===product.category||p.country===product.country)).slice(0,4);
  const alternatives=(related.length>=3?related:[...related,...products.filter(p=>p.id!==product.id&&!related.some(r=>r.id===p.id))]).slice(0,4);
  const supplierProducts=products.filter(p=>p.supplier===product.supplier).slice(0,5);
+ const demoMarkets=[
+  {code:"us",flag:"🇺🇸",name:"United States"},
+  {code:"gb",flag:"🇬🇧",name:"United Kingdom"},
+  {code:"au",flag:"🇦🇺",name:"Australia"},
+  {code:"ca",flag:"🇨🇦",name:"Canada"},
+  {code:"de",flag:"🇩🇪",name:"Germany"}
+ ];
+ const demoRegions=[
+  {name:"Western Europe",pct:50},
+  {name:"North America",pct:33},
+  {name:"Oceania",pct:17}
+ ];
+
  function share(){
    const url=window.location.href;
    if(navigator.share){navigator.share({title:product.name,url}).catch(()=>{});}
@@ -121,7 +134,7 @@ export function ProductDetail({product}:{product:Product}){
      </div>
    </div>}
    <div className="product-page-container">
-     <div className="product-breadcrumbs"><Link href="/">All Products</Link><ChevronDown size={14}/><span>{product.category}</span><ChevronDown size={14}/><span>{product.name}</span></div>
+     <div className="product-demo-banner"><strong>DEMO PREVIEW</strong><span>All supplier ratings, verification badges, export markets and activity figures on this page are illustrative until a real database is connected.</span></div><div className="product-breadcrumbs"><Link href="/">All Products</Link><ChevronDown size={14}/><span>{product.category}</span><ChevronDown size={14}/><span>{product.name}</span></div>
      <div className="product-content-layout">
        <div className="product-left-column">
          <section className="product-primary-card">
@@ -147,60 +160,71 @@ export function ProductDetail({product}:{product:Product}){
          <section className="detail-section"><h2>Product Specifications</h2><div className="detail-specifications">{[["Minimum Order Quantity",product.moq],["Product",product.name],["Trade Term","To be confirmed"],["Supplier Country",product.country],["Payment Term","By agreement"],...product.specifications].map(([k,v],i)=><div key={i}><span>{k}</span><strong>{v}</strong></div>)}</div></section>
          <section className="detail-section"><h2>Product Certificates</h2><div className="certificate-placeholder"><FileText size={28}/><strong>No certificates uploaded</strong><p>Certification claims will appear here only after documents have been reviewed.</p></div></section>
          <section className="supplier-profile-section">
-          <div className="supplier-profile-header">
-            <div className="supplier-avatar supplier-avatar-large"><Building2 size={28}/></div>
-            <div className="supplier-heading-details">
-              <h2>{product.supplier}</h2>
-              <div className="supplier-subline">
-                <span className="verification-label"><ShieldCheck size={14}/> Pending verification</span>
-                <span className="supplier-separator">•</span>
-                <span className="supplier-country"><span className="supplier-country-flag">{product.flag}</span>{product.country}</span>
-                <span className="supplier-separator">•</span>
-                <span>Supplier profile (example)</span>
-              </div>
-            </div>
+  <div className="supplier-profile-header">
+    <div className="supplier-avatar supplier-avatar-large"><Building2 size={28}/></div>
+    <div className="supplier-heading-details">
+      <h2>{product.supplier}</h2>
+      <div className="supplier-subline">
+        <span className="demo-trust-badge"><ShieldCheck size={14}/> Verified L3 <sup>DEMO</sup></span>
+        <span className="demo-star-rating">4.3 <span>★</span> <small>DEMO</small></span>
+        <span className="supplier-separator">•</span>
+        <span className="supplier-country"><span className="supplier-country-flag">{product.flag}</span>{product.country}</span>
+        <span className="supplier-separator">•</span>
+        <span>Distributor / Wholesaler · Trading Company (demo)</span>
+      </div>
+    </div>
+    <span className="demo-supplier-mark">SAMPLE COMPANY</span>
+  </div>
+  <div className="supplier-profile-body">
+    <div className="profile-section-heading"><h3>Activity signals</h3><span className="demo-data-note">Demo metrics · not real activity</span></div>
+    <div className="supplier-stats">
+      <div><span>Total inquiries received</span><strong>2</strong></div>
+      <div><span>Last supplier active</span><strong>Just now</strong></div>
+      <div><span>Year Established</span><strong>2013</strong></div>
+      <div><span>Number of Employees</span><strong>11–50 employees</strong></div>
+    </div>
+    <div className="supplier-insights-grid">
+      <div className="export-markets">
+        <h3>Export Markets</h3>
+        <p>Example distribution — illustrative data only.</p>
+        <div className="demo-market-flags">
+          {demoMarkets.map(m=><span key={m.code} className="demo-market-chip"><span className="market-flag">{m.flag}</span> {m.name}</span>)}
+        </div>
+        <div className="demo-market-bars">
+          {demoRegions.map(r=><div className="demo-market-bar" key={r.name}>
+            <span>{r.name}</span>
+            <div className="demo-bar-track"><div className="demo-bar-fill" style={{width:r.pct+"%"}}/></div>
+            <strong>{r.pct}%</strong>
+          </div>)}
+        </div>
+      </div>
+      <div className="verification-information">
+        <h3>Verification information</h3>
+        <div className="verification-info-grid">
+          <div>
+            <h4>Verification information <small>(DEMO)</small></h4>
+            <div className="verification-item"><span className="verify-icon demo-verified"><ShieldCheck size={15}/></span><span><strong>Verify business documents</strong><small>Demo verification system</small></span></div>
+            <div className="verification-item"><span className="verify-icon demo-verified"><ShieldCheck size={15}/></span><span><strong>Verify phone number</strong><small>Demo verification team</small></span></div>
+            <div className="verification-item"><span className="verify-icon demo-verified"><ShieldCheck size={15}/></span><span><strong>Verify account email</strong><small>SYLUTION demonstration</small></span></div>
+            <div className="verification-item"><span className="verify-icon demo-unverified"><X size={14}/></span><span><strong>Verify work email</strong><small>Not verified (demo)</small></span></div>
           </div>
-          <div className="supplier-profile-body">
-            <h3>Activity signals</h3>
-            <div className="supplier-stats">
-              <div><span>Total inquiries received</span><strong>—</strong></div>
-              <div><span>Last supplier active</span><strong>—</strong></div>
-              <div><span>Year Established</span><strong>—</strong></div>
-              <div><span>Number of Employees</span><strong>—</strong></div>
-            </div>
-            <div className="supplier-insights-grid">
-              <div className="export-markets">
-                <h3>Export Markets</h3>
-                <p>Based on information provided by the supplier.</p>
-                <div className="market-not-provided"><Globe2 size={18}/><span>Export markets not yet provided.</span></div>
-                <p className="export-help">Country flags and green market-share bars will appear here when supported by real supplier data.</p>
-              </div>
-              <div className="verification-information">
-                <h3>Verification information</h3>
-                <div className="verification-info-grid">
-                  <div>
-                    <h4>Verification information</h4>
-                    <div className="verification-item"><span className="verify-icon pending"><ShieldCheck size={15}/></span><span><strong>Verify business documents</strong><small>Awaiting document review</small></span></div>
-                    <div className="verification-item"><span className="verify-icon unknown"><ShieldCheck size={15}/></span><span><strong>Verify phone number</strong><small>Not confirmed</small></span></div>
-                    <div className="verification-item"><span className="verify-icon unknown"><ShieldCheck size={15}/></span><span><strong>Verify account email</strong><small>Not confirmed</small></span></div>
-                    <div className="verification-item"><span className="verify-icon unknown"><ShieldCheck size={15}/></span><span><strong>Verify work email</strong><small>Not confirmed</small></span></div>
-                  </div>
-                  <div>
-                    <h4>External Validation</h4>
-                    <div className="validation-line"><span>Company</span><strong>Not validated</strong></div>
-                    <div className="validation-line"><span>Address</span><strong>Not validated</strong></div>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div>
+            <h4>External Validation</h4>
+            <div className="validation-line"><span>Company</span><strong>Demo confirmed</strong></div>
+            <div className="validation-line"><span>Address</span><strong>Demo confirmed</strong></div>
+            <p className="demo-validation-notice">Sample presentation only. No real company checks or certifications have been performed.</p>
           </div>
-        </section>
-        <section className="detail-section reviews-section"><h2>Reviews of this Product</h2><div className="reviews-empty"><MessageSquare size={23}/><strong>No reviews yet</strong><p>Buyer reviews will appear here after verified transactions are supported.</p></div></section>
+        </div>
+      </div>
+    </div>
+  </div>
+ </section>
+ <section className="detail-section reviews-section"><h2>Reviews of this Product</h2><div className="reviews-empty"><MessageSquare size={23}/><strong>No reviews yet</strong><p>Buyer reviews will appear here after verified transactions are supported.</p></div></section>
          <section className="detail-section"><h2>Product description from the supplier</h2><p className="long-description">{product.description}</p><p className="disclaimer">The current page uses example product data. SYLUTION has not independently verified supplier claims, pricing or availability.</p></section>
          <section className="detail-section"><div className="detail-section-title"><h2>Products of this Supplier</h2></div><div className="related-grid">{supplierProducts.map(p=><ProductCard key={p.id} product={p} onInquiry={setSelected}/>)}</div></section>
        </div>
        <aside className="product-detail-aside">
-         <div className="detail-supplier-card"><div className="aside-heading"><h3>Contact this Supplier</h3><span className="unverified-tag">Not verified</span></div><div className="aside-supplier-heading"><div className="supplier-avatar"><Building2 size={24}/></div><div><strong>{product.supplier}</strong><p><span className="supplier-country">{({Nigeria:"ng",China:"cn",USA:"us",UAE:"ae",Türkiye:"tr"} as Record<string,string>)[product.country] ? <img className="country-flag-image" src={`https://flagcdn.com/w40/${({Nigeria:"ng",China:"cn",USA:"us",UAE:"ae",Türkiye:"tr"} as Record<string,string>)[product.country]}.png`} alt={`${product.country} flag`} onError={e=>{e.currentTarget.style.display="none";}}/> : <span className="supplier-country-flag">{product.flag}</span>} {product.country}</span></p></div></div><div className="aside-attributes"><div><span>Company type</span><strong>Supplier (demo)</strong></div><div><span>Location</span><strong>{product.country}</strong></div><div><span>Business registration</span><strong>Not reviewed</strong></div></div><button className="aside-chat" onClick={()=>setSelected(product)}><MessageSquare size={17}/> Contact supplier</button><button className="detail-action-green" onClick={()=>setSelected(product)}><Send size={17}/> Inquiry now</button></div>
+         <div className="detail-supplier-card"><div className="aside-heading"><h3>Contact this Supplier</h3><span className="demo-trust-badge"><ShieldCheck size={13}/> Verified L3 <sup>DEMO</sup></span></div><div className="aside-supplier-heading"><div className="supplier-avatar"><Building2 size={24}/></div><div><strong>{product.supplier}</strong><p><span className="supplier-country">{({Nigeria:"ng",China:"cn",USA:"us",UAE:"ae",Türkiye:"tr"} as Record<string,string>)[product.country] ? <img className="country-flag-image" src={`https://flagcdn.com/w40/${({Nigeria:"ng",China:"cn",USA:"us",UAE:"ae",Türkiye:"tr"} as Record<string,string>)[product.country]}.png`} alt={`${product.country} flag`} onError={e=>{e.currentTarget.style.display="none";}}/> : <span className="supplier-country-flag">{product.flag}</span>} {product.country}</span></p></div></div><div className="aside-demo-rating"><span>4.3 <b>★</b> <small>Demo rating</small></span><span>Example supplier profile</span></div><div className="aside-attributes"><div><span>Company type</span><strong>Distributor / Wholesaler (demo)</strong></div><div><span>Location</span><strong>{product.country}</strong></div><div><span>Established</span><strong>2013 (demo)</strong></div></div><button className="aside-chat" onClick={()=>setSelected(product)}><MessageSquare size={17}/> Contact supplier</button><button className="detail-action-green" onClick={()=>setSelected(product)}><Send size={17}/> Inquiry now</button></div>
          <div className="aside-products"><h3><span className="ad-label">Explore</span> Top Products</h3>{products.filter(p=>p.id!==product.id).slice(0,6).map(p=><Link className="aside-product-row" key={p.id} href={"/products/"+p.slug}><img src={p.image} alt="" loading="lazy" onError={e=>e.currentTarget.style.display="none"}/><div><strong>{p.name}</strong><b>{p.price}</b><small>Min. order: {p.moq}</small><span>{p.country}</span></div></Link>)}</div>
        </aside>
      </div>

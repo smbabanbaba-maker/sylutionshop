@@ -421,3 +421,48 @@ body{background:#ebedf1;color:var(--market-ink)}
  .supplier-profile-section{padding:9px!important}
  .supplier-profile-body{padding:12px!important}
 }
+
+/* Demo-complete supplier detail screenshot styling; sample values are clearly labeled */
+.product-demo-banner{display:flex;gap:10px;align-items:center;flex-wrap:wrap;border:1px solid #b6d9c3;background:#e9f8ee;padding:9px 13px;margin:12px 0 0;border-radius:8px;color:#28543e;font-size:12px;line-height:1.4}
+.product-demo-banner strong{color:#056e2e;border:1px solid #a7d5b9;background:#fff;padding:3px 7px;border-radius:4px;letter-spacing:.5px;font-size:10px}
+.supplier-profile-section{background:#d9e4ff!important;border-radius:9px!important}
+.supplier-profile-header{gap:12px!important;position:relative}
+.supplier-heading-details{flex:1}
+.supplier-profile-header h2{font-size:21px!important;color:#102c4b!important}
+.supplier-subline{font-size:12px!important;gap:8px!important}
+.demo-trust-badge{display:inline-flex;align-items:center;gap:4px;background:#f8fbf9;color:#143a2c;font-size:11px;font-weight:700;padding:3px 6px;border-radius:4px;white-space:nowrap}
+.demo-trust-badge svg{color:#079947}
+.demo-trust-badge sup{background:#def2e5;color:#04773c;font-size:8px;padding:2px 4px;border:1px solid #96d9ae;border-radius:3px;line-height:1}
+.demo-star-rating{font-size:12px;color:#1f334a}
+.demo-star-rating>span{color:#f2b21b;font-size:16px}
+.demo-star-rating small{font-size:9px;color:#73829b}
+.demo-supplier-mark{font-size:9px;color:#52769a;font-weight:750;letter-spacing:.5px;border:1px solid #bbcee9;background:#edf3ff;padding:5px 7px;border-radius:5px;white-space:nowrap}
+.profile-section-heading{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.demo-data-note{color:#7b8ba0;font-size:10px;letter-spacing:.1px}
+.supplier-profile-body{padding:13px!important}
+.supplier-stats>div{background:#f1f3f6!important;border-radius:8px!important;min-height:74px!important;gap:8px!important}
+.supplier-stats strong{font-size:18px!important;color:#0d2035!important}
+.supplier-insights-grid{margin-top:22px!important;grid-template-columns:1fr 1fr!important;gap:24px!important}
+.export-markets p{margin:0 0 8px!important}
+.demo-market-flags{display:flex;gap:5px;flex-wrap:wrap;align-items:center;margin:9px 0 13px}
+.demo-market-chip{display:inline-flex;align-items:center;gap:5px;padding:3px 5px;border:1px solid #dfe5eb;background:#fff;border-radius:3px;font-size:11px;color:#193650;white-space:nowrap}
+.market-flag{font-size:15px;line-height:1}
+.demo-market-bars{display:grid;gap:10px;max-width:540px}
+.demo-market-bar{display:grid;grid-template-columns:max-content minmax(40px,1fr) 34px;align-items:center;gap:7px}
+.demo-market-bar>span{font-size:12px;color:#263e58}.demo-market-bar>strong{font-size:12px;font-weight:500;color:#334761}
+.demo-bar-track{height:8px;border-radius:10px;background:#dfe9e2;overflow:hidden;min-width:30px}
+.demo-bar-fill{height:100%;border-radius:10px;background:#07973c}
+.verification-info-grid{grid-template-columns:1fr 1fr!important;gap:19px!important}
+.verification-info-grid h4 small{font-size:9px;color:#7388a2;font-weight:500}
+.verification-item{margin-bottom:9px!important}
+.verify-icon.demo-verified{background:#e2f7e9;color:#078b3a}
+.verify-icon.demo-unverified{background:#fff0ef;color:#df4040}
+.verification-item small{color:#7b8da5!important}
+.validation-line{grid-template-columns:35% 65%}
+.validation-line strong{color:#405870}
+.demo-validation-notice{background:#f3f6fa;color:#697b8e;font-size:10px;line-height:1.4;padding:8px;border-radius:5px}
+.aside-demo-rating{display:flex;justify-content:space-between;gap:8px;align-items:center;color:#4f6780;font-size:11px;margin:0 0 12px}
+.aside-demo-rating b{color:#f4b000}.aside-demo-rating small{font-size:10px}.aside-demo-rating>span:last-child{color:#8290a0;font-size:10px}
+.detail-supplier-card .demo-trust-badge{font-size:10px}
+@media(max-width:1000px){.supplier-insights-grid{grid-template-columns:1fr!important}}
+@media(max-width:650px){.supplier-insights-grid{gap:18px!important}.verification-info-grid{grid-template-columns:1fr!important}.supplier-profile-header{align-items:flex-start!important}.demo-supplier-mark{display:none}.supplier-stats strong{font-size:15px!important}.demo-market-chip{font-size:10px}.profile-section-heading{align-items:start}}
