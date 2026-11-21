@@ -689,3 +689,82 @@ body{background:#ebedf1;color:var(--market-ink)}
 @media(max-width:1150px){.sy-performance-grid,.sy-premium-data{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:720px){.sy-recommended-products{grid-template-columns:repeat(2,minmax(0,1fr))}.sy-profile-nudge,.sy-account-performance-note{align-items:flex-start;flex-wrap:wrap}.sy-dashboard-bottom{grid-template-columns:1fr}.sy-workspace-heading{align-items:start;flex-wrap:wrap}}
 @media(max-width:430px){.sy-performance-grid,.sy-premium-data,.sy-recommended-products,.sy-verification-grid{grid-template-columns:1fr}.sy-recommended-photo{height:165px}}
+
+/* Exact visual color roles referenced by buyer & supplier Freshdi screenshots.
+   Actions remain SYLUTION-branded and all demonstration features are disclosed. */
+.sy-account-page{--sy-green:#008f3b;--sy-green-hover:#067c36;--sy-red:#dc291f;--sy-orange:#ff9100;--sy-dark:#1d2938;--sy-surface:#edf0f4;}
+.sy-account-sidebar{background:#f5f6f8!important;border-radius:0!important;box-shadow:none!important;min-height:570px}
+.sy-account-sidebar>button{color:#324664!important;font-weight:550!important;padding:11px 12px!important;min-height:40px!important}
+.sy-account-sidebar>button.active{color:#008f3b!important;background:#e7e9ec!important;border-left:3px solid #008f3b!important;font-weight:800!important}
+.sy-account-sidebar>button:hover:not(.sy-sidebar-primary){color:#008f3b!important;background:#e9f3ed!important}
+.sy-account-sidebar>button.sy-sidebar-primary{display:flex!important;align-items:center!important;justify-content:flex-start;background:var(--sy-green)!important;color:white!important;margin:6px 0 10px;border-radius:7px!important;font-weight:800!important;min-height:43px!important;border-left:0!important}
+.sy-account-sidebar>button.sy-sidebar-primary:hover{background:var(--sy-green-hover)!important}
+.sy-plus-sign{font-size:22px;font-weight:600;line-height:1}
+.sy-profile-nudge{background:#ffdddd!important;border-left:4px solid #e53025!important;color:#a72019}
+.sy-profile-nudge button{background:var(--sy-red)!important;color:white!important}
+.sy-profile-nudge button:hover{background:#b91d15!important}
+.sy-green-action,.sy-account-performance-note button,.sy-buyer-theme .sy-checklist-create{background:var(--sy-green)!important;color:white!important}
+.sy-green-action:hover,.sy-account-performance-note button:hover{background:var(--sy-green-hover)!important}
+.sy-auth-actions .sy-signup-action{background:#fff!important;border:1px solid var(--sy-green)!important;color:var(--sy-green)!important}
+.sy-menu-links a:hover,.sy-menu-links a:focus-visible{color:var(--sy-green)!important;background:#e7f7ed!important}
+.sy-request-row>button{color:#df2e27!important;background:#ffefed!important}
+.sy-request-row>button:hover{background:#ffdedb!important}
+.sy-fav-card button{color:#008f3b!important;background:#eaf8f0!important;border:1px solid #b9dbc5!important}
+.sy-fav-card button:hover{background:#d8f3e3!important}
+.sy-account-page button,.sy-account-page a{transition:background-color .15s ease,color .15s ease,border-color .15s ease}
+.sy-account-page button:focus-visible,.sy-account-page a:focus-visible{outline:3px solid #49b67b;outline-offset:2px}
+/* Supplier: navy workspace navigation, green active tabs and orange premium actions */
+.sy-supplier-theme .sy-account-sidebar{background:#1e2b3e!important;color:#fff!important}
+.sy-supplier-theme .sy-account-identity{border-bottom:1px solid #394b61}
+.sy-supplier-theme .sy-account-identity strong,.sy-supplier-theme .sy-account-identity small{color:#e2eaf4}
+.sy-supplier-theme .sy-account-sidebar>button{background:transparent!important;color:#c6d1df!important}
+.sy-supplier-theme .sy-account-sidebar>button.active{background:#344158!important;color:#12b65e!important;border-left:3px solid #0bac57!important}
+.sy-supplier-theme .sy-account-sidebar>button:hover:not(.sy-sidebar-primary){background:#2e3d52!important;color:#1fd874!important}
+.sy-supplier-theme .sy-account-sidebar>button.sy-sidebar-primary{background:var(--sy-green)!important;color:white!important}
+.sy-supplier-theme .sy-account-sidebar>button.sy-sidebar-primary:hover{background:var(--sy-green-hover)!important}
+.sy-supplier-workspace{display:grid;gap:13px}
+.sy-supplier-intro,.sy-supplier-title-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.sy-supplier-intro h3{font-size:20px;color:#153149;margin:5px 0}
+.sy-supplier-intro p{font-size:12px;color:#687d8d;margin:0 0 7px}
+.sy-free-plan{padding:6px 10px;border-radius:20px;font-size:10px;background:#e5e9ee;color:#4b5f76;white-space:nowrap}
+.sy-supplier-columns{display:grid;grid-template-columns:minmax(0,1fr) 295px;gap:12px;align-items:start}
+.sy-supplier-primary,.sy-supplier-side{display:grid;gap:12px}
+.sy-supplier-title-row h3{margin:0!important}
+.sy-supplier-title-row>span{color:#7c8da0;font-size:11px}
+.sy-store-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.sy-store-stats>div{border:1px solid #e4e9ee;border-radius:8px;padding:12px;display:flex;flex-direction:column;gap:9px;min-height:137px}
+.sy-store-stats svg{color:#75869b}
+.sy-store-stats span{font-size:11px;color:#4f667c}
+.sy-store-stats strong{font-size:25px;color:#102940}
+.sy-store-stats button{padding:0!important;border:0;background:none;color:#087cb1;font-size:11px;font-weight:700;text-align:left;margin-top:auto}
+.sy-store-stats button:hover{color:#005b83}
+.sy-store-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.sy-store-steps button{display:grid;grid-template-columns:25px 1fr;gap:7px;text-align:left;background:#fff;border:1px solid #dfe7ed;border-radius:8px;padding:13px 9px}
+.sy-store-steps button:hover{border-color:#049b50;background:#f3fbf7}
+.sy-store-steps button svg{color:#63788b;grid-row:span 2}
+.sy-store-steps button strong{color:#223b50;font-size:12px}
+.sy-store-steps button span{color:#087dab;font-size:11px}
+.sy-leads-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.sy-lead-card{display:flex;flex-direction:column;align-items:flex-start;gap:9px;background:#fff;border:1px solid #dfe6eb;border-radius:8px;padding:13px}
+.sy-hot-lead{color:#885500;background:#ffce55;border-radius:4px;font-size:10px;font-weight:800;padding:4px 7px}
+.sy-lead-card strong{color:#17324b;font-size:12px}
+.sy-lead-card small{color:#60748b}
+.sy-lead-card p{margin:0!important;font-size:11px!important;color:#73899a!important}
+.sy-lead-card a{display:flex;gap:5px;align-items:center;margin-top:auto;color:#008a42;font-size:11px;font-weight:800}
+.sy-supplier-company{display:flex;align-items:center;gap:10px;padding-bottom:12px;border-bottom:1px solid #e2e8ec}
+.sy-supplier-company strong,.sy-supplier-company small{display:block}
+.sy-supplier-company strong{color:#18374c;font-size:13px}
+.sy-supplier-company small{color:#77899b;font-size:10px;margin-top:5px}
+.sy-supplier-side h4{font-size:13px;margin:16px 0 9px}
+.sy-benefit-row{display:flex;justify-content:space-between;padding:11px 9px;border-radius:6px;margin-bottom:7px;background:#f3f5f7;gap:8px;font-size:11px;color:#597088}
+.sy-benefit-row strong{color:#142d46}
+.sy-visit-store{display:flex;align-items:center;justify-content:center;gap:5px;width:100%;border:0;background:#fff;color:#087fba;padding:11px;font-weight:750;font-size:12px}
+.sy-premium-card{background:linear-gradient(145deg,#fff3dc,#ffe6b5);border-radius:11px;padding:20px;border:1px solid #f5ce81}
+.sy-premium-card>span{font-size:11px;font-weight:800;color:#b16c00}
+.sy-premium-card h3{font-size:21px;color:#a85d00;margin:9px 0}
+.sy-premium-card p{font-size:12px;color:#80531f}
+.sy-premium-card button{background:#ff9000;color:white;border:0;border-radius:7px;padding:11px 13px;font-weight:800;font-size:11px}
+.sy-premium-card button:hover{background:#e27a00}
+@media(max-width:1200px){.sy-supplier-columns{grid-template-columns:1fr}.sy-supplier-side{grid-template-columns:1fr 1fr}}
+@media(max-width:800px){.sy-store-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.sy-store-steps{grid-template-columns:1fr}.sy-account-sidebar{min-height:auto}}
+@media(max-width:650px){.sy-supplier-side,.sy-leads-grid{grid-template-columns:1fr}.sy-profile-nudge button{white-space:normal}.sy-supplier-theme .sy-account-sidebar{background:#1e2b3e!important}}
