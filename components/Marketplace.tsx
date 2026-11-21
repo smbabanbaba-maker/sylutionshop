@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { Search, Heart, MessageSquare, Globe2, Menu, ArrowLeft, Send, X, ClipboardList, Package, Building2, ShieldCheck, ChevronDown, SlidersHorizontal, Grid2X2, ListFilter, BadgeCheck, MapPin, Bell } from "lucide-react";
+import { Search, Heart, MessageSquare, Globe2, Menu, ArrowLeft, Send, X, ClipboardList, Package, Building2, ShieldCheck, ChevronDown, Share2, ChevronLeft, ChevronRight, FileText, SlidersHorizontal, Grid2X2, ListFilter, BadgeCheck, MapPin, Bell } from "lucide-react";
 import { categories, products, type Product } from "@/lib/catalog";
 
 function Header({search,setSearch}:{search?:string;setSearch?:(value:string)=>void}) {
@@ -93,5 +93,71 @@ export function HomePage(){
  </>;
 }
 export function ProductDetail({product}:{product:Product}){
- const [selected,setSelected]=useState<Product|null>(null);return <><Header/><main className="container detail-page"><Link href="/" className="back-link"><ArrowLeft size={16}/> Back to marketplace</Link><div className="detail-grid"><div className="detail-image"><span className="image-fallback" aria-hidden="true">📦</span><img src={product.image} alt={product.name} onError={e=>{e.currentTarget.style.display="none";}}/></div><div className="detail-summary"><div className="section-kicker">{product.category.toUpperCase()} • {product.country.toUpperCase()}</div><h1>{product.name}</h1><div className="product-price large">{product.price} <span>/ {product.unit}</span></div><div className="detail-facts"><div><span>Minimum order</span><strong>{product.moq}</strong></div><div><span>Country</span><strong>{product.flag} {product.country}</strong></div><div><span>Supplier</span><strong>{product.supplier}</strong></div><div><span>Verification</span><strong>Not verified — demo</strong></div></div><button className="primary-btn full" onClick={()=>setSelected(product)}><Send size={18}/> Request Quotation</button><p className="muted mini">This is a demonstration listing; prices and suppliers are illustrative.</p></div></div><div className="detail-extra"><h2>Product description</h2><p>{product.description}</p><h2>Specifications</h2><div className="spec-table">{product.specifications.map(([k,v])=><div key={k}><span>{k}</span><strong>{v}</strong></div>)}</div></div></main><footer><div className="container footer-inner">SYLUTION TRADE • Demo build</div></footer>{selected&&<InquiryModal product={selected} close={()=>setSelected(null)}/>}</>
+ const [selected,setSelected]=useState<Product|null>(null);
+ const [photoIndex,setPhotoIndex]=useState(0);
+ const [saved,setSaved]=useState(false);
+ const [showSticky,setShowSticky]=useState(false);
+ const [copied,setCopied]=useState(false);
+ useEffect(()=>{
+   const sync=()=>setShowSticky(window.scrollY>370);
+   sync();window.addEventListener("scroll",sync,{passive:true});
+   return()=>window.removeEventListener("scroll",sync);
+ },[]);
+ const related=products.filter(p=>p.id!==product.id&&(p.category===product.category||p.country===product.country)).slice(0,4);
+ const alternatives=(related.length>=3?related:[...related,...products.filter(p=>p.id!==product.id&&!related.some(r=>r.id===p.id))]).slice(0,4);
+ const supplierProducts=products.filter(p=>p.supplier===product.supplier).slice(0,5);
+ function share(){
+   const url=window.location.href;
+   if(navigator.share){navigator.share({title:product.name,url}).catch(()=>{});}
+   else if(navigator.clipboard){navigator.clipboard.writeText(url).then(()=>{setCopied(true);window.setTimeout(()=>setCopied(false),2400);}).catch(()=>{});}
+ }
+ const countryNames:Record<string,string>={Nigeria:"ng",China:"cn",USA:"us",UAE:"ae",Türkiye:"tr"};
+ return <><Header/><div className="product-page">
+   {showSticky&&<div className="product-sticky-bar">
+     <div className="product-sticky-inner">
+       <img src={product.image} alt="" onError={e=>{e.currentTarget.style.display="none";}}/>
+       <div className="sticky-info"><strong>{product.price}<span> / {product.unit}</span></strong><p>{product.name} <span> · MOQ {product.moq}</span></p></div>
+       <div className="sticky-actions"><button aria-label="Save this product" onClick={()=>setSaved(!saved)}><Heart size={18} fill={saved?"currentColor":"none"}/></button><button onClick={share}><Share2 size={18}/></button><button className="detail-action-green" onClick={()=>setSelected(product)}><Send size={17}/> Send Inquiry</button></div>
+     </div>
+   </div>}
+   <div className="product-page-container">
+     <div className="product-breadcrumbs"><Link href="/">All Products</Link><ChevronDown size={14}/><span>{product.category}</span><ChevronDown size={14}/><span>{product.name}</span></div>
+     <div className="product-content-layout">
+       <div className="product-left-column">
+         <section className="product-primary-card">
+           <div className="product-gallery">
+             <div className="gallery-thumbnails">{[0,1,2,3].map(i=><button key={i} aria-label={"View product image "+(i+1)} aria-pressed={photoIndex===i} className={photoIndex===i?"active":""} onClick={()=>setPhotoIndex(i)}><img src={product.image} alt="" onError={e=>e.currentTarget.style.display="none"}/></button>)}</div>
+             <div className="gallery-image-wrap"><div className="gallery-image-main"><span className="gallery-placeholder">📦</span><img key={product.image} src={product.image} alt={product.name} style={{objectPosition:photoIndex===1?"35% center":photoIndex===2?"65% center":"center",transform:photoIndex===3?"scale(1.16)":"none"}} onError={e=>{e.currentTarget.style.display="none";}}/></div><button className="gallery-prev" aria-label="Previous image crop" onClick={()=>setPhotoIndex((photoIndex+3)%4)}><ChevronLeft size={23}/></button><button className="gallery-next" aria-label="Next image crop" onClick={()=>setPhotoIndex((photoIndex+1)%4)}><ChevronRight size={23}/></button><div className="gallery-count">View {photoIndex+1} / 4</div></div>
+             <div className="gallery-share"><span>Share product</span><button onClick={share} aria-label="Copy or share product link"><Share2 size={18}/></button><button onClick={()=>setSaved(!saved)} aria-label="Add to favorites"><Heart size={19} fill={saved?"currentColor":"none"}/></button>{copied&&<small>Link copied</small>}</div>
+           </div>
+           <div className="product-offer">
+             <div className="product-title-row"><div><span className="detail-eyebrow">{product.category} · {product.country}</span><h1>{product.name}</h1><p className="product-review-line">No reviews yet <span>•</span> Demo product listing</p></div><button onClick={()=>setSaved(!saved)} aria-label="Save product" className="save-product"><Heart size={20} fill={saved?"currentColor":"none"}/></button></div>
+             <div className="product-price-block"><div className="price-overline">Indicative wholesale price</div><div className="offer-price">{product.price}<span> / {product.unit}</span></div><p>Final price, availability and trade terms must be confirmed by quotation.</p></div>
+             <div className="offer-information-grid">
+               <div><Package size={17}/><span>Minimum order</span><strong>{product.moq}</strong></div>
+               <div><MessageSquare size={17}/><span>Price terms</span><strong>Negotiable</strong></div>
+               <div><MapPin size={17}/><span>Supplier country</span><strong>{product.country}</strong></div>
+               <div><Globe2 size={17}/><span>Trade markets</span><strong>Ask supplier</strong></div>
+             </div>
+             <div className="trade-facts"><div><span>Product category</span><strong>{product.category}</strong></div><div><span>Trade terms</span><strong>On request</strong></div><div><span>Payment terms</span><strong>To be agreed</strong></div><div><span>Shipping port</span><strong>Not specified</strong></div></div>
+             <div className="offer-bottom"><button className="detail-action-green" onClick={()=>setSelected(product)}><Send size={18}/> Inquiry now</button><p>Demo mode — your RFQ will be saved only in your browser.</p></div>
+           </div>
+         </section>
+         <section className="detail-section related-section"><div className="detail-section-title"><h2>Related products</h2><span>More sourcing options</span></div><div className="related-grid">{alternatives.map(p=><ProductCard key={p.id} product={p} onInquiry={setSelected}/>)}</div></section>
+         <section className="detail-section"><h2>Product Specifications</h2><div className="detail-specifications">{[["Minimum Order Quantity",product.moq],["Product",product.name],["Trade Term","To be confirmed"],["Supplier Country",product.country],["Payment Term","By agreement"],...product.specifications].map(([k,v],i)=><div key={i}><span>{k}</span><strong>{v}</strong></div>)}</div></section>
+         <section className="detail-section"><h2>Product Certificates</h2><div className="certificate-placeholder"><FileText size={28}/><strong>No certificates uploaded</strong><p>Certification claims will appear here only after documents have been reviewed.</p></div></section>
+         <section className="supplier-profile-section"><div className="supplier-profile-header"><div className="supplier-avatar"><Building2 size={27}/></div><div><h2>{product.supplier}</h2><div className="supplier-subline"><span>{product.country}</span><span>•</span><span>Business verification pending</span></div></div></div>
+           <div className="supplier-profile-body"><h3>Business information</h3><div className="supplier-stats"><div><span>Inquiries received</span><strong>Not available</strong></div><div><span>Last active</span><strong>Not available</strong></div><div><span>Established</span><strong>Not provided</strong></div><div><span>Employees</span><strong>Not provided</strong></div></div><div className="profile-two-col"><div><h3>Export Markets</h3><p>Supplier has not provided verified export market information.</p></div><div><h3>Verification information</h3><div className="verification-pending"><ShieldCheck size={17}/> Company documentation not verified</div><p>Verification levels will be shown after a documented review process.</p></div></div></div>
+         </section>
+         <section className="detail-section reviews-section"><h2>Reviews of this Product</h2><div className="reviews-empty"><MessageSquare size={23}/><strong>No reviews yet</strong><p>Buyer reviews will appear here after verified transactions are supported.</p></div></section>
+         <section className="detail-section"><h2>Product description from the supplier</h2><p className="long-description">{product.description}</p><p className="disclaimer">The current page uses example product data. SYLUTION has not independently verified supplier claims, pricing or availability.</p></section>
+         <section className="detail-section"><div className="detail-section-title"><h2>Products of this Supplier</h2></div><div className="related-grid">{supplierProducts.map(p=><ProductCard key={p.id} product={p} onInquiry={setSelected}/>)}</div></section>
+       </div>
+       <aside className="product-detail-aside">
+         <div className="detail-supplier-card"><div className="aside-heading"><h3>Contact this Supplier</h3><span className="unverified-tag">Not verified</span></div><div className="aside-supplier-heading"><div className="supplier-avatar"><Building2 size={24}/></div><div><strong>{product.supplier}</strong><p>{product.flag} {product.country}</p></div></div><div className="aside-attributes"><div><span>Company type</span><strong>Supplier (demo)</strong></div><div><span>Location</span><strong>{product.country}</strong></div><div><span>Business registration</span><strong>Not reviewed</strong></div></div><button className="aside-chat" onClick={()=>setSelected(product)}><MessageSquare size={17}/> Contact supplier</button><button className="detail-action-green" onClick={()=>setSelected(product)}><Send size={17}/> Inquiry now</button></div>
+         <div className="aside-products"><h3><span className="ad-label">Explore</span> Top Products</h3>{products.filter(p=>p.id!==product.id).slice(0,6).map(p=><Link className="aside-product-row" key={p.id} href={"/products/"+p.slug}><img src={p.image} alt="" loading="lazy" onError={e=>e.currentTarget.style.display="none"}/><div><strong>{p.name}</strong><b>{p.price}</b><small>Min. order: {p.moq}</small><span>{p.country}</span></div></Link>)}</div>
+       </aside>
+     </div>
+   </div>
+ </div><footer><div className="container footer-inner"><strong>SYLUTION</strong><span>Global B2B Marketplace · Demo product data</span></div></footer>{selected&&<InquiryModal product={selected} close={()=>setSelected(null)}/>}</>;
 }
