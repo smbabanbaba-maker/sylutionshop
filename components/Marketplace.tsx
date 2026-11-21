@@ -100,6 +100,26 @@ export function ProductDetail({product}:{product:Product}){
  const [saved,setSaved]=useState(false);
  const [showSticky,setShowSticky]=useState(false);
  const [copied,setCopied]=useState(false);
+ const [compareSlug,setCompareSlug]=useState("");
+ const [toolkitOpen,setToolkitOpen]=useState(false);
+ const [checked,setChecked]=useState<string[]>([]);
+ const [saveNotice,setSaveNotice]=useState("");
+ useEffect(()=>{try{const stored=JSON.parse(localStorage.getItem("sylution_saved_products")||"[]") as string[];setSaved(stored.includes(product.slug));}catch{}},[product.slug]);
+ function toggleSaved(){
+   const next=!saved;setSaved(next);
+   try{const stored=JSON.parse(localStorage.getItem("sylution_saved_products")||"[]") as string[];
+     localStorage.setItem("sylution_saved_products",JSON.stringify(next?[...new Set([...stored,product.slug])]:stored.filter((s:string)=>s!==product.slug)));
+   }catch{}
+   setSaveNotice(next?"Added to your local shortlist":"Removed from your local shortlist");
+ }
+ const checklist=[
+   "Request current stock and lead time",
+   "Confirm product grade, packaging and MOQ",
+   "Request relevant test reports and certificates",
+   "Agree Incoterms and destination port",
+   "Verify supplier identity before payment"
+ ];
+ 
  useEffect(()=>{
    const sync=()=>setShowSticky(window.scrollY>370);
    sync();window.addEventListener("scroll",sync,{passive:true});
@@ -108,6 +128,7 @@ export function ProductDetail({product}:{product:Product}){
  const related=products.filter(p=>p.id!==product.id&&(p.category===product.category||p.country===product.country)).slice(0,4);
  const alternatives=(related.length>=3?related:[...related,...products.filter(p=>p.id!==product.id&&!related.some(r=>r.id===p.id))]).slice(0,4);
  const supplierProducts=products.filter(p=>p.supplier===product.supplier).slice(0,5);
+ const compared=products.find(p=>p.slug===compareSlug);
  const demoMarkets=[
   {code:"us",flag:"🇺🇸",name:"United States"},
   {code:"gb",flag:"🇬🇧",name:"United Kingdom"},
@@ -132,7 +153,7 @@ export function ProductDetail({product}:{product:Product}){
      <div className="product-sticky-inner">
        <img src={product.image} alt="" onError={e=>{e.currentTarget.style.display="none";}}/>
        <div className="sticky-info"><strong>{product.price}<span> / {product.unit}</span></strong><p>{product.name} <span> · MOQ {product.moq}</span></p></div>
-       <div className="sticky-actions"><button aria-label="Save this product" onClick={()=>setSaved(!saved)}><Heart size={18} fill={saved?"currentColor":"none"}/></button><button onClick={share}><Share2 size={18}/></button><button className="detail-action-green" onClick={()=>setSelected(product)}><Send size={17}/> Send Inquiry</button></div>
+       <div className="sticky-actions"><button aria-label="Save this product" onClick={toggleSaved}><Heart size={18} fill={saved?"currentColor":"none"}/></button><button onClick={share}><Share2 size={18}/></button><button className="detail-action-green" onClick={()=>setSelected(product)}><Send size={17}/> Send Inquiry</button></div>
      </div>
    </div>}
    <div className="product-page-container">
@@ -160,7 +181,12 @@ export function ProductDetail({product}:{product:Product}){
              </div>
            </div>
            <div className="product-offer">
-             <div className="product-title-row"><div><span className="detail-eyebrow">{product.category} · {product.country}</span><h1>{product.name}</h1><p className="product-review-line">No reviews yet <span>•</span> Demo product listing</p></div><button onClick={()=>setSaved(!saved)} aria-label="Save product" className="save-product"><Heart size={20} fill={saved?"currentColor":"none"}/></button></div>
+             <div className="product-title-row"><div><span className="detail-eyebrow">{product.category} · {product.country}</span><h1>{product.name}</h1><p className="product-review-line">No reviews yet <span>•</span> Demo product listing</p></div><button onClick={toggleSaved} aria-label="Save product" className="save-product"><Heart size={20} fill={saved?"currentColor":"none"}/></button></div>
+             <div className="buyer-value-strip">
+               <span><ClipboardList size={16}/> Structured RFQs</span>
+               <span><Heart size={16}/> Local shortlist</span>
+               <span><ShieldCheck size={16}/> Verification-aware</span>
+             </div>
              <div className="product-price-block"><div className="price-overline">Indicative wholesale price</div><div className="offer-price">{product.price}<span> / {product.unit}</span></div><p>Final price, availability and trade terms must be confirmed by quotation.</p></div>
              <div className="offer-information-grid">
                <div><Package size={17}/><span>Minimum order</span><strong>{product.moq}</strong></div>
@@ -169,8 +195,24 @@ export function ProductDetail({product}:{product:Product}){
                <div><Globe2 size={17}/><span>Trade markets</span><strong>Ask supplier</strong></div>
              </div>
              <div className="trade-facts"><div><span>Product category</span><strong>{product.category}</strong></div><div><span>Trade terms</span><strong>On request</strong></div><div><span>Payment terms</span><strong>To be agreed</strong></div><div><span>Shipping port</span><strong>Not specified</strong></div></div>
-             <div className="offer-bottom"><button className="detail-action-green" onClick={()=>setSelected(product)}><Send size={18}/> Inquiry now</button><p>Demo mode — your RFQ will be saved only in your browser.</p></div>
+             <div className="offer-bottom">
+               <button className="detail-action-green" onClick={()=>setSelected(product)}><Send size={18}/> Request wholesale quotation</button>
+               <div className="offer-quick-actions"><button onClick={toggleSaved}><Heart size={16} fill={saved?"currentColor":"none"}/>{saved?"Saved to shortlist":"Save to shortlist"}</button><button onClick={()=>setToolkitOpen(!toolkitOpen)}><ClipboardList size={16}/>{toolkitOpen?"Hide buyer toolkit":"Buyer toolkit"}</button></div>
+               {saveNotice&&<p className="save-notice" role="status">{saveNotice}</p>}
+               <p>Preview mode — demo RFQs are stored in this browser only.</p>
+             </div>
            </div>
+         </section>
+         <section className="buyer-tools-panel detail-section">
+           <div className="buyer-tools-heading"><div><span className="buyer-tools-kicker">SYLUTION SOURCING TOOLS</span><h2>Compare before you enquire</h2><p>Review sample listings side-by-side, then prepare your sourcing checklist.</p></div><span className="tools-demo-mark">Interactive demo</span></div>
+           <div className="buyer-compare-controls"><label htmlFor="compare-product">Compare this product with</label><select id="compare-product" value={compareSlug} onChange={e=>setCompareSlug(e.target.value)}><option value="">Choose another product</option>{products.filter(p=>p.id!==product.id).map(p=><option key={p.slug} value={p.slug}>{p.name}</option>)}</select></div>
+           {compared&&<div className="buyer-compare-table">
+             <div className="comparison-row comparison-head"><span>Specification</span><strong>{product.name}</strong><strong>{compared.name}</strong></div>
+             {[["Indicative price",product.price,compared.price],["Minimum order",product.moq,compared.moq],["Country",product.country,compared.country],["Category",product.category,compared.category],["Supplier",product.supplier,compared.supplier]].map(([label,a,b])=><div className="comparison-row" key={label}><span>{label}</span><strong>{a}</strong><strong>{b}</strong></div>)}
+             <p>Prices and suppliers shown here are illustrative, not verified quotations.</p>
+           </div>}
+           <div className="buyer-toolkit-trigger"><div><strong>Wholesale buyer checklist</strong><p>Prepare the right questions before contacting a supplier.</p></div><button onClick={()=>setToolkitOpen(!toolkitOpen)} aria-expanded={toolkitOpen}>{toolkitOpen?"Hide checklist":"Open checklist"} <ChevronDown size={17}/></button></div>
+           {toolkitOpen&&<div className="buyer-checklist">{checklist.map(item=><label key={item}><input type="checkbox" checked={checked.includes(item)} onChange={e=>setChecked(old=>e.target.checked?[...old,item]:old.filter(x=>x!==item))}/><span>{item}</span></label>)}<div className="checklist-progress">{checked.length} of {checklist.length} checks prepared</div><button onClick={()=>setSelected(product)}><Send size={16}/> Create demo RFQ</button></div>}
          </section>
          <section className="detail-section related-section"><div className="detail-section-title"><h2>Related products</h2><span>More sourcing options</span></div><div className="related-grid">{alternatives.map(p=><ProductCard key={p.id} product={p} onInquiry={setSelected}/>)}</div></section>
          <section className="detail-section"><h2>Product Specifications</h2><div className="detail-specifications">{[["Minimum Order Quantity",product.moq],["Product",product.name],["Trade Term","To be confirmed"],["Supplier Country",product.country],["Payment Term","By agreement"],...product.specifications].map(([k,v],i)=><div key={i}><span>{k}</span><strong>{v}</strong></div>)}</div></section>

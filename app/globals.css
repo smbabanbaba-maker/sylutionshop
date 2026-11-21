@@ -492,3 +492,38 @@ body{background:#ebedf1;color:var(--market-ink)}
 .brand-share-icons .brand-share-btn.native-share:hover{background:#e5f6eb}
 .brand-share-section{padding-bottom:4px}
 @media(max-width:520px){.brand-share-icons{gap:7px;max-width:100%}.brand-share-section .share-label{width:100%}}
+
+/* SYLUTION-specific buyer utility: comparison, shortlist and sourcing checklist */
+.buyer-value-strip{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 4px}
+.buyer-value-strip span{display:inline-flex;align-items:center;gap:5px;border-radius:20px;background:#e8f7ef;color:#146b42;padding:6px 8px;font-size:10px;font-weight:700}
+.buyer-value-strip svg{flex-shrink:0}
+.offer-quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:9px}
+.offer-quick-actions button{display:flex;gap:7px;align-items:center;justify-content:center;border:1px solid #bad7c6;border-radius:7px;padding:10px 7px;background:#f6fbf8;color:#067a3b;font-weight:700;font-size:12px}
+.offer-quick-actions button:hover{background:#e9f8ef}
+.offer-bottom p.save-notice{color:#08753c;font-weight:650}
+.buyer-tools-panel{border:1px solid #a5d4bd;background:linear-gradient(115deg,#f3fbf6,#fff 50%,#f1f7fd);padding:20px}
+.buyer-tools-heading{display:flex;justify-content:space-between;align-items:start;gap:12px}
+.buyer-tools-kicker{font-size:10px;color:#008744;font-weight:800;letter-spacing:1px}
+.buyer-tools-heading h2{margin:6px 0 5px!important;font-size:20px!important}
+.buyer-tools-heading p{color:#5b7481;font-size:12px;line-height:1.5;margin:0 0 13px}
+.tools-demo-mark{border-radius:20px;background:#e5f4ee;border:1px solid #bde0cc;color:#17724a;padding:6px 9px;font-size:10px;font-weight:800;white-space:nowrap}
+.buyer-compare-controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:#fff;border:1px solid #e2ece7;border-radius:9px;padding:12px;margin-bottom:10px}
+.buyer-compare-controls label{font-size:12px;font-weight:700}
+.buyer-compare-controls select{border:1px solid #d2ded9;background:#fff;color:#1b3950;border-radius:7px;padding:9px;flex:1;min-width:180px;max-width:100%}
+.buyer-compare-table{overflow-x:auto;border:1px solid #d7e7dc;background:white;border-radius:9px;margin:10px 0}
+.comparison-row{display:grid;grid-template-columns:26% 37% 37%;border-top:1px solid #e8efeb;align-items:center;min-width:420px}
+.comparison-row:first-child{border-top:0}
+.comparison-row>*{padding:10px 12px;font-size:11px;overflow-wrap:anywhere}
+.comparison-row>span{color:#687b88}.comparison-row>strong{font-weight:600;color:#1b3345}
+.comparison-head{background:#e8f7ed}.comparison-head>*{font-size:12px}
+.buyer-compare-table>p{padding:8px 12px;font-size:10px;color:#6f8390}
+.buyer-toolkit-trigger{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0 0}
+.buyer-toolkit-trigger strong{font-size:13px}
+.buyer-toolkit-trigger p{margin:5px 0;color:#637987;font-size:11px}
+.buyer-toolkit-trigger button{display:inline-flex;align-items:center;gap:5px;border:1px solid #07883f;color:#087b3e;background:#fff;border-radius:7px;padding:9px;font-weight:700;font-size:11px;white-space:nowrap}
+.buyer-checklist{margin-top:12px;padding:13px;background:#fff;border:1px solid #d9eae0;border-radius:9px;display:grid;gap:11px}
+.buyer-checklist label{display:flex;align-items:center;gap:10px;font-size:12px;color:#263f50}
+.buyer-checklist input{accent-color:#048b41;width:16px;height:16px}
+.checklist-progress{color:#158449;font-weight:700;font-size:11px}
+.buyer-checklist button{display:flex;align-items:center;justify-content:center;gap:7px;background:#008d3d;border:0;border-radius:7px;color:#fff;font-weight:700;padding:10px}
+@media(max-width:650px){.buyer-tools-heading{flex-direction:column}.buyer-toolkit-trigger{align-items:start}.offer-quick-actions{grid-template-columns:1fr}.buyer-compare-controls{align-items:stretch}.buyer-compare-controls label{width:100%}}
