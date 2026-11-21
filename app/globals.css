@@ -641,3 +641,51 @@ body{background:#ebedf1;color:var(--market-ink)}
 @media(max-width:1050px){.sy-account-layout{grid-template-columns:205px minmax(0,1fr)}.sy-stat-tiles{grid-template-columns:repeat(2,1fr)}.sy-account-header nav>a{display:none}}
 @media(max-width:700px){.sy-account-layout{grid-template-columns:1fr}.sy-account-sidebar{display:flex;overflow-x:auto;gap:5px}.sy-account-identity{display:none}.sy-account-sidebar>button{min-width:max-content;width:auto}.sy-dashboard-grid{grid-template-columns:1fr}.sy-fav-grid{grid-template-columns:repeat(2,1fr)}.sy-account-header{padding:12px 16px}.sy-account-banner{padding:22px 5px}.sy-account-dropdown{right:-14px}.sy-user-name{display:none}}
 @media(max-width:430px){.sy-auth-pair,.sy-action-grid,.sy-product-shortcuts,.sy-supplier-teaser{grid-template-columns:1fr}.sy-fav-grid{grid-template-columns:1fr}.sy-content-topline{align-items:start}.sy-preview-tag{white-space:normal}}
+
+/* Buyer dashboard with sourcing performance, recommendations and profile nudge */
+.sy-account-page{background:#eceff3}
+.sy-profile-nudge{background:#ffe6e5;border-left:4px solid #ed4f48;border-radius:9px;padding:13px 15px;display:flex;gap:13px;align-items:center;margin-bottom:4px}
+.sy-nudge-symbol{display:grid;place-items:center;flex-shrink:0;background:#ffd5d2;border-radius:9px;color:#d93f32;width:44px;height:44px}
+.sy-profile-nudge>div:nth-child(2){flex:1;min-width:0}
+.sy-profile-nudge strong{font-size:14px;color:#c72e25}.sy-profile-nudge p{margin:4px 0 0;color:#89453e;font-size:12px}
+.sy-profile-nudge button{display:flex;align-items:center;gap:7px;background:#d53327;border:0;color:white;font-weight:800;border-radius:7px;padding:10px;white-space:nowrap;font-size:11px}
+.sy-workspace-heading,.sy-recommended-heading{display:flex;align-items:end;justify-content:space-between;gap:16px;margin:16px 0}
+.sy-workspace-heading h2,.sy-recommended-heading h2{font-size:24px;margin:5px 0;color:#142e44}
+.sy-workspace-heading p,.sy-recommended-heading p{font-size:12px;color:#6b8290;margin:0}
+.sy-workspace-heading label{display:grid;gap:5px;font-size:11px;color:#6e8190;font-weight:700;white-space:nowrap}
+.sy-workspace-heading select{border:1px solid #d6e3ea;background:white;border-radius:7px;color:#17394e;padding:9px;min-width:130px}
+.sy-performance-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px}
+.sy-performance-grid>div{border:1px solid #e2eaef;background:#fff;border-radius:11px;display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:17px;min-width:0}
+.sy-performance-grid>div>span{font-size:12px;color:#516a7e}
+.sy-performance-grid strong{font-size:29px;color:#112f45}
+.sy-performance-grid a,.sy-performance-grid button{border:0;background:none;padding:0;color:#068342;display:flex;align-items:center;gap:4px;font-size:11px;font-weight:700;text-align:left}
+.sy-premium-data{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px}
+.sy-premium-data>div{min-height:148px;display:flex;flex-direction:column;gap:10px;background:#fff;border:1px solid #e0e8ef;border-radius:10px;padding:16px;justify-content:flex-start}
+.sy-premium-data h3{font-size:13px;margin:0;color:#1b3950}
+.sy-data-preview{display:flex;align-items:center;gap:7px;border-radius:7px;background:#f2f6fa;padding:9px;color:#597389;font-size:11px;font-weight:750}
+.sy-premium-data small{color:#8797a5;font-size:10px}
+.sy-account-performance-note{display:flex;align-items:center;justify-content:space-between;gap:14px;border:1px solid #c6e2d4;border-radius:9px;background:#e9f7ef;padding:13px}
+.sy-account-performance-note>div{display:flex;align-items:center;gap:8px;color:#215941;font-size:11px}
+.sy-account-performance-note button{display:flex;align-items:center;gap:5px;background:#008b42;color:#fff;border:0;border-radius:7px;padding:9px;white-space:nowrap;font-size:11px}
+.sy-recommended-heading>a{color:#087a44;display:flex;align-items:center;gap:6px;white-space:nowrap;font-weight:750}
+.sy-recommended-products{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.sy-recommended-card{padding:9px;background:white;border:1px solid #e0e8ec;border-radius:10px;min-width:0;display:grid;gap:5px;overflow:hidden}
+.sy-recommended-photo{height:142px;border-radius:7px;position:relative;background:#eef3f7;overflow:hidden}
+.sy-recommended-photo img{width:100%;height:100%;object-fit:cover}
+.sy-recommended-photo>span{position:absolute;bottom:6px;left:6px;background:#fff5dc;color:#d17d00;padding:4px 8px;border-radius:5px;font-size:10px;font-weight:800}
+.sy-recommended-card>strong{font-size:12px;color:#1c3a50;line-height:1.4;min-height:32px}
+.sy-recommended-card>b{font-size:15px;color:#122b42}
+.sy-recommended-card>b small{font-size:10px;font-weight:500;color:#698095}
+.sy-recommended-card>small{color:#60758a;font-size:10px}
+.sy-recommended-country{font-size:11px;color:#47617c;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.sy-recommended-country em{font-size:9px;color:#a47116;font-style:normal;background:#fff7e2;padding:3px 5px;border-radius:4px}
+.sy-dashboard-bottom{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sy-dashboard-bottom .sy-panel>button{background:#e8f7ed;border:1px solid #b9dec8;color:#07783f;padding:9px;border-radius:7px;font-weight:750;font-size:11px}
+.sy-profile-meter{height:10px;background:#e9edf0;border-radius:10px;overflow:hidden;margin-bottom:8px}
+.sy-profile-meter>div{height:100%;background:#0a9e4d;border-radius:10px;transition:width .2s}
+.sy-verification-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;text-align:left;max-width:590px;margin:15px auto}
+.sy-verification-grid span{background:#f7f9fa;border:1px solid #e7ebef;padding:12px;border-radius:7px;font-size:11px;color:#526b7c}
+.sy-verification-grid b{display:block;font-weight:700;margin-top:6px;color:#b08020}
+@media(max-width:1150px){.sy-performance-grid,.sy-premium-data{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:720px){.sy-recommended-products{grid-template-columns:repeat(2,minmax(0,1fr))}.sy-profile-nudge,.sy-account-performance-note{align-items:flex-start;flex-wrap:wrap}.sy-dashboard-bottom{grid-template-columns:1fr}.sy-workspace-heading{align-items:start;flex-wrap:wrap}}
+@media(max-width:430px){.sy-performance-grid,.sy-premium-data,.sy-recommended-products,.sy-verification-grid{grid-template-columns:1fr}.sy-recommended-photo{height:165px}}
