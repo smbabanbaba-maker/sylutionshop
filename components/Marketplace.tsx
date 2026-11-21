@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { DemoAccountMenu } from "@/components/DemoAccount";
 import { FaFacebookF, FaLinkedinIn, FaWhatsapp, FaTelegramPlane, FaPinterestP, FaEnvelope } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { useEffect, useMemo, useState } from "react";
@@ -12,11 +13,11 @@ function Header({search,setSearch}:{search?:string;setSearch?:(value:string)=>vo
     <div className="header-inner">
       <Link className="brand" href="/"><span className="brand-mark">S</span><span><strong>SYLUTION</strong><small>Global B2B Marketplace</small></span></Link>
       <div className="header-search"><span className="search-category">All categories <ChevronDown size={13}/></span><input aria-label="Search products" placeholder="Search products and suppliers..." value={search??""} onChange={e=>setSearch?.(e.target.value)} /><button className="search-submit" aria-label="Search marketplace" onClick={()=>document.getElementById("products")?.scrollIntoView({behavior:"smooth"})}><Search size={18}/> Search</button></div>
-      <nav className="header-actions"><Link href="/#products">Find Products</Link><Link href="/#supplier-leads">Suppliers</Link><Link href="/#how-it-works">Post Buying Request</Link><span><Globe2 size={17}/> EN</span><Link href="/#supplier-leads" className="header-signin">Log in</Link><Link href="/#supplier-leads" className="header-signup">Sign up</Link></nav>
+      <nav className="header-actions"><Link href="/#products">Find Products</Link><Link href="/#supplier-leads">Suppliers</Link><Link href="/#how-it-works">Post Buying Request</Link><span><Globe2 size={17}/> EN</span><DemoAccountMenu/></nav>
       <button aria-label="Toggle menu" className="menu-toggle" onClick={()=>setMobile(!mobile)}><Menu size={23}/></button>
     </div>
   </header>
-  {mobile&&<div className="mobile-menu"><Link href="/">Home</Link><Link href="/#products">Products</Link><Link href="/#how-it-works">How It Works</Link></div>}
+  {mobile&&<div className="mobile-menu"><Link href="/">Home</Link><Link href="/#products">Products</Link><Link href="/#how-it-works">How It Works</Link><Link href="/account">My Account</Link></div>}
   </>;
 }
 const cash = (s:string)=>s;
