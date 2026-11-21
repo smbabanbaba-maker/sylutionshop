@@ -1,7 +1,9 @@
 "use client";
 import Link from "next/link";
+import { FaFacebookF, FaLinkedinIn, FaWhatsapp } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 import { useEffect, useMemo, useState } from "react";
-import { Search, Heart, MessageSquare, Globe2, Menu, ArrowLeft, Send, X, ClipboardList, Package, Building2, ShieldCheck, ChevronDown, Share2, ChevronLeft, ChevronRight, FileText, SlidersHorizontal, Grid2X2, ListFilter, BadgeCheck, MapPin, Bell } from "lucide-react";
+import { Search, Heart, MessageSquare, Globe2, Menu, ArrowLeft, Send, X, ClipboardList, Package, Building2, ShieldCheck, ChevronDown, Share2, Copy, ChevronLeft, ChevronRight, FileText, SlidersHorizontal, Grid2X2, ListFilter, BadgeCheck, MapPin, Bell } from "lucide-react";
 import { categories, products, type Product } from "@/lib/catalog";
 
 function Header({search,setSearch}:{search?:string;setSearch?:(value:string)=>void}) {
@@ -141,7 +143,17 @@ export function ProductDetail({product}:{product:Product}){
            <div className="product-gallery">
              <div className="gallery-thumbnails">{[0,1,2,3].map(i=><button key={i} aria-label={"View product image "+(i+1)} aria-pressed={photoIndex===i} className={photoIndex===i?"active":""} onClick={()=>setPhotoIndex(i)}><img src={product.image} alt="" onError={e=>e.currentTarget.style.display="none"}/></button>)}</div>
              <div className="gallery-image-wrap"><div className="gallery-image-main"><span className="gallery-placeholder">📦</span><img key={product.image} src={product.image} alt={product.name} style={{objectPosition:photoIndex===1?"35% center":photoIndex===2?"65% center":"center",transform:photoIndex===3?"scale(1.16)":"none"}} onError={e=>{e.currentTarget.style.display="none";}}/></div><button className="gallery-prev" aria-label="Previous image crop" onClick={()=>setPhotoIndex((photoIndex+3)%4)}><ChevronLeft size={23}/></button><button className="gallery-next" aria-label="Next image crop" onClick={()=>setPhotoIndex((photoIndex+1)%4)}><ChevronRight size={23}/></button><div className="gallery-count">View {photoIndex+1} / 4</div></div>
-             <div className="gallery-share"><span>Share product</span><button onClick={share} aria-label="Copy or share product link"><Share2 size={18}/></button><button onClick={()=>setSaved(!saved)} aria-label="Add to favorites"><Heart size={19} fill={saved?"currentColor":"none"}/></button>{copied&&<small>Link copied</small>}</div>
+             <div className="gallery-share brand-share-section">
+               <span className="share-label">Share on</span>
+               <div className="brand-share-icons">
+                 <a className="brand-share-btn facebook" href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent("https://sylutionshop.vercel.app/products/"+product.slug)}`} target="_blank" rel="noopener noreferrer" title="Share on Facebook" aria-label="Share on Facebook"><FaFacebookF/></a>
+                 <a className="brand-share-btn x-twitter" href={`https://twitter.com/intent/tweet?url=${encodeURIComponent("https://sylutionshop.vercel.app/products/"+product.slug)}&text=${encodeURIComponent(product.name)}`} target="_blank" rel="noopener noreferrer" title="Share on X" aria-label="Share on X"><FaXTwitter/></a>
+                 <a className="brand-share-btn linkedin" href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent("https://sylutionshop.vercel.app/products/"+product.slug)}`} target="_blank" rel="noopener noreferrer" title="Share on LinkedIn" aria-label="Share on LinkedIn"><FaLinkedinIn/></a>
+                 <a className="brand-share-btn whatsapp" href={`https://api.whatsapp.com/send?text=${encodeURIComponent(product.name+" https://sylutionshop.vercel.app/products/"+product.slug)}`} target="_blank" rel="noopener noreferrer" title="Share on WhatsApp" aria-label="Share on WhatsApp"><FaWhatsapp/></a>
+                 <button className="brand-share-btn copy" onClick={()=>{navigator.clipboard?.writeText(window.location.href).then(()=>{setCopied(true);window.setTimeout(()=>setCopied(false),2500)}).catch(()=>{});}} aria-label="Copy product link" title="Copy product link"><Copy size={17}/></button>
+               </div>
+               {copied&&<small role="status">Link copied!</small>}
+             </div>
            </div>
            <div className="product-offer">
              <div className="product-title-row"><div><span className="detail-eyebrow">{product.category} · {product.country}</span><h1>{product.name}</h1><p className="product-review-line">No reviews yet <span>•</span> Demo product listing</p></div><button onClick={()=>setSaved(!saved)} aria-label="Save product" className="save-product"><Heart size={20} fill={saved?"currentColor":"none"}/></button></div>

@@ -466,3 +466,19 @@ body{background:#ebedf1;color:var(--market-ink)}
 .detail-supplier-card .demo-trust-badge{font-size:10px}
 @media(max-width:1000px){.supplier-insights-grid{grid-template-columns:1fr!important}}
 @media(max-width:650px){.supplier-insights-grid{gap:18px!important}.verification-info-grid{grid-template-columns:1fr!important}.supplier-profile-header{align-items:flex-start!important}.demo-supplier-mark{display:none}.supplier-stats strong{font-size:15px!important}.demo-market-chip{font-size:10px}.profile-section-heading{align-items:start}}
+
+/* Social share actions: accurate Facebook/X/LinkedIn/WhatsApp iconography */
+.gallery-share.brand-share-section{display:flex;align-items:center;gap:12px;flex-wrap:wrap;grid-column:1/-1;min-height:42px;padding-top:4px}
+.brand-share-section .share-label{font-size:14px;font-weight:600;color:#172838}
+.brand-share-icons{display:flex;align-items:center;gap:9px}
+.brand-share-icons .brand-share-btn{width:34px;height:34px;min-width:34px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;border:1px solid transparent;padding:0;color:#fff;box-shadow:none;text-decoration:none;font-size:17px;transition:transform .15s,box-shadow .15s;background:#e9edf0;cursor:pointer}
+.brand-share-icons .brand-share-btn svg{width:17px;height:17px}
+.brand-share-icons .brand-share-btn.facebook{background:#1877f2}
+.brand-share-icons .brand-share-btn.x-twitter{background:#050505}
+.brand-share-icons .brand-share-btn.linkedin{background:#0a66c2}
+.brand-share-icons .brand-share-btn.whatsapp{background:#25d366}
+.brand-share-icons .brand-share-btn.copy{background:#f0f1f2;color:#65717c;border-color:#e6e8eb}
+.brand-share-icons .brand-share-btn:hover{transform:translateY(-2px);box-shadow:0 4px 10px #0b2a391d}
+.brand-share-icons .brand-share-btn:focus-visible{outline:3px solid #64b8f9;outline-offset:2px}
+.brand-share-section small[role=status]{color:#08793b;font-weight:650;font-size:11px}
+@media(max-width:460px){.gallery-share.brand-share-section{gap:8px}.brand-share-icons{gap:6px}.brand-share-icons .brand-share-btn{width:31px;height:31px;min-width:31px}}
