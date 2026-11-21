@@ -482,3 +482,13 @@ body{background:#ebedf1;color:var(--market-ink)}
 .brand-share-icons .brand-share-btn:focus-visible{outline:3px solid #64b8f9;outline-offset:2px}
 .brand-share-section small[role=status]{color:#08793b;font-weight:650;font-size:11px}
 @media(max-width:460px){.gallery-share.brand-share-section{gap:8px}.brand-share-icons{gap:6px}.brand-share-icons .brand-share-btn{width:31px;height:31px;min-width:31px}}
+
+/* SYLUTION extra sharing channels beyond reference: Telegram, Pinterest, Email, native sharing */
+.brand-share-icons{flex-wrap:wrap;row-gap:8px}
+.brand-share-icons .brand-share-btn.telegram{background:#229ed9}
+.brand-share-icons .brand-share-btn.pinterest{background:#e60023}
+.brand-share-icons .brand-share-btn.email-share{background:#5c7185}
+.brand-share-icons .brand-share-btn.native-share{background:#f3f7fb;color:#0d7851;border-color:#c8e5d5}
+.brand-share-icons .brand-share-btn.native-share:hover{background:#e5f6eb}
+.brand-share-section{padding-bottom:4px}
+@media(max-width:520px){.brand-share-icons{gap:7px;max-width:100%}.brand-share-section .share-label{width:100%}}

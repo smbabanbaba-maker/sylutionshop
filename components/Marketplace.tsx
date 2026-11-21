@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { FaFacebookF, FaLinkedinIn, FaWhatsapp } from "react-icons/fa";
+import { FaFacebookF, FaLinkedinIn, FaWhatsapp, FaTelegramPlane, FaPinterestP, FaEnvelope } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { useEffect, useMemo, useState } from "react";
 import { Search, Heart, MessageSquare, Globe2, Menu, ArrowLeft, Send, X, ClipboardList, Package, Building2, ShieldCheck, ChevronDown, Share2, Copy, ChevronLeft, ChevronRight, FileText, SlidersHorizontal, Grid2X2, ListFilter, BadgeCheck, MapPin, Bell } from "lucide-react";
@@ -150,6 +150,10 @@ export function ProductDetail({product}:{product:Product}){
                  <a className="brand-share-btn x-twitter" href={`https://twitter.com/intent/tweet?url=${encodeURIComponent("https://sylutionshop.vercel.app/products/"+product.slug)}&text=${encodeURIComponent(product.name)}`} target="_blank" rel="noopener noreferrer" title="Share on X" aria-label="Share on X"><FaXTwitter/></a>
                  <a className="brand-share-btn linkedin" href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent("https://sylutionshop.vercel.app/products/"+product.slug)}`} target="_blank" rel="noopener noreferrer" title="Share on LinkedIn" aria-label="Share on LinkedIn"><FaLinkedinIn/></a>
                  <a className="brand-share-btn whatsapp" href={`https://api.whatsapp.com/send?text=${encodeURIComponent(product.name+" https://sylutionshop.vercel.app/products/"+product.slug)}`} target="_blank" rel="noopener noreferrer" title="Share on WhatsApp" aria-label="Share on WhatsApp"><FaWhatsapp/></a>
+                 <a className="brand-share-btn telegram" href={`https://t.me/share/url?url=${encodeURIComponent("https://sylutionshop.vercel.app/products/"+product.slug)}&text=${encodeURIComponent(product.name)}`} target="_blank" rel="noopener noreferrer" title="Share on Telegram" aria-label="Share on Telegram"><FaTelegramPlane/></a>
+                 <a className="brand-share-btn pinterest" href={`https://www.pinterest.com/pin/create/button/?url=${encodeURIComponent("https://sylutionshop.vercel.app/products/"+product.slug)}&media=${encodeURIComponent(product.image)}&description=${encodeURIComponent(product.name)}`} target="_blank" rel="noopener noreferrer" title="Share on Pinterest" aria-label="Share on Pinterest"><FaPinterestP/></a>
+                 <a className="brand-share-btn email-share" href={`mailto:?subject=${encodeURIComponent(product.name+" | SYLUTION")}&body=${encodeURIComponent("View this product on SYLUTION: https://sylutionshop.vercel.app/products/"+product.slug)}`} title="Share by email" aria-label="Share by email"><FaEnvelope/></a>
+                 <button type="button" className="brand-share-btn native-share" onClick={share} aria-label="More sharing options" title="More sharing options"><Share2 size={17}/></button>
                  <button className="brand-share-btn copy" onClick={()=>{navigator.clipboard?.writeText(window.location.href).then(()=>{setCopied(true);window.setTimeout(()=>setCopied(false),2500)}).catch(()=>{});}} aria-label="Copy product link" title="Copy product link"><Copy size={17}/></button>
                </div>
                {copied&&<small role="status">Link copied!</small>}
