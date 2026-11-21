@@ -147,58 +147,55 @@ export function ProductDetail({product}:{product:Product}){
          <section className="detail-section"><h2>Product Specifications</h2><div className="detail-specifications">{[["Minimum Order Quantity",product.moq],["Product",product.name],["Trade Term","To be confirmed"],["Supplier Country",product.country],["Payment Term","By agreement"],...product.specifications].map(([k,v],i)=><div key={i}><span>{k}</span><strong>{v}</strong></div>)}</div></section>
          <section className="detail-section"><h2>Product Certificates</h2><div className="certificate-placeholder"><FileText size={28}/><strong>No certificates uploaded</strong><p>Certification claims will appear here only after documents have been reviewed.</p></div></section>
          <section className="supplier-profile-section">
-           <div className="supplier-profile-header">
-             <div className="supplier-avatar supplier-avatar-large"><Building2 size={29}/></div>
-             <div className="supplier-heading-details">
-               <h2>{product.supplier}</h2>
-               <div className="supplier-subline">
-                 <span className="verification-label"><ShieldCheck size={14}/> Verification pending</span>
-                 <span className="supplier-separator">•</span>
-                 <span className="supplier-country">{({Nigeria:"ng",China:"cn",USA:"us",UAE:"ae",Türkiye:"tr"} as Record<string,string>)[product.country] ? <img className="country-flag-image" src={`https://flagcdn.com/w40/${({Nigeria:"ng",China:"cn",USA:"us",UAE:"ae",Türkiye:"tr"} as Record<string,string>)[product.country]}.png`} alt={`${product.country} flag`} onError={e=>{e.currentTarget.style.display="none";}}/> : <span className="supplier-country-flag">{product.flag}</span>} {product.country}</span>
-                 <span className="supplier-separator">•</span>
-                 <span>Supplier profile — demonstration</span>
-               </div>
-             </div>
-           </div>
-           <div className="supplier-profile-body">
-             <div className="activity-section">
-               <h3>Activity signals</h3>
-               <div className="supplier-stats">
-                 <div><span>Total inquiries received</span><strong>Not available</strong></div>
-                 <div><span>Last supplier active</span><strong>Not available</strong></div>
-                 <div><span>Year Established</span><strong>Not provided</strong></div>
-                 <div><span>Number of Employees</span><strong>Not provided</strong></div>
-               </div>
-             </div>
-             <div className="supplier-insights-grid">
-               <div className="export-markets">
-                 <h3>Export Markets</h3>
-                 <p>Markets must be supplied by the business and verified before publication.</p>
-                 <div className="export-market-empty"><Globe2 size={22}/><div><strong>Awaiting export-market information</strong><span>No confirmed destinations have been submitted yet.</span></div></div>
-                 <div className="market-sample-caption">Country flags appear automatically when a real market is available.</div>
-               </div>
-               <div className="verification-information">
-                 <h3>Verification information</h3>
-                 <div className="verification-info-grid">
-                   <div>
-                     <h4>Verification status</h4>
-                     <div className="verification-item"><span className="verification-status-icon status-pending"><ShieldCheck size={15}/></span><span><strong>Business documents</strong><small>Awaiting review</small></span><span className="verify-mini-tag">Pending</span></div>
-                     <div className="verification-item"><span className="verification-status-icon status-unchecked"><ShieldCheck size={15}/></span><span><strong>Phone number</strong><small>Not confirmed</small></span></div>
-                     <div className="verification-item"><span className="verification-status-icon status-unchecked"><ShieldCheck size={15}/></span><span><strong>Account email</strong><small>Not confirmed</small></span></div>
-                     <div className="verification-item"><span className="verification-status-icon status-unchecked"><ShieldCheck size={15}/></span><span><strong>Work email</strong><small>Not confirmed</small></span></div>
-                   </div>
-                   <div>
-                     <h4>External validation</h4>
-                     <div className="external-validation-row"><span>Company registration</span><strong>Not validated</strong></div>
-                     <div className="external-validation-row"><span>Business address</span><strong>Not validated</strong></div>
-                     <p className="external-validation-note">SYLUTION will only show Verified status once checks are completed.</p>
-                   </div>
-                 </div>
-               </div>
-             </div>
-           </div>
-         </section>
-         <section className="detail-section reviews-section"><h2>Reviews of this Product</h2><div className="reviews-empty"><MessageSquare size={23}/><strong>No reviews yet</strong><p>Buyer reviews will appear here after verified transactions are supported.</p></div></section>
+          <div className="supplier-profile-header">
+            <div className="supplier-avatar supplier-avatar-large"><Building2 size={28}/></div>
+            <div className="supplier-heading-details">
+              <h2>{product.supplier}</h2>
+              <div className="supplier-subline">
+                <span className="verification-label"><ShieldCheck size={14}/> Pending verification</span>
+                <span className="supplier-separator">•</span>
+                <span className="supplier-country"><span className="supplier-country-flag">{product.flag}</span>{product.country}</span>
+                <span className="supplier-separator">•</span>
+                <span>Supplier profile (example)</span>
+              </div>
+            </div>
+          </div>
+          <div className="supplier-profile-body">
+            <h3>Activity signals</h3>
+            <div className="supplier-stats">
+              <div><span>Total inquiries received</span><strong>—</strong></div>
+              <div><span>Last supplier active</span><strong>—</strong></div>
+              <div><span>Year Established</span><strong>—</strong></div>
+              <div><span>Number of Employees</span><strong>—</strong></div>
+            </div>
+            <div className="supplier-insights-grid">
+              <div className="export-markets">
+                <h3>Export Markets</h3>
+                <p>Based on information provided by the supplier.</p>
+                <div className="market-not-provided"><Globe2 size={18}/><span>Export markets not yet provided.</span></div>
+                <p className="export-help">Country flags and green market-share bars will appear here when supported by real supplier data.</p>
+              </div>
+              <div className="verification-information">
+                <h3>Verification information</h3>
+                <div className="verification-info-grid">
+                  <div>
+                    <h4>Verification information</h4>
+                    <div className="verification-item"><span className="verify-icon pending"><ShieldCheck size={15}/></span><span><strong>Verify business documents</strong><small>Awaiting document review</small></span></div>
+                    <div className="verification-item"><span className="verify-icon unknown"><ShieldCheck size={15}/></span><span><strong>Verify phone number</strong><small>Not confirmed</small></span></div>
+                    <div className="verification-item"><span className="verify-icon unknown"><ShieldCheck size={15}/></span><span><strong>Verify account email</strong><small>Not confirmed</small></span></div>
+                    <div className="verification-item"><span className="verify-icon unknown"><ShieldCheck size={15}/></span><span><strong>Verify work email</strong><small>Not confirmed</small></span></div>
+                  </div>
+                  <div>
+                    <h4>External Validation</h4>
+                    <div className="validation-line"><span>Company</span><strong>Not validated</strong></div>
+                    <div className="validation-line"><span>Address</span><strong>Not validated</strong></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section className="detail-section reviews-section"><h2>Reviews of this Product</h2><div className="reviews-empty"><MessageSquare size={23}/><strong>No reviews yet</strong><p>Buyer reviews will appear here after verified transactions are supported.</p></div></section>
          <section className="detail-section"><h2>Product description from the supplier</h2><p className="long-description">{product.description}</p><p className="disclaimer">The current page uses example product data. SYLUTION has not independently verified supplier claims, pricing or availability.</p></section>
          <section className="detail-section"><div className="detail-section-title"><h2>Products of this Supplier</h2></div><div className="related-grid">{supplierProducts.map(p=><ProductCard key={p.id} product={p} onInquiry={setSelected}/>)}</div></section>
        </div>
