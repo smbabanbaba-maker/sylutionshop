@@ -46,17 +46,22 @@ export function HomePage(){
  const filtered=useMemo(()=>products.filter(p=>(category==="All Categories"||p.category===category)&&([p.name,p.supplier,p.country,p.category].join(" ").toLowerCase().includes(query.toLowerCase()))),[category,query]);
  return <><Header search={query} setSearch={setQuery}/><main>
    <section className="fresh-hero">
-     <div className="hero-art" aria-hidden="true"><div className="hero-art-pic first">🌾</div><div className="hero-art-pic second">🥜</div><div className="hero-art-pic third">📦</div></div>
+     <div className="hero-background-decoration" aria-hidden="true"><div className="hero-orbit orbit-one"/><div className="hero-orbit orbit-two"/></div>
      <div className="fresh-hero-inner container">
-       <div className="hero-mode-tabs">
-         {(["Products","Suppliers"] as const).map(mode=><button className={searchMode===mode?"active":""} key={mode} onClick={()=>setSearchMode(mode)}>{mode}</button>)}
+       <div className="hero-eyebrow"><Globe2 size={15}/> THE GLOBAL B2B SOURCING NETWORK <span className="eyebrow-dot"/> CONNECTING MARKETS</div>
+       <h1>{searchMode==="Products"?"Find the right products.":"Discover trusted opportunities."}<br/><span>{searchMode==="Products"?"Connect with global suppliers.":"Connect with global businesses."}</span></h1>
+       <p className="hero-description">Explore wholesale products, compare offers and send enquiries to suppliers across global markets.</p>
+       <div className="hero-search-panel">
+         <div className="hero-mode-tabs" role="tablist" aria-label="Search type">
+           {(["Products","Suppliers"] as const).map(mode=><button role="tab" aria-selected={searchMode===mode} className={searchMode===mode?"active":""} key={mode} onClick={()=>setSearchMode(mode)}>{mode}</button>)}
+         </div>
+         <div className="hero-search">
+           <span className="hero-search-category"><Menu size={19}/> All categories <ChevronDown size={14}/></span>
+           <input aria-label={searchMode==="Products"?"Search products":"Search suppliers"} value={query} onChange={e=>setQuery(e.target.value)} placeholder={searchMode==="Products"?"Search products, raw materials, machines & more":"Search suppliers by company, product or country"} onKeyDown={e=>{if(e.key==="Enter")document.getElementById("products")?.scrollIntoView({behavior:"smooth"});}}/>
+           <button onClick={()=>document.getElementById("products")?.scrollIntoView({behavior:"smooth"})}><Search size={20}/> Search</button>
+         </div>
        </div>
-       <h1>{searchMode==="Products"?"What products are you looking for?":"Find suppliers around the world"}</h1>
-       <div className="hero-search">
-         <span className="hero-search-category"><Menu size={20}/> All categories <ChevronDown size={14}/></span>
-         <input aria-label={searchMode==="Products"?"Search products":"Search suppliers"} value={query} onChange={e=>setQuery(e.target.value)} placeholder={searchMode==="Products"?"Search products and suppliers":"Search suppliers by company, product or country"}/>
-         <button onClick={()=>document.getElementById("products")?.scrollIntoView({behavior:"smooth"})}><Search size={20}/> Search</button>
-       </div>
+       <div className="hero-footnote"><span><ShieldCheck size={15}/> Business-first discovery</span><span><Globe2 size={15}/> International sourcing</span><span><MessageSquare size={15}/> Direct enquiries</span></div>
      </div>
    </section>
    <section className="quick-actions container"><span>Welcome to SYLUTION</span><div><a href="#how-it-works">◎ Post Buying Request</a><a href="#products">♧ Good Deals</a><a href="#products">◇ New Products</a></div></section>
