@@ -13,7 +13,6 @@ export type SupplierMessageDraft={
 export function SupplierContactModal({product,onClose}:{product:Product;onClose:()=>void}){
  const dialog=useRef<HTMLDialogElement>(null);
  const headingId=useId();
- const [subject,setSubject]=useState("Product availability & pricing");
  const [message,setMessage]=useState("");
  const [error,setError]=useState("");
  const [saved,setSaved]=useState(false);
@@ -24,18 +23,14 @@ export function SupplierContactModal({product,onClose}:{product:Product;onClose:
   document.body.style.overflow="hidden";
   return ()=>{el?.close();document.body.style.overflow=previous};
  },[]);
- const suggestions=[
-  "Is this product currently available?",
-  "Please confirm your latest price and minimum order.",
-  "Can you share specifications, samples and delivery terms?"
- ];
+ const suggestions=["Is this available?","What is your best price?","Can you deliver to my country?"];
  function save(e:React.FormEvent<HTMLFormElement>){
   e.preventDefault();
   if(message.trim().length<10){setError("Please write at least 10 characters before saving.");return;}
   const draft:SupplierMessageDraft={
    id:globalThis.crypto?.randomUUID?.()||String(Date.now()),
    supplier:product.supplier,country:product.country,product:product.name,productId:product.id,
-   subject:subject.trim()||"Product enquiry",message:message.trim(),
+   subject:"Message about "+product.name,message:message.trim(),
    createdAt:new Date().toISOString(),status:"Draft · browser only"
   };
   try{
@@ -49,12 +44,12 @@ export function SupplierContactModal({product,onClose}:{product:Product;onClose:
  return <dialog className="sy-contact-dialog" ref={dialog} aria-labelledby={headingId}
   onCancel={e=>{e.preventDefault();onClose();}}>
   <header className="sy-contact-head">
-   <div className="sy-contact-eyebrow"><MessageSquare size={15}/> SYLUTION SUPPLIER ENQUIRY</div>
+   <div className="sy-contact-eyebrow"><MessageSquare size={15}/> SYLUTION MESSAGES</div>
    <button type="button" className="sy-contact-close" aria-label="Close contact form" onClick={onClose}><X size={19}/></button>
   </header>
   <div className="sy-contact-supplier">
    <span className="sy-contact-avatar"><Building2 size={24}/></span>
-   <div className="sy-contact-identity"><h2 id={headingId}>Contact supplier</h2><strong>{product.supplier}</strong>
+   <div className="sy-contact-identity"><h2 id={headingId}>Message supplier</h2><strong>{product.supplier}</strong>
     <span><CountryFlag country={product.country} compact/>{product.country} · Example supplier</span></div>
   </div>
   <div className="sy-contact-item"><img src={product.image} alt="" onError={e=>{e.currentTarget.style.display="none"}}/>
@@ -66,15 +61,14 @@ export function SupplierContactModal({product,onClose}:{product:Product;onClose:
     <button type="button" className="sy-contact-secondary" onClick={onClose}>Close</button>
    </div>:
    <form onSubmit={save} className="sy-contact-form">
-    <label>Subject<select value={subject} onChange={e=>setSubject(e.target.value)}><option>Product availability & pricing</option><option>Request product specifications</option><option>Shipping and lead time</option><option>Samples and minimum order</option><option>Payment and trade terms</option></select></label>
-    <label>Your message <span className="sy-contact-req">*</span>
-     <textarea rows={5} maxLength={3000} required minLength={10} value={message} onChange={e=>{setMessage(e.target.value);if(error)setError("");}} placeholder="Hello, I am interested in your product. Please share your latest price, MOQ, availability and delivery terms."/></label>
-    <div className="sy-contact-templates"><span>Quick questions</span>
+    <label>Write your message <span className="sy-contact-req">*</span>
+     <textarea rows={5} maxLength={3000} required minLength={10} value={message} onChange={e=>{setMessage(e.target.value);if(error)setError("");}} placeholder="Hello, I am interested in this product. Is it available?"/></label>
+    <div className="sy-contact-templates"><span>Tap to add a question (optional)</span>
      {suggestions.map(text=><button key={text} type="button" onClick={()=>setMessage(current=>(current.trim()?current.trim()+"\n":"")+text)}>{text}</button>)}
     </div>
     {error&&<p className="sy-contact-error" role="alert">{error}</p>}
-    <p className="sy-contact-privacy">Demo only · This creates a local message draft. No email or live chat is sent to the supplier.</p>
-    <button type="submit" className="sy-contact-primary"><Send size={17}/> Save message draft</button>
+    <p className="sy-contact-privacy">Demo preview: your message is saved on this device, not sent to the supplier.</p>
+    <button type="submit" className="sy-contact-primary"><Send size={17}/> Save message</button>
    </form>}
  </dialog>;
 }
