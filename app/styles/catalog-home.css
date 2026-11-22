@@ -362,3 +362,34 @@
   .catalog-home .inquiry-btn { font-size:9px; }
   .catalog-home .catalog-menu-products { grid-template-columns:1fr; }
 }
+
+
+/* Audit fix: global brand.css uses !important one-column cards under 370px.
+   Catalog grids must remain exactly two columns even on 320px phones. */
+@media(max-width:600px){
+  .catalog-home .catalog-listing .product-grid,
+  .catalog-home .catalog-feature .product-grid{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    grid-auto-flow:row!important;
+    overflow:visible!important;
+    min-width:0;
+  }
+}
+@media(max-width:370px){
+  .catalog-home .catalog-listing .product-grid,
+  .catalog-home .catalog-feature .product-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:6px!important;
+  }
+  .catalog-home .catalog-listing .product-card,
+  .catalog-home .catalog-feature .product-card{min-width:0!important}
+  .catalog-home .catalog-listing .card-body,
+  .catalog-home .catalog-feature .card-body{padding:6px 5px}
+  .catalog-home .catalog-listing .product-price,
+  .catalog-home .catalog-feature .product-price{font-size:12px}
+  .catalog-home .catalog-listing .inquiry-btn,
+  .catalog-home .catalog-feature .inquiry-btn{font-size:9px;gap:2px}
+  .catalog-home .catalog-listing .inquiry-btn svg,
+  .catalog-home .catalog-feature .inquiry-btn svg{width:12px}
+}
