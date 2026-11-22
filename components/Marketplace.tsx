@@ -349,5 +349,5 @@ export function ProductDetail({product}:{product:Product}){
        </aside>
      </div>
    </div>
- <div className="detail-mobile-quote"><button className="detail-action-green" onClick={()=>setSelected(product)}><Send size={18}/> Request Quote</button></div></div><footer className="detail-footer"><div className="container footer-inner"><strong>SYLUTION</strong><span>Global B2B Marketplace · Demo product data</span></div></footer>{selected&&<InquiryModal product={selected} close={()=>setSelected(null)}/ >}{contactOpen&&<SupplierContactModal product={product} onClose={()=>setContactOpen(false)}/>}</>;
+ <div className="detail-mobile-quote"><button className="detail-action-green" onClick={()=>setSelected(product)}><Send size={18}/> Request Quote</button></div></div><footer className="detail-footer"><div className="container footer-inner"><strong>SYLUTION</strong><span>Global B2B Marketplace · Demo product data</span></div></footer>{selected&&<InquiryModal product={selected} close={()=>setSelected(null)}/>}{contactOpen&&<SupplierContactModal product={product} onClose={()=>setContactOpen(false)}/>}</>;
 }
