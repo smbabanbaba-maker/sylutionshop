@@ -45,6 +45,7 @@ export function HomePage(){
  const [collection,setCollection]=useState("all");
  const [filters,setFilters]=useState(emptySelection);
  const [limit,setLimit]=useState(24);
+ const [categoryMenuOpen,setCategoryMenuOpen]=useState(false);
  const [categoryPreview,setCategoryPreview]=useState<(typeof categories)[number]>(categories[1]);
 
  const filtered=useMemo(()=>{
@@ -79,24 +80,20 @@ export function HomePage(){
  return <><Header search={query} setSearch={setSearch}/><main className="catalog-home" id="home-top">
   <section className="catalog-hero">
    <div className="container catalog-hero-content">
-    <div><p className="catalog-kicker">SYLUTION TRADE</p><h1>Find wholesale products and suppliers</h1><p>Browse by product, supplier or country, then prepare a wholesale quote request.</p></div>
-    <div className="catalog-search-box">
-     <div className="catalog-mode" aria-label="Search type">{(["Products","Suppliers"] as const).map(option=><button type="button" key={option} aria-pressed={mode===option} onClick={()=>{setMode(option);setCollection("all");setLimit(24);}}>{option}</button>)}</div>
-     <form className="catalog-search-form" onSubmit={event=>{event.preventDefault();goProducts();}}>
-      <select aria-label="Search category" value={category} onChange={event=>{setCategory(event.target.value);setLimit(24);}}>{categories.map(option=><option key={option}>{option}</option>)}</select>
-      <input type="search" aria-label="Search catalog" placeholder={mode==="Products"?"Search for a product":"Search for a supplier"} value={query} onChange={event=>setSearch(event.target.value)}/>
+    <h1 className="catalog-visually-hidden">Find wholesale products and suppliers</h1>
+    <div className="catalog-search-box" onBlur={event=>{if(!event.currentTarget.contains(event.relatedTarget))setCategoryMenuOpen(false);}} onKeyDown={event=>{if(event.key==="Escape"&&categoryMenuOpen){setCategoryMenuOpen(false);event.currentTarget.querySelector<HTMLButtonElement>("#hero-categories-toggle")?.focus();}}}>
+     <div className="catalog-mode" aria-label="Search type">{(["Products","Suppliers"] as const).map(option=><button type="button" key={option} aria-pressed={mode===option} onClick={()=>{setMode(option);setCollection("all");setLimit(24);setCategoryMenuOpen(false);}}>{option}</button>)}</div>
+     <form className="catalog-search-form" onSubmit={event=>{event.preventDefault();setCategoryMenuOpen(false);goProducts();}}>
+      <button id="hero-categories-toggle" className="catalog-category-trigger" type="button" aria-expanded={categoryMenuOpen} aria-controls="hero-category-menu" onClick={()=>setCategoryMenuOpen(open=>!open)}><Menu size={18}/><span>{category==="All Categories"?"All categories":category}</span><ChevronDown size={15}/></button>
+      <input type="search" aria-label="Search catalog" placeholder={mode==="Products"?"Search products":"Search suppliers"} value={query} onFocus={()=>setCategoryMenuOpen(false)} onChange={event=>setSearch(event.target.value)}/>
       <button className="catalog-primary" type="submit"><Search size={18}/> Search</button>
      </form>
-     <details className="catalog-category-menu">
-      <summary>Explore all categories</summary>
-      <div className="catalog-category-menu-body">
-       <div aria-label="Preview category">{categories.slice(1).map(option=><button type="button" key={option} aria-pressed={categoryPreview===option} onClick={()=>setCategoryPreview(option)}>{option}</button>)}</div>
-       <div><button type="button" onClick={event=>{clear();setMode("Products");setCategory(categoryPreview);event.currentTarget.closest("details")?.removeAttribute("open");goProducts();}}>Browse {categoryPreview}</button>
-        {products.filter(product=>product.category===categoryPreview).slice(0,6).map(product=><Link href={"/products/"+product.slug} key={product.id}>{product.name}</Link>)}
-       </div>
+     {categoryMenuOpen&&<div id="hero-category-menu" className="catalog-category-menu-body">
+      <div aria-label="Preview category"><button type="button" onClick={()=>{clear();setCategoryMenuOpen(false);goProducts();}}>All categories</button>{categories.slice(1).map(option=><button type="button" key={option} aria-pressed={categoryPreview===option} onClick={()=>setCategoryPreview(option)}>{option}</button>)}</div>
+      <div><button type="button" onClick={()=>{clear();setMode("Products");setCategory(categoryPreview);setCategoryMenuOpen(false);goProducts();}}>Browse {categoryPreview}</button>
+       {products.filter(product=>product.category===categoryPreview).slice(0,6).map(product=><Link href={"/products/"+product.slug} key={product.id}>{product.name}</Link>)}
       </div>
-     </details>
-     <div className="catalog-popular"><span>Popular searches</span>{(mode==="Products"?["Zobo","Sesame","Ginger","Almond","Solar"]:["Agro","Electronics","Solar","Nigeria"]).map(value=><button type="button" key={value} onClick={()=>{clear();setSearch(value);goProducts();}}>{value}</button>)}</div>
+     </div>}
     </div>
    </div>
   </section>
