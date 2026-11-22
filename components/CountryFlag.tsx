@@ -21,10 +21,10 @@ const aliases:Record<string,string>={"United States":"USA","United States of Ame
 export function getCountry(country:string){return COUNTRY_FLAGS[country]||COUNTRY_FLAGS[aliases[country]]||COUNTRIES.find(c=>c.code===country.toLowerCase());}
 export function getDialingCode(country:string){return getCountry(country)?.dial||"";}
 export function CountryFlag({country,compact=false}:{country:string;compact?:boolean}){
- const [failed,setFailed]=useState(false);
+ const [failedCode,setFailedCode]=useState<string|null>(null);
  const entry=getCountry(country);
  return <span className={"sy-country-flag "+(compact?"sy-country-flag-small":"")} title={country+" flag"}>
-  {entry&&!failed?<img key={entry.code} width="26" height="18" loading="lazy" src={`https://flagcdn.com/w40/${entry.code}.png`} alt={country+" flag"} onError={()=>setFailed(true)}/>:<span role="img" aria-label={country+" flag"}>{entry?.emoji??"🌐"}</span>}
+  {entry&&failedCode!==entry.code?<img key={entry.code} width="26" height="18" loading="lazy" src={`https://flagcdn.com/w40/${entry.code}.png`} alt={country+" flag"} onError={()=>setFailedCode(entry.code)}/>:<span role="img" aria-label={country+" flag"}>{entry?.emoji??"🌐"}</span>}
  </span>;
 }
 export function CountryField({value,onChange,includeAny=false,disabled=false,required=false,label="Country"}:{value:string;onChange:(name:string)=>void;includeAny?:boolean;disabled?:boolean;required?:boolean;label?:string}){
