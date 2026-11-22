@@ -8,7 +8,7 @@ import type {Product} from "@/lib/catalog";
 export const MESSAGE_DRAFT_KEY="sylution_supplier_message_drafts";
 export type SupplierMessageDraft={
  id:string; supplier:string; country:string; product:string; productId:string;
- subject:string; message:string; createdAt:string; status:"Draft · browser only";
+ subject:string; message:string; createdAt:string; status:"Draft · browser only"; reply?:string; repliedAt?:string;
 };
 export function SupplierContactModal({product,onClose}:{product:Product;onClose:()=>void}){
  const dialog=useRef<HTMLDialogElement>(null);
