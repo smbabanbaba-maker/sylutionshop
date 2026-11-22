@@ -75,3 +75,23 @@
  .sy-draft-detail{padding:0 2px}
  .sy-draft-detail h2{font-size:18px}
 }
+
+/* Simple-message mode: only product context, one textarea and submit.
+   Keep the dialog compact and readable rather than resembling a long RFQ form. */
+.sy-contact-dialog{width:min(510px,calc(100vw - 20px));max-height:calc(100dvh - 20px);border-radius:14px}
+.sy-contact-supplier{padding:15px 18px 10px}
+.sy-contact-item{margin:0 18px 12px;padding:8px}
+.sy-contact-item img{width:55px;height:55px;flex-basis:55px}
+.sy-contact-form{padding:0 18px 18px;gap:11px}
+.sy-contact-form textarea{min-height:115px;font-size:15px;line-height:1.55}
+.sy-contact-templates>span{font-size:11px}
+.sy-contact-templates button{font-size:11px;padding:7px 9px}
+.sy-contact-privacy{font-size:11px;padding:8px 10px}
+.sy-contact-primary{min-height:44px}
+@media(max-width:600px){
+ .sy-contact-dialog{width:calc(100vw - 12px);max-height:calc(100dvh - 12px)}
+ .sy-contact-supplier{padding:12px 12px 9px}
+ .sy-contact-item{margin:0 12px 10px}
+ .sy-contact-form{padding:0 12px 13px;gap:10px}
+ .sy-contact-form textarea{min-height:112px;font-size:16px}
+}
