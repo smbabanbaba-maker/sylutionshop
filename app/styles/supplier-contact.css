@@ -1,0 +1,77 @@
+
+/* Supplier contact: premium, mobile-first business enquiry. */
+.sy-contact-dialog{width:min(550px,calc(100% - 24px));max-height:calc(100dvh - 22px);padding:0;overflow-y:auto;overscroll-behavior:contain;border:1px solid #d8e5e9;border-radius:17px;background:#fff;color:#102c40;box-shadow:0 28px 90px #031a3555}
+.sy-contact-dialog::backdrop{background:#061a30b5;backdrop-filter:blur(3px)}
+.sy-contact-head{display:flex;justify-content:space-between;align-items:center;padding:13px 18px;background:linear-gradient(110deg,#0b1930,#0d4b57);color:#e7fcf7}
+.sy-contact-eyebrow{display:inline-flex;gap:7px;align-items:center;font-size:10px;font-weight:800;letter-spacing:1.1px}
+.sy-contact-close{width:35px;height:35px;border:1px solid #ffffff40;border-radius:8px;display:grid;place-items:center;background:#ffffff17;color:white}
+.sy-contact-supplier{display:flex;gap:12px;align-items:center;padding:19px 20px 14px}
+.sy-contact-avatar{display:grid;place-items:center;width:52px;height:52px;flex:0 0 52px;border-radius:13px;background:#e6f5f0;color:#08765c}
+.sy-contact-identity{min-width:0;display:grid;gap:3px}
+.sy-contact-identity h2{font-size:21px;line-height:1.24;letter-spacing:-.5px;margin:0 0 5px;color:#112d43}
+.sy-contact-identity strong{font-size:13px;line-height:1.4;overflow-wrap:anywhere}
+.sy-contact-identity>span{display:flex;align-items:center;gap:5px;font-size:11px;color:#5b7182;flex-wrap:wrap}
+.sy-contact-item{display:flex;gap:10px;align-items:center;margin:0 20px 14px;padding:10px;border:1px solid #d9e8e5;background:#f5faf8;border-radius:11px}
+.sy-contact-item img{width:64px;height:64px;object-fit:cover;flex:0 0 64px;border-radius:8px;background:#e6eeeb}
+.sy-contact-item>div{display:grid;gap:3px;min-width:0}
+.sy-contact-item small{color:#08715d;font-size:9px;letter-spacing:.8px;font-weight:800}
+.sy-contact-item strong{font-size:12px;line-height:1.4;color:#17364a;overflow-wrap:anywhere}
+.sy-contact-item span{font-size:12px;font-weight:800;color:#0c6151}
+.sy-contact-form{display:grid;gap:14px;padding:0 20px 20px}
+.sy-contact-form>label{display:grid;gap:7px;font-size:12px;font-weight:750;color:#294458}
+.sy-contact-form select,.sy-contact-form textarea{width:100%;min-width:0;border:1px solid #cadcd9;border-radius:9px;background:#fff;color:#132f45;font-size:14px;padding:11px 12px;line-height:1.5}
+.sy-contact-form textarea{resize:vertical;min-height:124px;max-height:45dvh}
+.sy-contact-form select:focus,.sy-contact-form textarea:focus{outline:3px solid #70c6b1;outline-offset:1px}
+.sy-contact-req{color:#b52f39}
+.sy-contact-templates{display:flex;flex-wrap:wrap;gap:6px}
+.sy-contact-templates>span{flex-basis:100%;font-size:11px;font-weight:800;color:#506b7b;margin-bottom:2px}
+.sy-contact-templates button{border:1px solid #cbdfe0;color:#275c68;background:#f4f9f9;border-radius:20px;padding:7px 9px;text-align:left;line-height:1.35;font-size:11px;max-width:100%}
+.sy-contact-templates button:hover{background:#e8f5f1;border-color:#8ac5b0}
+.sy-contact-privacy{color:#6c6573;font-size:11px;line-height:1.5;background:#f7f5fb;border-left:3px solid #9371b8;padding:10px;margin:0;border-radius:6px}
+.sy-contact-error{color:#b52f39;font-size:12px;line-height:1.4;margin:0}
+.sy-contact-primary{display:inline-flex;gap:8px;align-items:center;justify-content:center;min-height:44px;width:100%;border:0;border-radius:9px;color:#fff!important;background:#007b60!important;font-size:13px;font-weight:800;text-decoration:none}
+.sy-contact-primary:hover{background:#00634e!important}
+.sy-contact-success{padding:20px;display:grid;justify-items:center;gap:10px;text-align:center}
+.sy-contact-success>svg{color:#147f59}
+.sy-contact-success h3{margin:0;font-size:20px;color:#15364a}
+.sy-contact-success p{margin:0 0 6px;font-size:13px;line-height:1.6;color:#506879}
+.sy-contact-secondary{padding:10px;background:#f1f5f6;border:1px solid #d4e2e5;border-radius:8px;color:#315367;min-width:130px}
+.product-detail-aside .detail-supplier-card{border:1px solid #d5e4e8;border-top:3px solid #0b8d72!important;border-radius:12px;box-shadow:0 4px 15px #0b254017}
+.product-detail-aside .detail-supplier-card .aside-heading{align-items:flex-start;flex-wrap:wrap;gap:8px}
+.product-detail-aside .detail-supplier-card .aside-heading h3{font-size:16px;color:#112d43}
+.sy-supplier-demo-badge{font-size:10px;background:#fff3e2;color:#93610d;padding:5px 8px;border:1px solid #e8d4aa;border-radius:20px;font-weight:700}
+.product-detail-aside .detail-supplier-card .aside-chat{min-height:43px;background:#eff7ff;color:#1d4d83;border-color:#b9d2e5;font-weight:800}
+.product-detail-aside .detail-supplier-card .aside-chat:hover{background:#e1f0ff}
+.product-detail-aside .detail-supplier-card .detail-action-green{min-height:43px}
+.sy-draft-tab{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:800;color:#453b88;background:#f0eeff;border:1px solid #d4cafa;border-radius:20px;padding:8px 12px}
+.sy-draft-tab b{background:#fff;border-radius:50px;padding:1px 7px}
+.sy-draft-list{margin-top:12px;display:grid;gap:7px}
+.sy-draft-row{width:100%;text-align:left;display:grid;gap:6px;border:1px solid #e0e5ed;border-radius:10px;background:#fff;padding:12px;color:#223b50;min-width:0}
+.sy-draft-row:hover,.sy-draft-row.active{border-color:#8e89cc;background:#f6f4ff}
+.sy-draft-row-top{display:flex;justify-content:space-between;gap:6px;align-items:center}
+.sy-draft-row-top strong{font-size:12px;overflow-wrap:anywhere}
+.sy-draft-row-top small{font-size:10px;color:#805b24;background:#fff4dd;padding:3px 6px;border-radius:5px}
+.sy-draft-row b{font-size:12px}
+.sy-draft-row>span:last-child{font-size:11px;color:#667d8b;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.sy-draft-detail{width:100%;max-width:690px;text-align:left;display:grid;gap:12px;align-self:start}
+.sy-draft-detail-top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.sy-draft-detail-top span{font-size:11px;color:#805b24;background:#fff4dd;border-radius:6px;padding:6px 9px;font-weight:750}
+.sy-draft-detail-top button{display:inline-flex;gap:5px;align-items:center;border:1px solid #edc4c8;border-radius:7px;background:#fff0f1;color:#ac3037;font-size:11px;padding:8px 10px}
+.sy-draft-detail h2{font-size:20px;margin:3px 0 0}
+.sy-draft-detail p{margin:0;font-size:12px;line-height:1.5}
+.sy-draft-message{white-space:pre-wrap;overflow-wrap:anywhere;padding:16px;border-radius:10px;background:#f7f9fc;border:1px solid #dde7ec;color:#27475b;font-size:13px;line-height:1.6}
+.sy-draft-detail small{font-size:11px;color:#6e7d8c}
+.sy-draft-detail>.sy-soft-action{padding:11px;justify-self:start}
+@media(max-width:650px){
+ .sy-contact-dialog{width:calc(100% - 14px);max-height:calc(100dvh - 14px);border-radius:14px}
+ .sy-contact-head{padding:10px 12px}
+ .sy-contact-supplier{padding:13px 13px 10px}
+ .sy-contact-identity h2{font-size:18px}
+ .sy-contact-item{margin:0 13px 11px}
+ .sy-contact-form{padding:0 13px 15px;gap:11px}
+ .sy-contact-form select,.sy-contact-form textarea{font-size:16px}
+ .sy-contact-templates button{font-size:11px;padding:7px 9px}
+ .sy-inbox-shell{min-height:0}
+ .sy-draft-detail{padding:0 2px}
+ .sy-draft-detail h2{font-size:18px}
+}
