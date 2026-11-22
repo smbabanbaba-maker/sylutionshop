@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import {createPortal} from "react-dom";
 import {SupplierProductDrafts} from "@/components/SupplierProductDrafts";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -64,7 +65,7 @@ export function DemoAccountMenu(){
     <div className="sy-menu-links">{sections.filter(s=>profile.role==="supplier"||!["add-product","incoming"].includes(s.id)).map(({id,name,Icon})=><Link key={id} onClick={()=>setMenu(false)} href={"/account?tab="+id}><Icon size={16}/>{name}</Link>)}</div>
     <button className="sy-logout-action" onClick={logout}><LogOut size={16}/> Sign out of demo</button>
    </div></>}</>}
-  {modal&&<div className="sy-auth-overlay" onMouseDown={e=>{if(e.target===e.currentTarget)setModal(null)}}><form className="sy-auth-modal" onSubmit={saveProfile}>
+  {modal&&createPortal(<div className="sy-auth-overlay" onMouseDown={e=>{if(e.target===e.currentTarget)setModal(null)}}><form className="sy-auth-modal" onSubmit={saveProfile}>
     <button type="button" className="sy-close" onClick={()=>setModal(null)} aria-label="Close"><X size={18}/></button>
     <span className="sy-mini-overline">SYLUTION ACCOUNT PREVIEW</span>
     <h2>{modal==="register"?"Create a demo account":"Explore your buyer account"}</h2>
@@ -76,7 +77,7 @@ export function DemoAccountMenu(){
     {error&&<p className="sy-error" role="alert">{error}</p>}
     <button className="sy-green-action" type="submit">{modal==="register"?"Create demo account":"Continue in demo mode"} <ArrowRight size={16}/></button>
     <small>No passwords or real authentication are used in this prototype.</small>
-   </form></div>}
+   </form></div>,document.body)}
  </div>;
 }
 export function DemoAccountPage(){

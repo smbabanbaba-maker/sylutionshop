@@ -212,3 +212,14 @@
  .catalog-menu-sections button { white-space:normal; }
  .catalog-menu-preview { max-height:32dvh; }
 }
+
+@media(max-width:600px) {
+  .catalog-category-menu-body {
+    position: fixed;
+    inset: auto 10px calc(64px + env(safe-area-inset-bottom));
+    width: auto;
+    max-height: min(65dvh,460px);
+    grid-template-rows: minmax(0,1fr) minmax(0,1.2fr);
+  }
+  .catalog-menu-sections, .catalog-menu-preview { max-height: none; }
+}
