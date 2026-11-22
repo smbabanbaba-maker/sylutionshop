@@ -1,0 +1,81 @@
+
+/* Cohesive buyer messaging, RFQ creation, and buying-request management */
+.sy-inbox-shell{display:grid;grid-template-columns:310px minmax(0,1fr);background:#fff;min-height:520px;border-radius:12px;border:1px solid #dce8ed;overflow:hidden}
+.sy-inbox-list{border-right:1px solid #e2e9ef;padding:13px}
+.sy-inbox-actions,.sy-inbox-tabs{display:flex;align-items:center;gap:5px}
+.sy-inbox-actions{justify-content:space-between}
+.sy-inbox-actions>button{border:1px solid #d6e4e9;background:#fff;border-radius:8px;padding:9px;color:#5d7588}
+.sy-inbox-tabs button{font-size:11px;border:1px solid #d6e4e9;padding:8px;background:#fff;border-radius:30px;white-space:nowrap}
+.sy-inbox-tabs button.active{color:#007945;background:#e7f8ee;border-color:#0aa450}
+.sy-inbox-search{border:1px solid #d4e1e9;background:#fafcfd;display:flex;align-items:center;gap:7px;border-radius:8px;padding:10px;margin:12px 0}
+.sy-inbox-search input{flex:1;min-width:0;outline:0;background:transparent;border:0;font-size:12px}
+.sy-inbox-none{text-align:center;margin-top:36px;display:grid;gap:10px;justify-items:center}
+.sy-inbox-none>svg{background:#f0f4f7;border-radius:50%;padding:8px;width:58px;height:58px;color:#90a2b2}
+.sy-inbox-none strong{font-size:14px;color:#17364d}
+.sy-inbox-none p{font-size:12px;color:#6a8191;line-height:1.6}
+.sy-inbox-none button{min-height:41px;width:100%;max-width:255px}
+.sy-soft-action{background:#fff;color:#185775;border:1px solid #b8ceda;border-radius:8px;font-weight:750}
+.sy-inbox-content{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:38px 32px;background:radial-gradient(circle at 50% 40%,#e8f9f2,transparent 48%),#fff}
+.sy-inbox-content h2{color:#10334c;font-size:23px;margin:12px 0 9px}
+.sy-inbox-content p{font-size:13px;color:#5b7184;line-height:1.65;max-width:490px}
+.sy-inbox-content small{color:#8297a4;margin-top:23px}
+.sy-inbox-illustration{height:140px;width:160px;display:grid;place-items:center;position:relative;background:#e6f6ef;border-radius:35px;color:#008e53}
+.sy-inbox-illustration>svg{z-index:1}
+.sy-inbox-orb{position:absolute;width:47px;height:47px;border-radius:50%;background:#c6ebff;left:-15px;top:2px}
+.sy-inbox-orb.two{left:auto;right:-12px;bottom:0;top:auto;background:#f8ddaa}
+.sy-inbox-benefits{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin-top:16px}
+.sy-inbox-benefits span{display:inline-flex;align-items:center;gap:5px;padding:7px 9px;background:#f0f7f9;border:1px solid #dbebef;border-radius:20px;color:#35667a;font-size:10px}
+.sy-post-rfq{max-width:1050px;margin:auto;display:grid;gap:20px}
+.sy-rfq-top{text-align:center;padding:9px 6px}
+.sy-rfq-top h2{color:#102e47;font-size:clamp(23px,3vw,34px);margin:8px 0}
+.sy-rfq-top p{color:#63798b;font-size:13px;line-height:1.5;margin:0 auto 12px;max-width:620px}
+.sy-rfq-demo-tag{color:#087848;background:#e8f9f0;padding:6px 10px;border-radius:30px;font-size:11px}
+.sy-rfq-builder{background:white;border:1px solid #dce7ec;box-shadow:0 6px 25px #18334e0b;border-radius:13px;padding:25px;display:grid;gap:17px}
+.sy-rfq-builder label{display:grid;gap:7px;font-weight:700;font-size:12px;color:#213c52}
+.sy-rfq-builder label>span{color:#e14b35}
+.sy-rfq-builder input,.sy-rfq-builder textarea,.sy-rfq-builder select{color:#18374c;background:#fff;border:1px solid #d2dee6;border-radius:8px;padding:11px;min-width:0;width:100%;font-weight:400;outline-offset:2px}
+.sy-rfq-attrs{border:1px dashed #cddce6;padding:14px;border-radius:9px;background:#f8fafc;display:grid;gap:8px}
+.sy-rfq-attrs>div:first-child{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.sy-rfq-attrs strong{font-size:12px}
+.sy-rfq-attrs small{font-size:11px;color:#738a9b}
+.sy-rfq-attr-row{display:grid;grid-template-columns:1fr 1fr 38px;gap:7px}
+.sy-rfq-attr-row>button{border:0;border-radius:7px;background:#ffefef;color:#b73936}
+.sy-attr-add{background:transparent;color:#007c9b;font-size:11px;display:inline-flex;align-items:center;gap:6px;justify-self:start;border:0;padding:6px}
+.sy-rfq-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.sy-rfq-full{grid-column:1/-1}
+.sy-quantity-control{display:flex;gap:7px}
+.sy-quantity-control select{width:auto;min-width:85px;max-width:120px}
+.sy-rfq-save-note{display:flex;align-items:center;gap:8px;color:#516b7e;font-size:11px;background:#eef8f4;padding:11px;border-radius:8px}
+.sy-rfq-save-note svg{color:#00945a;flex-shrink:0}
+.sy-post-submit{width:100%;min-height:45px}
+.sy-rfq-notice{font-size:12px;color:#087447;font-weight:750;margin:0}
+.sy-rfq-how{padding:16px 0}
+.sy-rfq-how h3{text-align:center;color:#19394f}
+.sy-rfq-how>div{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.sy-rfq-how>div>div{display:grid;gap:6px;border:1px solid #d6e9e9;background:#fafdfe;border-radius:10px;padding:17px}
+.sy-rfq-how span{color:#0a9f85;font-weight:850}
+.sy-rfq-how strong{color:#1e4259}
+.sy-rfq-how small{color:#6c8290}
+.sy-manager{display:grid;gap:14px}
+.sy-manager-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.sy-manager-head h2{font-size:22px;margin:0 0 4px;color:#1d3850}
+.sy-manager-head span{font-size:12px;color:#6b8290}
+.sy-manager-filters{display:flex;align-items:center;gap:9px;padding:13px;background:#fff;border-radius:9px;border:1px solid #d9e6ec}
+.sy-manager-filters>svg{color:#748a9a}
+.sy-manager-filters input{flex:1;min-width:0;border:1px solid #e3eaee;padding:10px;border-radius:7px}
+.sy-manager-filters select{max-width:190px;padding:10px;border-radius:7px;border:1px solid #e0e8ed;background:#fff}
+.sy-manager-scroll{max-width:100%;overflow-x:auto;background:#fff;border-radius:10px}
+.sy-manager table{border-collapse:collapse;min-width:640px;width:100%}
+.sy-manager th{background:#1c2f44;color:#fff;padding:12px;text-align:left;font-size:11px}
+.sy-manager td{padding:14px 12px;border-bottom:1px solid #ecf1f3;color:#456075;font-size:11px}
+.sy-manager td strong,.sy-manager td small{display:block}
+.sy-manager td strong{font-size:12px;color:#213e52}
+.sy-manager td small{margin-top:5px;color:#7a8c9d}
+.sy-manager td button{background:#ffeded;border:0;border-radius:6px;padding:8px;color:#c14442}
+.sy-request-draft{color:#986a1b;background:#fff5e3;padding:5px 7px;border-radius:7px;font-size:10px}
+.sy-manager-empty{padding:50px 20px;background:#fff;border-radius:10px;text-align:center;display:grid;gap:10px;justify-items:center}
+.sy-manager-empty>svg{color:#8da2ae}
+.sy-manager-empty p{color:#617788;font-size:12px}
+.sy-manager-disclaimer{color:#738899}
+@media(max-width:780px){.sy-inbox-shell{grid-template-columns:1fr}.sy-inbox-list{border-right:0;border-bottom:1px solid #e2ebef}.sy-inbox-content{min-height:350px}.sy-rfq-fields{grid-template-columns:1fr}.sy-rfq-builder{padding:15px}.sy-manager-head{align-items:start;flex-wrap:wrap}}
+@media(max-width:430px){.sy-rfq-how>div{grid-template-columns:1fr}.sy-rfq-attr-row{grid-template-columns:1fr 1fr 32px}.sy-inbox-actions{flex-wrap:wrap}.sy-inbox-content{padding:24px 10px}.sy-manager-filters{flex-wrap:wrap}.sy-manager-filters input{min-width:150px}.sy-manager-filters select{width:100%;max-width:none}}

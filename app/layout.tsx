@@ -3,6 +3,7 @@ import "./globals.css";
 import "./styles/product.css";
 import "./styles/dashboard.css";
 import "./styles/brand.css";
+import "./styles/workflows.css";
 export const metadata: Metadata = {
   title: "SYLUTION | Global B2B Marketplace",
   description: "Discover global wholesale products, find suppliers and request quotations on SYLUTION TRADE."
