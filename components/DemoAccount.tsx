@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { UserRound, ChevronDown, LayoutDashboard, Search, MessageSquare, Send, ClipboardList, UsersRound, PenSquare, Heart, LockKeyhole, LogOut, Store, Settings, ShieldCheck, X, Mail, Building2, Package, Globe2, Menu, Bell, CheckCircle, ArrowRight, Trash2 } from "lucide-react";
 import {products} from "@/lib/catalog";
-import { CountryFlag } from "@/components/CountryFlag";
+import { CountryFlag, CountryField } from "@/components/CountryFlag";
 import {MessagesPreview,PostBuyingRequest,RequestManager} from "@/components/BuyerWorkflows";
 import {BuyerProfileEditor} from "@/components/BuyerProfileEditor";
 import {VerificationPanel} from "@/components/VerificationPanel";
@@ -69,7 +69,7 @@ export function DemoAccountMenu(){
     <label>Full name<input required value={name} onChange={e=>setName(e.target.value)} placeholder="Your name"/></label>
     <label>Email address<input required type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@company.com"/></label>
     <label>Company name<input value={company} onChange={e=>setCompany(e.target.value)} placeholder="Your business"/></label>
-    <div className="sy-auth-pair"><label>Country<input value={country} onChange={e=>setCountry(e.target.value)}/></label><label>Account type<select value={role} onChange={e=>setRole(e.target.value as "buyer"|"supplier")}><option value="buyer">Buyer</option><option value="supplier">Supplier</option></select></label></div>
+    <div className="sy-auth-pair"><label>Country<CountryField value={country} onChange={setCountry} required label="Your country"/></label><label>Account type<select value={role} onChange={e=>setRole(e.target.value as "buyer"|"supplier")}><option value="buyer">Buyer</option><option value="supplier">Supplier</option></select></label></div>
     {error&&<p className="sy-error" role="alert">{error}</p>}
     <button className="sy-green-action" type="submit">{modal==="register"?"Create demo account":"Continue in demo mode"} <ArrowRight size={16}/></button>
     <small>No passwords or real authentication are used in this prototype.</small>

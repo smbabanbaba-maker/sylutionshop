@@ -1,3 +1,4 @@
+import {CountryField} from "@/components/CountryFlag";
 "use client";
 import {useEffect,useState} from "react";
 import Link from "next/link";
@@ -48,7 +49,7 @@ export function PostBuyingRequest({onSaved}:{onSaved:()=>void}){
        <label>Payment term<select value={payment} onChange={e=>setPayment(e.target.value)}>{["Bank transfer","Letter of credit","Escrow preferred","Negotiable"].map(x=><option key={x}>{x}</option>)}</select></label>
        <label>Destination city / port <span>*</span><input value={port} required onChange={e=>setPort(e.target.value)} placeholder="e.g. Lagos Apapa Port"/></label>
        <label>Shipping method<select value={shipping} onChange={e=>setShipping(e.target.value)}><option>Sea freight</option><option>Air freight</option><option>Road freight</option><option>Flexible</option></select></label>
-       <label>Preferred supplier country<input value={preferred} onChange={e=>setPreferred(e.target.value)} placeholder="e.g. Nigeria"/></label>
+       <label>Preferred supplier country<CountryField value={preferred} onChange={setPreferred} includeAny label="Preferred supplier country"/></label>
        <label>Required lead time (days)<input type="number" min="1" value={lead} onChange={e=>setLead(e.target.value)} placeholder="30"/></label>
        <label className="sy-rfq-full">Required documents<input value={docs} onChange={e=>setDocs(e.target.value)} placeholder="Certificate of origin, test report, etc."/></label>
        <label className="sy-rfq-full">Additional requirements<textarea rows={4} value={notes} onChange={e=>setNotes(e.target.value)} placeholder="Quality, packaging, specifications, delivery expectations..."/></label>

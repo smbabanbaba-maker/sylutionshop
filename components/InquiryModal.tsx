@@ -1,11 +1,11 @@
 "use client";
 import {useEffect,useId,useMemo,useRef,useState} from "react";
 import {ArrowRight,Check,ChevronDown,ClipboardList,FileText,Heart,Info,Package,Plus,Search,Send,ShieldCheck,Trash2,UploadCloud,X} from "lucide-react";
-import {COUNTRY_FLAGS,CountryFlag} from "@/components/CountryFlag";
+import {COUNTRY_NAMES,CountryFlag} from "@/components/CountryFlag";
 import type {Product} from "@/lib/catalog";
 
 type Spec={name:string;value:string};
-const COUNTRY_NAMES=Object.keys(COUNTRY_FLAGS).sort((a,b)=>a.localeCompare(b));
+
 const TERMS=["FOB","CIF","EXW","FCA","DAP","DDP"];
 const PAYMENTS=["Bank transfer (T/T)","Letter of credit (L/C)","Escrow preferred","Negotiable"];
 const UNIT_OPTIONS=["MT","KG","Tons","Pieces","Sets","Containers","Litres","Bags","Unit"];

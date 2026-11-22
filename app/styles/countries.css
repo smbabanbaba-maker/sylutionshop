@@ -1,0 +1,11 @@
+
+/* Shared international ISO country selector: actual flag image for the selected country */
+.sy-country-field{width:100%;min-width:0;position:relative;display:flex;align-items:center;gap:8px;border:1px solid #cbdce5;border-radius:8px;padding:0 10px;background:#fff;min-height:42px}
+.sy-country-field>.sy-country-flag{flex:0 0 auto}
+.sy-country-field select{width:100%;min-width:0;border:0!important;outline:0;background:transparent!important;color:#193b50;font:inherit;padding:10px 0!important;min-height:40px;box-shadow:none!important;cursor:pointer}
+.sy-country-field:focus-within{outline:2px solid #00867a;outline-offset:2px;border-color:#00867a}
+.sy-country-field:has(select:disabled){background:#f7fafb;opacity:.9}
+.si-country-options{scrollbar-width:thin;scrollbar-color:#87aab6 #f4f8fa}
+.si-country-options button{min-height:40px}
+.si-country-options button .sy-country-flag{flex-shrink:0}
+@media(max-width:600px){.sy-country-field select{font-size:14px}}

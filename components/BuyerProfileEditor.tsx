@@ -1,7 +1,7 @@
 "use client";
 import {useEffect,useMemo,useState} from "react";
 import {Building2,Check,CheckCircle2,ChevronRight,FileText,Globe2,LockKeyhole,Pencil,Save,Settings2,ShieldCheck,UserRound} from "lucide-react";
-import {CountryFlag,COUNTRY_FLAGS} from "@/components/CountryFlag";
+import {CountryFlag,CountryField} from "@/components/CountryFlag";
 
 type Profile={name:string;email:string;company:string;country:string;role:"buyer"|"supplier";joined:string};
 type Details={
@@ -16,7 +16,7 @@ const empty:Details={businessType:"Buying Office",registration:"",website:"",pho
 const companyKeys:(keyof Details)[]=["businessType","registration","website","phone","established","employees","revenue","address","categories","importHistory","description","logoUrl","platforms"];
 const sourcingKeys:(keyof Details)[]=["sourcingProducts","sourcingMarkets","sourcingFrequency","sourcingBudget"];
 const labelMap:Record<string,string>={businessType:"Business type",registration:"Business registration ID",website:"Company website",phone:"Company phone number",established:"Year established",employees:"Number of employees",revenue:"Annual sales revenue",address:"Company address",categories:"Categories",importHistory:"Import history",description:"Company description",logoUrl:"Company logo URL",platforms:"Platforms I sell on",sourcingProducts:"Products you source",sourcingMarkets:"Preferred sourcing markets",sourcingFrequency:"Buying frequency",sourcingBudget:"Typical order budget"};
-const countries=["Nigeria","China","India","USA","UAE","Türkiye","Ghana","Kenya","Germany","Pakistan","Thailand","Egypt","Brazil","Vietnam","Morocco","Canada","Australia","Ethiopia","Tunisia","Ukraine"];
+
 function safeRead(){try{const x=JSON.parse(localStorage.getItem(KEY)||"{}");return x&&typeof x==="object"?x as Partial<Details>:{};}catch{return {}}}
 function isFilled(value:unknown){return typeof value==="string"?value.trim().length>0:!!value}
 export function BuyerProfileEditor({profile,onUpdate}:{profile:Profile;onUpdate:(p:Profile)=>void}){
@@ -65,7 +65,7 @@ export function BuyerProfileEditor({profile,onUpdate}:{profile:Profile;onUpdate:
      <div className="sy-profile-field-grid">
       <label className="sy-profile-field"><span>Full name</span><input required disabled={!editing} value={identity.name} onChange={e=>setIdentity(v=>({...v,name:e.target.value}))}/></label>
       <label className="sy-profile-field"><span>Company name *</span><input disabled={!editing} value={identity.company} placeholder="Not added" onChange={e=>setIdentity(v=>({...v,company:e.target.value}))}/></label>
-      <label className="sy-profile-field"><span>Country of registration *</span><select disabled={!editing} value={identity.country} onChange={e=>setIdentity(v=>({...v,country:e.target.value}))}>{countries.map(c=><option key={c}>{c}</option>)}</select></label>
+      <label className="sy-profile-field"><span>Country of registration *</span><CountryField value={identity.country} disabled={!editing} onChange={value=>setIdentity(v=>({...v,country:value}))} label="Country of registration"/></label>
       {field("businessType","",["Buying Office","Importer","Wholesaler","Distributor","Manufacturer","Retailer","Trading company","Other"])}
       {field("registration","e.g. CAC registration number")}
       {field("website","https://example.com")}

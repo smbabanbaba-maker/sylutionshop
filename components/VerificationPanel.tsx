@@ -1,7 +1,7 @@
 "use client";
 import {useState} from "react";
 import {Check, CheckCircle2, CircleAlert, FileText, HelpCircle, Mail, Phone, ShieldCheck, UploadCloud, XCircle, LockKeyhole, Info, ArrowRight, Building2} from "lucide-react";
-import {CountryFlag} from "@/components/CountryFlag";
+import {CountryFlag,getDialingCode} from "@/components/CountryFlag";
 type Status="verified"|"pending"|"unverified"|"rejected";
 type FileKind="license"|"import"|"tax";
 function VerificationStatus({status,text}:{status:Status;text?:string}){
@@ -37,7 +37,7 @@ export function VerificationPanel({country="Nigeria",onProfile}:{country?:string
   <div className="sv-progress"><div><ShieldCheck size={18}/><strong>Verification progress</strong><span>{prepared}/3 document types selected locally</span></div><div className="sv-progress-track"><div style={{width:(prepared/3*100)+"%"}}/></div><p>Files and contact details on this page are not sent to a server. Verification remains inactive until a secure backend is connected.</p></div>
   <section className="sv-card">
    <header className="sv-section-header"><div className="sv-title-with-icon"><span className="sv-icon sv-phone"><Phone size={20}/></span><div><h3>Verify phone number</h3><p>Allow suppliers to reach a verified business phone after confirmation.</p></div></div><VerificationStatus status="unverified"/></header>
-   <div className="sv-inline-field"><div className="sv-country-code"><CountryFlag country={country} compact/><span>{({Nigeria:"+234",USA:"+1",Canada:"+1",China:"+86",India:"+91",Ghana:"+233",Kenya:"+254",UAE:"+971",Türkiye:"+90",Germany:"+49",Pakistan:"+92",Thailand:"+66",Egypt:"+20",Brazil:"+55",Vietnam:"+84",Morocco:"+212",Australia:"+61",Ethiopia:"+251",Tunisia:"+216",Ukraine:"+380"} as Record<string,string>)[country]??"Intl."}</span></div><input type="tel" inputMode="tel" value={phone} onChange={e=>setPhone(e.target.value)} placeholder="Enter business phone number" aria-label="Business phone number"/><button type="button" onClick={()=>setNotice("SMS/OTP verification needs the secure backend. No message has been sent.")}>Verify phone</button></div>
+   <div className="sv-inline-field"><div className="sv-country-code"><CountryFlag country={country} compact/><span>{getDialingCode(country)</span></div><input type="tel" inputMode="tel" value={phone} onChange={e=>setPhone(e.target.value)} placeholder="Enter business phone number" aria-label="Business phone number"/><button type="button" onClick={()=>setNotice("SMS/OTP verification needs the secure backend. No message has been sent.")}>Verify phone</button></div>
    <p className="sv-field-hint">No SMS or OTP is sent in demo mode. Never enter a one-time code into this preview.</p>
   </section>
   <section className="sv-card">

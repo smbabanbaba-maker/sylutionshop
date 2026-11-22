@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { DemoAccountMenu } from "@/components/DemoAccount";
-import { CountryFlag } from "@/components/CountryFlag";
+import { CountryFlag, COUNTRIES } from "@/components/CountryFlag";
 import {InquiryModal} from "@/components/InquiryModal";
 import { FaFacebookF, FaLinkedinIn, FaWhatsapp, FaTelegramPlane, FaPinterestP, FaEnvelope } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
@@ -40,7 +40,8 @@ export function HomePage(){
  const [sort,setSort]=useState<"featured"|"name">("featured");
  const [visibleCount,setVisibleCount]=useState(24);
  const [countryFilter,setCountryFilter]=useState("All Countries");
- const countryOptions=["All Countries",...Array.from(new Set(products.map(p=>p.country))).sort()];
+ const countryOptions=["All Countries",...COUNTRIES.map(c=>c.name)];
+ const listedCountryCount=new Set(products.map(p=>p.country)).size;
  const filtered=useMemo(()=>{
    const matched=products.filter(p=>(category==="All Categories"||p.category===category)&&(countryFilter==="All Countries"||p.country===countryFilter)&&([p.name,p.supplier,p.country,p.category].join(" ").toLowerCase().includes(query.trim().toLowerCase())));
    return sort==="name"?[...matched].sort((a,b)=>a.name.localeCompare(b.name)):matched;
@@ -77,7 +78,7 @@ export function HomePage(){
   <section className="container marketplace-layout" id="products"><div className="market-main">
     <div className="section-head"><div><h2>Explore the trade catalog</h2><p>Browse industries, compare origins and build your sourcing shortlist.</p></div><div className="result-count">{filtered.length} example products</div></div>
     <div className="listing-toolbar"><div className="category-tabs">{categories.map(c=><button key={c} className={category===c?"selected":""} onClick={()=>{setCategory(c);setVisibleCount(24);}}>{c}</button>)}</div><select className="product-sort" aria-label="Sort products" value={sort} onChange={e=>setSort(e.target.value as "featured"|"name")}><option value="featured">Featured</option><option value="name">Name A–Z</option></select></div>
-    <div className="listing-extra-filters"><label>Supplier country <select value={countryFilter} onChange={e=>{setCountryFilter(e.target.value);setVisibleCount(24);}}>{countryOptions.map(c=><option key={c} value={c}>{c}</option>)}</select></label><span>{filtered.length} sample listings · {countryOptions.length-1} countries</span></div>
+    <div className="listing-extra-filters"><label>Supplier country <select value={countryFilter} onChange={e=>{setCountryFilter(e.target.value);setVisibleCount(24);}}>{countryOptions.map(c=><option key={c} value={c}>{COUNTRIES.find(x=>x.name===c)?.emoji||"🌐"} {c}</option>)}</select></label><span>{filtered.length} sample listings · {listedCountryCount} origins in demo catalog · Worldwide country filter</span></div>
     <div className="product-grid">{filtered.slice(0,visibleCount).map(p=><ProductCard key={p.id} product={p} onInquiry={setSelected}/>)}</div>
     {filtered.length>visibleCount&&<div className="load-more-listings"><button onClick={()=>setVisibleCount(v=>v+24)}>Load more products <span>({filtered.length-visibleCount} remaining)</span></button></div>}
     {!filtered.length&&<div className="empty-state">No matching products yet. Try a different keyword or category. <button onClick={()=>{setQuery("");setCategory("All Categories");}}>Clear search</button></div>}
