@@ -80,10 +80,10 @@ export function InquiryModal({product,close}:{product:Product;close:()=>void}){
     <div className="si-spec-preview"><h4>Product details</h4>{product.specifications.slice(0,4).map(([key,val])=><p key={key}><span>{key}</span><strong>{val}</strong></p>)}</div>
    </aside>
    <div className="si-main">
-    <header className="si-heading"><div><span className="si-overline">SYLUTION / WHOLESALE SOURCING</span><h2 id={titleId}>Send an inquiry</h2><p>Prepare a structured request and compare offers when supplier messaging launches.</p></div><button type="button" className="si-close" aria-label="Close inquiry" onClick={close}><X size={22}/></button></header>
+    <header className="si-heading"><div><span className="si-overline">SYLUTION / WHOLESALE SOURCING</span><h2 id={titleId}>Send an inquiry</h2><p>Complete your sourcing details below. The Save button stays visible while you scroll.</p></div><button type="button" className="si-close" aria-label="Close inquiry" onClick={close}><X size={22}/></button></header>
     {submitted?<div className="si-confirmation"><div><Check size={33}/></div><h3>Demo inquiry saved</h3><p>Your RFQ is stored in this browser under Buying Requests. Nothing was sent to the supplier.</p><button className="si-submit" type="button" onClick={close}>Continue browsing <ArrowRight size={17}/></button></div>:
      <form onSubmit={submit} className="si-form">
-      <div className="si-fields si-triple">
+      <div className="si-form-scroll"><div className="si-fields si-triple">
        <label>Quantity <b>*</b><div className="si-number-unit"><input ref={first} type="number" min="0.01" step="any" required value={qty} onChange={e=>setQty(e.target.value)}/><select aria-label="Quantity unit" value={unit} onChange={e=>setUnit(e.target.value)}>{[...new Set([product.unit,...UNIT_OPTIONS])].map(t=><option key={t}>{t}</option>)}</select></div></label>
        <div className="si-field"><span>Ship to <b>*</b></span><CountrySelector value={country} onChange={setCountry}/></div>
        <label>Destination port / city <b>*</b><input required value={port} onChange={e=>setPort(e.target.value)} placeholder="e.g. Lagos Apapa"/></label>
@@ -102,7 +102,8 @@ export function InquiryModal({product,close}:{product:Product;close:()=>void}){
       {!!attachments.length&&<div className="si-file-chips">{attachments.map((f,i)=><span key={i}><FileText size={13}/>{f.name}<button type="button" aria-label={"Remove "+f.name} onClick={()=>setAttachments(old=>old.filter((_,j)=>i!==j))}><X size={13}/></button></span>)}</div>}
       <label className="si-consent"><input type="checkbox" required checked={consent} onChange={e=>setConsent(e.target.checked)}/><span>I understand this is a <strong>demo RFQ</strong> saved only in this browser. No supplier will receive this request yet.</span></label>
       {error&&<div className="si-error" role="alert"><Info size={16}/>{error}</div>}
-      <footer className="si-footer"><div><ShieldCheck size={16}/> Demo · Not sent</div><button className="si-submit" type="submit"><Send size={17}/> Save Inquiry & Create RFQ</button></footer>
+      </div>
+      <footer className="si-footer"><div><ShieldCheck size={17}/> Saved in browser only</div><button className="si-submit" type="submit"><Send size={18}/> Save Inquiry & Create RFQ</button></footer>
      </form>}
    </div>
   </section>
