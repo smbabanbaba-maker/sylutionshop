@@ -1,4 +1,14 @@
-export type Category = "Agriculture" | "Food & Beverage" | "Energy" | "Industrial" | "Electronics";
+export const categoryGroups = [
+  {name:"Agriculture & food", categories:["Agriculture","Food & Beverage","Fishing & Aquaculture","Livestock & Animal Feed","Food Ingredients","Forestry & Timber"]},
+  {name:"Industry & materials", categories:["Industrial","Manufacturing Equipment","Tools, Instruments & Testing","Metals & Minerals","Chemicals","Plastics & Rubber","Packaging & Printing","Construction Materials","Building Systems","Safety & Industrial Supplies","Water & Environmental Equipment"]},
+  {name:"Energy & technology", categories:["Energy","Electronics","Electrical Equipment","Computers & IT","Telecommunications","Consumer Electronics","Robotics & Automation","Batteries & Power Storage"]},
+  {name:"Transport & logistics", categories:["Automotive & Parts","Commercial Vehicles","Motorcycles & Bicycles","Marine Equipment","Aviation Equipment","Warehouse & Logistics Equipment"]},
+  {name:"Health & daily essentials", categories:["Healthcare & Medical Supplies","Laboratory Supplies","Beauty & Personal Care","Cleaning & Hygiene","Pet Supplies"]},
+  {name:"Home & consumer goods", categories:["Home, Furniture & Living","Home Appliances","Kitchenware & Tableware","Garden & Outdoor","Apparel & Fashion","Textiles & Fabrics","Footwear & Accessories","Jewelry & Watches","Sports & Recreation","Toys & Games","Arts, Crafts & Gifts","Office & School Supplies","Books & Media"]},
+] as const;
+
+export type Category = typeof categoryGroups[number]["categories"][number];
+export const categories: readonly ("All Categories" | Category)[] = ["All Categories",...categoryGroups.flatMap(group=>[...group.categories])];
 export type Product = { id: string; slug: string; name: string; category: Category; price: string; unit: string; moq: string; country: string; flag: string; supplier: string; image: string; description: string; specifications: [string,string][] };
 export const products: Product[] = [
   {id:"p1",slug:"premium-nigerian-white-sesame-seeds",name:"Premium Nigerian White Sesame Seeds",category:"Agriculture",price:"$1,150–$1,300",unit:"MT",moq:"1 MT",country:"Nigeria",flag:"🇳🇬",supplier:"Demo Agro Commodities Ltd.",image:"https://images.unsplash.com/photo-1509358271058-acd22cc93898?w=900&q=85",description:"Wholesale white sesame seeds for food processing and international trade. Request batch-specific specifications, samples and origin documentation.",specifications:[["Commodity","White sesame seeds"],["Origin","Nigeria"],["Packaging","25 kg / 50 kg bags (ask supplier)"],["Availability","Confirm by RFQ"]]},
@@ -50,5 +60,4 @@ export const products: Product[] = [
   {"id":"p47","slug":"led-display-panels-p10","name":"LED Display Panels P10","category":"Electronics","price":"$8.50–$14.00","unit":"panel","moq":"50 panels","country":"China","flag":"🇨🇳","supplier":"Demo Display Equipment Co.","image":"https://images.unsplash.com/photo-1518770660439-4636190af475?w=900&q=80","description":"Illustrative wholesale listing for led display panels p10 originating from China. Pricing, packaging, quality documentation, stock and shipment terms require confirmation with a real supplier.","specifications":[["Product","LED Display Panels P10"],["Origin","China"],["Minimum order","50 panels"],["Supplier verification","Demo only"]]},
   {"id":"p48","slug":"wireless-lora-transceiver-modules","name":"Wireless LoRa Transceiver Modules","category":"Electronics","price":"$3.20–$6.80","unit":"unit","moq":"100 units","country":"China","flag":"🇨🇳","supplier":"Demo IoT Module Distributors","image":"https://images.unsplash.com/photo-1518770660439-4636190af475?w=900&q=80","description":"Illustrative wholesale listing for wireless lora transceiver modules originating from China. Pricing, packaging, quality documentation, stock and shipment terms require confirmation with a real supplier.","specifications":[["Product","Wireless LoRa Transceiver Modules"],["Origin","China"],["Minimum order","100 units"],["Supplier verification","Demo only"]]}
 ];
-export const categories = ["All Categories","Agriculture","Food & Beverage","Energy","Industrial","Electronics"] as const;
 export const getProduct = (slug:string) => products.find(p=>p.slug===slug);

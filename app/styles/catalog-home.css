@@ -203,3 +203,12 @@
   .catalog-menu-preview { max-height: 42dvh; padding: 10px; }
   .catalog-menu-products { grid-template-columns: minmax(0,1fr); }
 }
+.catalog-menu-group { display:grid; gap:4px; }
+.catalog-menu-group h3 { margin:8px 4px 1px; font-size:12px; color:#486275; }
+.catalog-category-search { width:100%; min-width:0; min-height:42px; padding:8px; color:#143344; border:1px solid #c3d9d5; border-radius:8px; background:#fff; }
+.catalog-menu-empty { color:#486275; padding-block:8px; }
+@media(max-width:600px) {
+ .catalog-menu-sections { display:grid; max-height:190px; overflow-y:auto; }
+ .catalog-menu-sections button { white-space:normal; }
+ .catalog-menu-preview { max-height:32dvh; }
+}

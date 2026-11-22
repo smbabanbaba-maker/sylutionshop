@@ -10,7 +10,7 @@ import { FaFacebookF, FaLinkedinIn, FaWhatsapp, FaTelegramPlane, FaPinterestP, F
 import { FaXTwitter } from "react-icons/fa6";
 import { useEffect, useMemo, useState } from "react";
 import { Search, Heart, MessageSquare, Globe2, Menu, ArrowLeft, Send, X, ClipboardList, Package, Building2, ShieldCheck, ChevronDown, Share2, Copy, ChevronLeft, ChevronRight, FileText, SlidersHorizontal, Grid2X2, ListFilter, BadgeCheck, MapPin, Bell } from "lucide-react";
-import { categories, products, type Product } from "@/lib/catalog";
+import { categories, categoryGroups, products, type Category, type Product } from "@/lib/catalog";
 
 function Header({search,setSearch}:{search?:string;setSearch?:(value:string)=>void}) {
   const [mobile,setMobile]=useState(false);
@@ -46,7 +46,8 @@ export function HomePage(){
  const [filters,setFilters]=useState(emptySelection);
  const [limit,setLimit]=useState(24);
  const [categoryMenuOpen,setCategoryMenuOpen]=useState(false);
- const [categoryPreview,setCategoryPreview]=useState<(typeof categories)[number]>(categories[1]);
+ const [categoryPreview,setCategoryPreview]=useState<Category>("Agriculture");
+ const [categoryQuery,setCategoryQuery]=useState("");
 
  const filtered=useMemo(()=>{
   const keyword=query.trim().toLowerCase();
@@ -71,6 +72,9 @@ export function HomePage(){
   (groups[key]??=[]).push(listing);
   return groups;
  },{}));
+ const previewProducts=products.filter(product=>product.category===categoryPreview);
+ const listedCategories=categories.slice(1).filter(option=>products.some(product=>product.category===option));
+ const categoryTabs=["All Categories",...new Set([...listedCategories,...(category==="All Categories"?[]:[category])])];
  const spotlight=filtered.filter(listing=>listing.featured).slice(0,6);
  const goProducts=()=>document.getElementById("products")?.scrollIntoView({behavior:"smooth"});
  const setCollectionAndBrowse=(value:string)=>{setMode("Products");setCollection(value);setLimit(24);goProducts();};
@@ -84,16 +88,22 @@ export function HomePage(){
     <div className="catalog-search-box" onBlur={event=>{if(!event.currentTarget.contains(event.relatedTarget))setCategoryMenuOpen(false);}} onKeyDown={event=>{if(event.key==="Escape"&&categoryMenuOpen){setCategoryMenuOpen(false);event.currentTarget.querySelector<HTMLButtonElement>("#hero-categories-toggle")?.focus();}}}>
      <div className="catalog-mode" aria-label="Search type">{(["Products","Suppliers"] as const).map(option=><button type="button" key={option} aria-pressed={mode===option} onClick={()=>{setMode(option);setCollection("all");setLimit(24);setCategoryMenuOpen(false);}}>{option}</button>)}</div>
      <form className="catalog-search-form" onSubmit={event=>{event.preventDefault();setCategoryMenuOpen(false);goProducts();}}>
-      <button id="hero-categories-toggle" className="catalog-category-trigger" type="button" aria-expanded={categoryMenuOpen} aria-controls="hero-category-menu" onClick={()=>setCategoryMenuOpen(open=>!open)}><Menu size={18}/><span>{category==="All Categories"?"All categories":category}</span><ChevronDown size={15}/></button>
+      <button id="hero-categories-toggle" className="catalog-category-trigger" type="button" aria-expanded={categoryMenuOpen} aria-controls="hero-category-menu" onClick={()=>{setCategoryQuery("");setCategoryMenuOpen(open=>!open);}}><Menu size={18}/><span>{category==="All Categories"?"All categories":category}</span><ChevronDown size={15}/></button>
       <input type="search" aria-label="Search catalog" placeholder={mode==="Products"?"Search products":"Search suppliers"} value={query} onFocus={()=>setCategoryMenuOpen(false)} onChange={event=>setSearch(event.target.value)}/>
       <button className="catalog-primary" type="submit" aria-label="Search"><Search size={18}/><span>Search</span></button>
      </form>
      {categoryMenuOpen&&<section id="hero-category-menu" className="catalog-category-menu-body" aria-label="Explore product categories">
       <nav className="catalog-menu-sections" aria-label="Product categories">
        <button type="button" onClick={()=>{clear();setMode("Products");setCategoryMenuOpen(false);goProducts();}}><Grid2X2 size={17} aria-hidden="true"/> All products</button>
-       {categories.slice(1).map(option=><button type="button" key={option} aria-pressed={categoryPreview===option} onClick={()=>setCategoryPreview(option)}>
-        <Package size={17} aria-hidden="true"/><span>{option}</span><ChevronRight size={15} aria-hidden="true"/>
-       </button>)}
+       <input className="catalog-category-search" type="search" value={categoryQuery} onChange={event=>setCategoryQuery(event.target.value)} placeholder="Find a category" aria-label="Find a category"/>
+       {categoryGroups.map(group=>{
+        const matches=group.categories.filter(option=>(group.name+" "+option).toLowerCase().includes(categoryQuery.trim().toLowerCase()));
+        if(!matches.length)return null;
+        return <div className="catalog-menu-group" key={group.name}><h3>{group.name}</h3>{matches.map(option=><button type="button" key={option} aria-pressed={categoryPreview===option} onClick={()=>setCategoryPreview(option)}>
+          <Package size={17} aria-hidden="true"/><span>{option}</span><ChevronRight size={15} aria-hidden="true"/>
+        </button>)}</div>;
+       })}
+       {categoryQuery.trim()&&!categoryGroups.some(group=>group.categories.some(option=>(group.name+" "+option).toLowerCase().includes(categoryQuery.trim().toLowerCase())))&&<p>No matching categories.</p>}
       </nav>
       <div className="catalog-menu-preview">
        <header className="catalog-menu-heading">
@@ -101,10 +111,11 @@ export function HomePage(){
         <button type="button" className="catalog-menu-close" aria-label="Close categories" onClick={()=>{setCategoryMenuOpen(false);document.getElementById("hero-categories-toggle")?.focus();}}><X size={20}/></button>
        </header>
        <ul className="catalog-menu-products">
-        {products.filter(product=>product.category===categoryPreview).map(product=>(
+        {previewProducts.map(product=>(
          <li key={product.id}><Link href={"/products/"+product.slug}><span>{product.name}</span><small>{product.country} · Min. {product.moq}</small></Link></li>
         ))}
        </ul>
+       {!previewProducts.length&&<p className="catalog-menu-empty">No listings in this category yet.</p>}
       </div>
      </section>}
     </div>
@@ -118,7 +129,7 @@ export function HomePage(){
    <div className="catalog-controls">
    <div className="catalog-category-row">
    <header className="catalog-results-head"><h2>{mode==="Suppliers"?"Supplier directory":collection==="deals"?"Good Deals":collection==="new"?"New Products":collection==="featured"?"Featured Products":"Suggested Products"}</h2><span aria-live="polite">{mode==="Suppliers"?suppliers.length:filtered.length} sample {mode.toLowerCase()}</span></header>
-   <div className="catalog-categories" aria-label="Browse categories">{categories.map(option=><button type="button" key={option} aria-pressed={category===option} onClick={()=>{setCategory(option);setLimit(24);}}>{option==="All Categories"?"All":option} <small>{option==="All Categories"?products.length:products.filter(product=>product.category===option).length}</small></button>)}</div>
+   <div className="catalog-categories" aria-label="Browse categories">{categoryTabs.map(option=><button type="button" key={option} aria-pressed={category===option} onClick={()=>{setCategory(option);setLimit(24);}}>{option==="All Categories"?"All":option} <small>{option==="All Categories"?products.length:products.filter(product=>product.category===option).length}</small></button>)}</div>
    </div>
    <div className="catalog-toolbar">
     <CatalogFilters value={filters} onChange={value=>{setFilters(value);setLimit(24);}}/>
