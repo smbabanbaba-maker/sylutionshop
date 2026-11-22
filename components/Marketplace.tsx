@@ -1,5 +1,7 @@
 "use client";
 import Link from "next/link";
+import {CatalogFilters,emptySelection} from "@/components/CatalogFilters";
+import {previewListing} from "@/lib/catalog-preview";
 import {TradeNavigation} from "@/components/TradeNavigation";
 import { DemoAccountMenu } from "@/components/DemoAccount";
 import { CountryFlag, COUNTRIES } from "@/components/CountryFlag";
@@ -15,7 +17,7 @@ function Header({search,setSearch}:{search?:string;setSearch?:(value:string)=>vo
   return <><header className="site-header">
     <div className="header-inner">
       <Link className="brand" href="/"><span className="brand-mark"><span className="sy-brand-letter">S</span><i className="sy-brand-orbit"/></span><span><strong>SYLUTION</strong><small>Global B2B Marketplace</small></span></Link>
-      {setSearch&&<div className="header-search"><span className="search-category">All categories <ChevronDown size={13}/></span><input aria-label="Search products" placeholder="Search products and suppliers..." value={search??""} onChange={e=>setSearch?.(e.target.value)} /><button className="search-submit" aria-label="Search marketplace" onClick={()=>document.getElementById("products")?.scrollIntoView({behavior:"smooth"})}><Search size={18}/> Search</button></div>}
+      {setSearch&&<div className="header-search"><input aria-label="Search products" placeholder="Search products and suppliers..." value={search??""} onChange={e=>setSearch?.(e.target.value)} /><button className="search-submit" aria-label="Search marketplace" onClick={()=>document.getElementById("products")?.scrollIntoView({behavior:"smooth"})}><Search size={18}/> Search</button></div>}
       <div className="header-actions"><TradeNavigation/><DemoAccountMenu/></div>
       <button type="button" aria-label={mobile?"Close navigation menu":"Open navigation menu"} aria-expanded={mobile} aria-controls="sy-mobile-navigation" className="menu-toggle" onClick={()=>setMobile(!mobile)}>{mobile?<X size={23}/>:<Menu size={23}/>}</button>
     </div>
@@ -24,78 +26,108 @@ function Header({search,setSearch}:{search?:string;setSearch?:(value:string)=>vo
   </>;
 }
 const cash = (s:string)=>s;
-export function ProductCard({product,onInquiry}:{product:Product;onInquiry:(p:Product)=>void}){
+export function ProductCard({product,onInquiry,preview}:{product:Product;onInquiry:(p:Product)=>void;preview?:ReturnType<typeof previewListing>}){
  const [liked,setLiked]=useState(false);
  useEffect(()=>{const sync=()=>{try{const saved=JSON.parse(localStorage.getItem("sylution_saved_products")||"[]") as string[];setLiked(saved.includes(product.slug));}catch{}};sync();window.addEventListener("sylution-shortlist-change",sync);window.addEventListener("storage",sync);return()=>{window.removeEventListener("sylution-shortlist-change",sync);window.removeEventListener("storage",sync)};},[product.slug]);
  function toggleFavorite(){const next=!liked;setLiked(next);try{const stored=JSON.parse(localStorage.getItem("sylution_saved_products")||"[]") as string[];localStorage.setItem("sylution_saved_products",JSON.stringify(next?[...new Set([...stored,product.slug])]:stored.filter(s=>s!==product.slug)));window.dispatchEvent(new Event("sylution-shortlist-change"));}catch{}}
- return <article className="product-card"><Link href={"/products/"+product.slug} className="product-image"><span className="image-fallback" aria-hidden="true">{product.category==="Agriculture"?"🌾":product.category==="Electronics"?"🔌":product.category==="Energy"?"☀️":product.category==="Industrial"?"⚙️":"📦"}</span><img src={product.image} alt={product.name} loading="lazy" decoding="async" onError={e=>{e.currentTarget.style.display="none";}}/><span className="new-chip">Sample</span></Link><button className={"favorite"+(liked?" active":"")} aria-label={liked?"Remove from favorites":"Save to favorites"} aria-pressed={liked} onClick={toggleFavorite}><Heart size={18} fill={liked?"currentColor":"none"}/></button>
- <div className="card-body"><Link href={"/products/"+product.slug} className="product-name">{product.name}</Link><div className="product-price">{cash(product.price)} <span>/ {product.unit}</span></div><p className="product-moq">Min. order: {product.moq}</p><div className="supplier-name">{product.supplier}</div><div className="country"><CountryFlag country={product.country} compact/> {product.country} <span className="sample-pill">Demo</span></div><div className="card-bottom"><button onClick={()=>onInquiry(product)} className="inquiry-btn"><MessageSquare size={15}/> Request Quote</button><Link className="chat-link" href={"/products/"+product.slug} aria-label="See product details"><Package size={17}/></Link></div></div>
+ return <article className="product-card"><Link href={"/products/"+product.slug} className="product-image"><span className="image-fallback" aria-hidden="true">{product.category==="Agriculture"?"🌾":product.category==="Electronics"?"🔌":product.category==="Energy"?"☀️":product.category==="Industrial"?"⚙️":"📦"}</span><img src={product.image} alt={product.name} loading="lazy" decoding="async" onError={e=>{e.currentTarget.style.display="none";}}/><span className="new-chip">{preview?.recent?"New · Demo":"Sample"}</span></Link><button className={"favorite"+(liked?" active":"")} aria-label={liked?"Remove from favorites":"Save to favorites"} aria-pressed={liked} onClick={toggleFavorite}><Heart size={18} fill={liked?"currentColor":"none"}/></button>
+ <div className="card-body"><Link href={"/products/"+product.slug} className="product-name">{product.name}</Link><div className="product-price">{cash(product.price)} <span>/ {product.unit}</span></div><p className="product-moq">Min. order: {product.moq}</p><div className="supplier-name">{product.supplier}</div><div className="country"><CountryFlag country={product.country} compact/> {product.country} <span className="sample-pill">Demo</span></div>{preview&&<div className="catalog-card-meta">{preview.rating>0&&<span>★ {preview.rating.toFixed(1)} sample</span>}<span>{preview.terms.join(" · ")}</span>{preview.deal&&<span>Sample deal</span>}</div>}<div className="card-bottom"><button onClick={()=>onInquiry(product)} className="inquiry-btn"><MessageSquare size={15}/> Request Quote</button><Link className="chat-link" href={"/products/"+product.slug} aria-label="See product details"><Package size={17}/></Link></div></div>
  </article>;
 }
+const listings = products.map((product,index)=>({product,...previewListing(product,index)}));
+
 export function HomePage(){
  const [query,setQuery]=useState("");
  const [category,setCategory]=useState("All Categories");
  const [selected,setSelected]=useState<Product|null>(null);
- const [searchMode,setSearchMode]=useState<"Products"|"Suppliers">("Products");
- const [showCategories,setShowCategories]=useState(false);
- const [sort,setSort]=useState<"featured"|"name">("featured");
- const [visibleCount,setVisibleCount]=useState(24);
- const [filtersOpen,setFiltersOpen]=useState(false);
- const [countryFilter,setCountryFilter]=useState("All Countries");
- const countryOptions=["All Countries",...COUNTRIES.map(c=>c.name)];
+ const [mode,setMode]=useState<"Products"|"Suppliers">("Products");
+ const [sort,setSort]=useState("suggested");
+ const [collection,setCollection]=useState("all");
+ const [filters,setFilters]=useState(emptySelection);
+ const [limit,setLimit]=useState(24);
+ const [categoryPreview,setCategoryPreview]=useState<(typeof categories)[number]>(categories[1]);
+
  const filtered=useMemo(()=>{
-   const matched=products.filter(p=>(category==="All Categories"||p.category===category)&&(countryFilter==="All Countries"||p.country===countryFilter)&&([p.name,p.supplier,p.country,p.category].join(" ").toLowerCase().includes(query.trim().toLowerCase())));
-   return sort==="name"?[...matched].sort((a,b)=>a.name.localeCompare(b.name)):matched;
- },[category,query,sort,countryFilter]);
+  const keyword=query.trim().toLowerCase();
+  const matches=listings.filter(({product,markets,terms,rating,featured,deal,recent})=>{
+   const searchable=mode==="Suppliers"?[product.supplier,product.country,product.category]:[product.name,product.supplier,product.country,product.category];
+   return searchable.join(" ").toLowerCase().includes(keyword)
+    &&(category==="All Categories"||product.category===category)
+    &&(!filters.country.length||filters.country.includes(product.country))
+    &&(!filters.markets.length||filters.markets.some(market=>markets.includes(market)))
+    &&(!filters.terms.length||filters.terms.some(term=>terms.includes(term)))
+    &&(!filters.trust.length||(filters.trust[0]==="5"?rating===5:rating>Number(filters.trust[0])))
+    &&(collection==="all"||(collection==="featured"&&featured)||(collection==="deals"&&deal)||(collection==="new"&&recent));
+  });
+  if(sort==="name")matches.sort((a,b)=>a.product.name.localeCompare(b.product.name));
+  if(sort==="latest")matches.reverse();
+  if(sort==="rating")matches.sort((a,b)=>b.rating-a.rating);
+  return matches;
+ },[category,query,sort,filters,mode,collection]);
+
+ const suppliers=Object.values(filtered.reduce<Record<string,typeof filtered>>((groups,listing)=>{
+  const key=listing.product.supplier+" · "+listing.product.country;
+  (groups[key]??=[]).push(listing);
+  return groups;
+ },{}));
+ const spotlight=filtered.filter(listing=>listing.featured).slice(0,4);
  const goProducts=()=>document.getElementById("products")?.scrollIntoView({behavior:"smooth"});
- const quickSearch=(phrase:string)=>{setCategory("All Categories");setQuery(phrase);goProducts();};
- return <><Header search={query} setSearch={setQuery}/><main>
-  <section className="fresh-hero reference-hero">
-   <div className="fresh-hero-inner container">
-     <span className="hero-eyebrow">SYLUTION / YOUR SOURCING COMMAND CENTER</span>
-     <h1>{searchMode==="Products"?"Source globally. Decide confidently.":"Discover your next supplier connection"}</h1>
-     <p className="hero-description">Explore cross-border sourcing with comparison tools, supplier profiles and structured wholesale requests.</p>
-     <div className="hero-search-panel">
-       <div className="hero-search">
-         <div className="hero-search-category-wrap"><button className="hero-search-category" type="button" aria-expanded={showCategories} onClick={()=>setShowCategories(!showCategories)}>{searchMode==="Products"?"Find Products":"Find Suppliers"} <ChevronDown size={15}/></button>
-           {showCategories&&<div className="hero-search-menu"><button onClick={()=>{setSearchMode("Products");setShowCategories(false);}}>Find Products</button><button onClick={()=>{setSearchMode("Suppliers");setShowCategories(false);}}>Find Suppliers</button></div>}
-         </div>
-         <div className="hero-search-input"><Search size={20}/><input aria-label="Search global wholesale products" placeholder={searchMode==="Products"?"What products are you looking for?":"Find suppliers, products or countries"} value={query} onChange={e=>setQuery(e.target.value)} onKeyDown={e=>{if(e.key==="Enter")goProducts();}}/></div>
-         <button className="hero-search-button" onClick={goProducts}><Search size={18}/> Search</button>
+ const setCollectionAndBrowse=(value:string)=>{setMode("Products");setCollection(value);setLimit(24);goProducts();};
+ const setSearch=(value:string)=>{setQuery(value);setLimit(24);};
+ const clear=()=>{setSearch("");setCategory("All Categories");setFilters(emptySelection);setCollection("all");};
+
+ return <><Header search={query} setSearch={setSearch}/><main className="catalog-home" id="home-top">
+  <section className="catalog-hero">
+   <div className="container catalog-hero-content">
+    <div><p className="catalog-kicker">SYLUTION TRADE</p><h1>Find wholesale products and suppliers</h1><p>Browse by product, supplier or country, then prepare a wholesale quote request.</p></div>
+    <div className="catalog-search-box">
+     <div className="catalog-mode" aria-label="Search type">{(["Products","Suppliers"] as const).map(option=><button type="button" key={option} aria-pressed={mode===option} onClick={()=>{setMode(option);setCollection("all");setLimit(24);}}>{option}</button>)}</div>
+     <form className="catalog-search-form" onSubmit={event=>{event.preventDefault();goProducts();}}>
+      <select aria-label="Search category" value={category} onChange={event=>{setCategory(event.target.value);setLimit(24);}}>{categories.map(option=><option key={option}>{option}</option>)}</select>
+      <input type="search" aria-label="Search catalog" placeholder={mode==="Products"?"Search for a product":"Search for a supplier"} value={query} onChange={event=>setSearch(event.target.value)}/>
+      <button className="catalog-primary" type="submit"><Search size={18}/> Search</button>
+     </form>
+     <details className="catalog-category-menu">
+      <summary>Explore all categories</summary>
+      <div className="catalog-category-menu-body">
+       <div aria-label="Preview category">{categories.slice(1).map(option=><button type="button" key={option} aria-pressed={categoryPreview===option} onClick={()=>setCategoryPreview(option)}>{option}</button>)}</div>
+       <div><button type="button" onClick={event=>{clear();setMode("Products");setCategory(categoryPreview);event.currentTarget.closest("details")?.removeAttribute("open");goProducts();}}>Browse {categoryPreview}</button>
+        {products.filter(product=>product.category===categoryPreview).slice(0,6).map(product=><Link href={"/products/"+product.slug} key={product.id}>{product.name}</Link>)}
        </div>
-       <div className="popular-searches"><strong>Popular searches:</strong>{["Sesame Seeds","Ginger","Solar Pumps","Almonds","Electronics"].map(x=><button key={x} onClick={()=>quickSearch(x)}>{x}</button>)}</div>
-     </div>
-     <div className="hero-benefits"><span><Globe2 size={17}/> International sourcing</span><span><Building2 size={17}/> Business suppliers</span><span><MessageSquare size={17}/> Direct enquiries</span></div>
+      </div>
+     </details>
+     <div className="catalog-popular"><span>Popular searches</span>{(mode==="Products"?["Zobo","Sesame","Ginger","Almond","Solar"]:["Agro","Electronics","Solar","Nigeria"]).map(value=><button type="button" key={value} onClick={()=>{clear();setSearch(value);goProducts();}}>{value}</button>)}</div>
+    </div>
    </div>
   </section>
-  <section className="quick-actions container"><strong>Build smarter trade relationships with SYLUTION</strong><div><Link href="/account?tab=post-rfq">Post Buying Request</Link><a href="#products">Top Products</a><a href="#category-explorer">Categories</a></div></section>
-  <section className="container discovery-row" id="category-explorer">
-    <div className="discovery-column category-directory"><h3>All Categories</h3>{categories.slice(1).map(c=><button key={c} onClick={()=>{setCategory(c);goProducts();}}><span>{c}</span><ChevronDown size={15}/></button>)}</div>
-    <div className="discovery-column"><div className="discovery-heading"><h3>Frequently searched</h3><span>Agriculture</span></div><div className="discovery-feature"><img src="https://images.unsplash.com/photo-1509358271058-acd22cc93898?w=550&q=80" alt="Wholesale seeds and agricultural commodities" loading="lazy"/><div><strong>Seeds & Grains</strong><button onClick={()=>quickSearch("Sesame")}>Explore products</button></div></div></div>
-    <div className="discovery-column"><div className="discovery-heading"><h3>Frequently searched</h3><span>Food & Beverage</span></div><div className="discovery-feature"><img src="https://images.unsplash.com/photo-1615485500704-8e990f9900f0?w=550&q=80" alt="Agricultural food products" loading="lazy"/><div><strong>Food Commodities</strong><button onClick={()=>quickSearch("Ginger")}>Explore products</button></div></div></div>
-    <div className="discovery-column"><div className="discovery-heading"><h3>Frequently searched</h3><span>Equipment</span></div><div className="discovery-feature"><img src="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?w=550&q=80" alt="Solar and industrial equipment" loading="lazy"/><div><strong>Energy & Machinery</strong><button onClick={()=>{setCategory("Energy");goProducts();}}>Explore products</button></div></div></div>
-    <div className="discovery-promo"><div className="promo-kicker">SOURCE SMARTER</div><h3>Connect with more business opportunities.</h3><p>Explore suppliers and request wholesale quotations in one place.</p><button onClick={goProducts}>Browse products <span>→</span></button></div>
+  <div className="container catalog-shortcuts" aria-label="Marketplace shortcuts">
+   <Link href="/account?tab=profile">Update Profile</Link><Link href="/account?tab=post-rfq">Post Buying Request</Link>
+   <button type="button" onClick={()=>setCollectionAndBrowse("deals")}>Good Deals</button><button type="button" onClick={()=>setCollectionAndBrowse("new")}>New Products</button><a href="#how-it-works">Help</a>
+  </div>
+  <section className="container catalog-listing" id="products">
+   <header className="catalog-results-head"><h2>{mode==="Suppliers"?"Supplier directory":collection==="deals"?"Good Deals":collection==="new"?"New Products":collection==="featured"?"Featured Products":"Suggested Products"}</h2><span aria-live="polite">{mode==="Suppliers"?suppliers.length:filtered.length} sample {mode.toLowerCase()}</span></header>
+   <div className="catalog-categories" aria-label="Browse categories">{categories.map(option=><button type="button" key={option} aria-pressed={category===option} onClick={()=>{setCategory(option);setLimit(24);}}>{option} <small>{option==="All Categories"?products.length:products.filter(product=>product.category===option).length}</small></button>)}</div>
+   <div className="catalog-toolbar">
+    <CatalogFilters value={filters} onChange={value=>{setFilters(value);setLimit(24);}}/>
+    <label>Sort <select value={sort} onChange={event=>{setSort(event.target.value);setLimit(24);}}><option value="suggested">Suggested</option><option value="latest">Latest</option><option value="name">Name A–Z</option><option value="rating">Sample rating</option></select></label>
+   </div>
+   <p className="catalog-demo-note">Demo catalog. Prices, ratings, markets and trade terms are examples.</p>
+   {collection!=="all"&&<button className="catalog-text-button" type="button" onClick={()=>setCollectionAndBrowse("all")}>Back to all products</button>}
+   {mode==="Products"&&collection==="all"&&!query.trim()&&category==="All Categories"&&!Object.values(filters).some(values=>values.length)&&spotlight.length>0&&<section className="catalog-feature">
+    <header><h3>Featured Products</h3><button className="catalog-text-button" type="button" onClick={()=>setCollectionAndBrowse("featured")}>View all featured</button></header>
+    <div className="product-grid">{spotlight.map(listing=><ProductCard key={listing.product.id} product={listing.product} preview={listing} onInquiry={setSelected}/>)}</div>
+   </section>}
+   {mode==="Suppliers"?<div className="catalog-supplier-grid">{suppliers.slice(0,limit).map(group=>{
+    const {product,rating}=group[0];
+    return <article key={product.supplier+" · "+product.country}><Building2 size={22}/><h3>{product.supplier}</h3><p><CountryFlag country={product.country} compact/> {product.country} · {group.length} sample {group.length===1?"listing":"listings"}</p>{rating>0&&<small>{rating} / 5 sample rating</small>}<div>{group.map(({product:item})=><Link key={item.id} href={"/products/"+item.slug}>{item.name} <ChevronRight size={15}/></Link>)}</div></article>;
+   })}</div>:<div className="product-grid">{filtered.slice(0,limit).map(listing=><ProductCard key={listing.product.id} product={listing.product} preview={listing} onInquiry={setSelected}/>)}</div>}
+   {(mode==="Suppliers"?suppliers.length:filtered.length)>limit&&<div className="load-more-listings"><button type="button" onClick={()=>setLimit(value=>value+24)}>Load more {mode.toLowerCase()}</button></div>}
+   {!filtered.length&&<div className="empty-state">No matches. Try another search or clear your filters. <button type="button" onClick={clear}>Clear search and filters</button></div>}
   </section>
-  <section className="container marketplace-layout" id="products"><div className="market-main">
-    <div className="section-head"><div><h2>Explore the trade catalog</h2><p>Browse industries, compare origins and build your sourcing shortlist.</p></div><div className="result-count">{filtered.length} example products</div></div>
-    <label className="trade-catalog-search"><Search size={18}/><input type="search" aria-label="Search catalog" placeholder="Search products and suppliers" value={query} onChange={event=>{setQuery(event.target.value);setVisibleCount(24);}}/></label>
-    <div className="trade-catalog-layout">
-    <div className={"trade-filters"+(filtersOpen?" is-open":"")}>
-      <button className="trade-filter-toggle" type="button" aria-expanded={filtersOpen} aria-controls="catalog-filters" onClick={()=>setFiltersOpen(open=>!open)}><SlidersHorizontal size={17}/> Filters{(category!=="All Categories"||countryFilter!=="All Countries")?" · Active":""}</button>
-      <div className="trade-filter-fields" id="catalog-filters">
-        <label>Category <select value={category} onChange={e=>{setCategory(e.target.value);setVisibleCount(24);}}>{categories.map(c=><option key={c}>{c}</option>)}</select></label>
-        <label>Supplier country <select value={countryFilter} onChange={e=>{setCountryFilter(e.target.value);setVisibleCount(24);}}>{countryOptions.map(c=><option key={c} value={c}>{c}</option>)}</select></label>
-        <label>Sort products <select value={sort} onChange={e=>setSort(e.target.value as "featured"|"name")}><option value="featured">Featured</option><option value="name">Name A–Z</option></select></label>
-      </div>
-    </div>
-    <div className="trade-catalog-results">
-    <div className="product-grid">{filtered.slice(0,visibleCount).map(p=><ProductCard key={p.id} product={p} onInquiry={setSelected}/>)}</div>
-    {filtered.length>visibleCount&&<div className="load-more-listings"><button onClick={()=>setVisibleCount(v=>v+24)}>Load more products <span>({filtered.length-visibleCount} remaining)</span></button></div>}
-    {!filtered.length&&<div className="empty-state">No matching products yet. Try a different keyword or category. <button onClick={()=>{setQuery("");setCategory("All Categories");setCountryFilter("All Countries");setVisibleCount(24);}}>Clear search</button></div>}
-  </div></div></div></section>
-  <section className="container why-section" id="how-it-works"><div className="why-copy"><div className="why-label">WHY SYLUTION</div><h2>A simpler way to source and connect.</h2><p>Explore product opportunities, compare details and send structured requests for quotations.</p></div><div className="why-item"><Search size={24}/><strong>Discover</strong><span>Find products fast</span></div><div className="why-item"><MessageSquare size={24}/><strong>Enquire</strong><span>Send clear RFQs</span></div><div className="why-item"><Globe2 size={24}/><strong>Connect</strong><span>Explore global markets</span></div></section>
-  </main><footer><div className="container footer-inner"><div><strong>SYLUTION</strong><p>Global B2B Marketplace</p></div><span>© 2026 SYLUTION • Demo marketplace</span></div></footer>
-  {selected&&<InquiryModal product={selected} close={()=>setSelected(null)}/>}
+  <section className="container catalog-help" id="how-it-works"><h2>How it works</h2><p>Browse the catalog, open a product and select Request Quote. Your quote drafts are available in My Requests.</p><Link href="/account?tab=requests">Open My Requests</Link></section>
+  <aside className="catalog-tools" aria-label="Quick links"><a href="#how-it-works">Help</a><Link href="/account?tab=post-rfq">RFQ</Link><Link href="/account?tab=messages">Messages</Link><a href="#home-top">Top</a></aside>
+ </main><footer><div className="container footer-inner"><strong>SYLUTION</strong><span>Global B2B Marketplace · Demo</span></div></footer>
+ {selected&&<InquiryModal product={selected} close={()=>setSelected(null)}/>}
  </>;
 }
 export function ProductDetail({product}:{product:Product}){
