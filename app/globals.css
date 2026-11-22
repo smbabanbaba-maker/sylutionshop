@@ -768,3 +768,64 @@ body{background:#ebedf1;color:var(--market-ink)}
 @media(max-width:1200px){.sy-supplier-columns{grid-template-columns:1fr}.sy-supplier-side{grid-template-columns:1fr 1fr}}
 @media(max-width:800px){.sy-store-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.sy-store-steps{grid-template-columns:1fr}.sy-account-sidebar{min-height:auto}}
 @media(max-width:650px){.sy-supplier-side,.sy-leads-grid{grid-template-columns:1fr}.sy-profile-nudge button{white-space:normal}.sy-supplier-theme .sy-account-sidebar{background:#1e2b3e!important}}
+
+/* SYLUTION distinctive design system: independent of the supplied competitor screenshots */
+:root{--sy-navy:#10283f;--sy-royal:#1658a5;--sy-teal:#08a5a1;--sy-mint:#c9f5e3;--sy-green:#008f43;--sy-ice:#eef7fc;--sy-outline:#d3e4e9}
+body{background:#eef4f7;color:var(--sy-navy)}
+.sy-country-flag{display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex:none;width:28px;height:20px;overflow:hidden;border-radius:3px;background:#f4f7f9;border:1px solid #d2dfe6;box-shadow:0 1px 2px #16344a18}
+.sy-country-flag img{display:block;width:100%;height:100%;object-fit:cover}
+.sy-country-flag>span{font-size:19px;line-height:1}
+.sy-country-flag-small{width:24px;height:17px}
+.sy-country-flag-small>span{font-size:17px}
+.country .sy-country-flag,.supplier-country .sy-country-flag{margin-right:3px}
+.sy-recommended-country .sy-country-flag{margin-right:3px}
+.site-header,.sy-account-header{border-bottom:1px solid #dbe8ed!important;box-shadow:0 3px 17px #0b355112!important}
+.site-header .brand-mark,.sy-account-logo-mark{position:relative;overflow:hidden;background:linear-gradient(135deg,#1153a1 0%,#047e90 48%,#00a66c 100%)!important;border-radius:11px!important;box-shadow:0 3px 12px #0e698a33}
+.sy-brand-letter{z-index:1}.sy-brand-orbit,.sy-account-logo-mark i{position:absolute;display:block;border:2px solid #ffffff66;border-radius:50%;width:42px;height:42px;right:-19px;top:-21px;transform:rotate(-30deg)}
+.site-header .brand strong,.sy-account-logo strong{letter-spacing:.2px!important;color:#0b304a!important}
+.site-header .brand small,.sy-account-logo small{color:#428497!important;letter-spacing:.5px}
+.reference-hero{background-image:linear-gradient(100deg,#071f38ea,#0b4869cc 65%,#06664c98),url("https://images.unsplash.com/photo-1494412519320-aa613dfb7738?w=1800&q=80")!important}
+.reference-hero .hero-eyebrow{display:inline-flex;align-items:center;border:1px solid #78dccc8a;background:#0a615e61;color:#bdf6e3!important;border-radius:20px!important;padding:7px 12px!important;letter-spacing:1.35px}
+.reference-hero h1{max-width:800px!important;letter-spacing:-1.3px!important}
+.reference-hero .hero-search-panel{border:1px solid #bee5e0!important;box-shadow:0 14px 35px #05182827!important}
+.reference-hero .hero-search-button,.site-header .search-submit{background:#008e67!important}
+.reference-hero .hero-search-button:hover,.site-header .search-submit:hover{background:#057956!important}
+.quick-actions{border-radius:13px!important;border:1px solid #d7e7ec!important;background:linear-gradient(110deg,#fff,#edf9f8)!important;box-shadow:0 3px 15px #143d5110}
+.quick-actions strong{color:#0a5570!important}
+.discovery-column{border:1px solid #dce9ed!important;box-shadow:0 3px 13px #11374b0b}
+.discovery-promo{background:linear-gradient(145deg,#0f3a68,#087b88)!important;border-radius:14px!important}
+.section-head h2{color:#103c58!important;font-weight:800!important}
+.listing-extra-filters{background:#f4fbfb!important;border-color:#cce9e5!important}
+.product-card{border:1px solid #dae7eb!important;border-radius:12px!important;box-shadow:0 4px 15px #0f38510b!important;transition:transform .15s,box-shadow .15s}
+.product-card:hover{transform:translateY(-2px);box-shadow:0 9px 24px #103c581c!important}
+.product-card .product-name{color:#16425f!important}
+.product-card .country{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.product-card .inquiry-btn{background:#008f63!important}
+.product-card .inquiry-btn:hover{background:#006d51!important}
+.product-page{background:#edf4f8!important}
+.supplier-profile-section{background:linear-gradient(125deg,#dceafd,#dff6f3)!important;border:1px solid #c7e6e7!important}
+.supplier-profile-header h2{color:#113a60!important}
+.supplier-profile-body{border:1px solid #e3ecf0!important}
+.sy-account-page{background:#edf4f8!important}
+.sy-account-banner{border-bottom:1px solid #dae9ed}
+.sy-account-layout{gap:19px}
+.sy-buyer-theme .sy-account-sidebar{background:#fff!important;border:1px solid #dce8eb!important;border-radius:12px!important;box-shadow:0 6px 24px #163b4d0c!important;padding:10px!important}
+.sy-buyer-theme .sy-account-sidebar>button.active{background:#e2f5f2!important;color:#047964!important;border-left:3px solid #00a48d!important}
+.sy-account-page .sy-profile-nudge{background:#e9f5fc!important;border:1px solid #c4e3f3!important;border-left:4px solid #1979a7!important}
+.sy-account-page .sy-profile-nudge strong{color:#185576!important}
+.sy-account-page .sy-profile-nudge p{color:#526f7f!important}
+.sy-account-page .sy-nudge-symbol{background:#d6eefa!important;color:#176b97!important}
+.sy-account-page .sy-profile-nudge button{background:#176ba5!important}
+.sy-account-page .sy-profile-nudge button:hover{background:#135582!important}
+.sy-account-page .sy-content-topline h2{color:#10466a!important}
+.sy-account-page .sy-performance-grid>div{border:1px solid #d7e8ed!important;border-top:3px solid #08a5a1!important}
+.sy-account-page .sy-premium-data>div{background:#fafdff!important}
+.sy-account-page .sy-account-performance-note{background:#e5f7f4!important;border-color:#a9e1d5!important}
+.sy-account-page .sy-preview-tag{background:#d9f5f0!important;color:#087c70!important}
+.sy-supplier-theme .sy-account-sidebar{background:#11273f!important}
+.sy-supplier-theme .sy-account-sidebar>button.active{background:#1e4960!important;color:#3aefc7!important;border-left-color:#13c3a2!important}
+.sy-supplier-theme .sy-premium-card{background:linear-gradient(140deg,#e9f4fc,#dbf6ec)!important;border-color:#b6dedc!important}
+.sy-supplier-theme .sy-premium-card h3{color:#125a72!important}
+.sy-supplier-theme .sy-premium-card button{background:#0a7a9d!important}
+.sy-supplier-theme .sy-premium-card>span{color:#16856f!important}
+@media(max-width:690px){.reference-hero h1{letter-spacing:-.5px!important}.sy-buyer-theme .sy-account-sidebar{border-radius:9px!important}.product-card:hover{transform:none}}

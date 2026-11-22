@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { DemoAccountMenu } from "@/components/DemoAccount";
+import { CountryFlag } from "@/components/CountryFlag";
 import { FaFacebookF, FaLinkedinIn, FaWhatsapp, FaTelegramPlane, FaPinterestP, FaEnvelope } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { useEffect, useMemo, useState } from "react";
@@ -11,7 +12,7 @@ function Header({search,setSearch}:{search?:string;setSearch?:(value:string)=>vo
   const [mobile,setMobile]=useState(false);
   return <><header className="site-header">
     <div className="header-inner">
-      <Link className="brand" href="/"><span className="brand-mark">S</span><span><strong>SYLUTION</strong><small>Global B2B Marketplace</small></span></Link>
+      <Link className="brand" href="/"><span className="brand-mark"><span className="sy-brand-letter">S</span><i className="sy-brand-orbit"/></span><span><strong>SYLUTION</strong><small>Global B2B Marketplace</small></span></Link>
       <div className="header-search"><span className="search-category">All categories <ChevronDown size={13}/></span><input aria-label="Search products" placeholder="Search products and suppliers..." value={search??""} onChange={e=>setSearch?.(e.target.value)} /><button className="search-submit" aria-label="Search marketplace" onClick={()=>document.getElementById("products")?.scrollIntoView({behavior:"smooth"})}><Search size={18}/> Search</button></div>
       <nav className="header-actions"><Link href="/#products">Find Products</Link><Link href="/#supplier-leads">Suppliers</Link><Link href="/#how-it-works">Post Buying Request</Link><span><Globe2 size={17}/> EN</span><DemoAccountMenu/></nav>
       <button aria-label="Toggle menu" className="menu-toggle" onClick={()=>setMobile(!mobile)}><Menu size={23}/></button>
@@ -41,7 +42,7 @@ export function InquiryModal({product,close}:{product:Product;close:()=>void}) {
 export function ProductCard({product,onInquiry}:{product:Product;onInquiry:(p:Product)=>void}){
  const [liked,setLiked]=useState(false);
  return <article className="product-card"><Link href={"/products/"+product.slug} className="product-image"><span className="image-fallback" aria-hidden="true">{product.category==="Agriculture"?"🌾":product.category==="Electronics"?"🔌":product.category==="Energy"?"☀️":product.category==="Industrial"?"⚙️":"📦"}</span><img src={product.image} alt={product.name} loading="lazy" onError={e=>{e.currentTarget.style.display="none";}}/><span className="new-chip">New</span></Link><button className={"favorite"+(liked?" active":"")} aria-label="Save favorite" onClick={()=>setLiked(!liked)}><Heart size={18} fill={liked?"currentColor":"none"}/></button>
- <div className="card-body"><Link href={"/products/"+product.slug} className="product-name">{product.name}</Link><div className="product-price">{cash(product.price)} <span>/ {product.unit}</span></div><p className="product-moq">Min. order: {product.moq}</p><div className="supplier-name">{product.supplier}</div><div className="country"><img className="country-flag" src={`https://flagcdn.com/w40/${({Nigeria:"ng",China:"cn",USA:"us",UAE:"ae",Türkiye:"tr"} as Record<string,string>)[product.country] || "un"}.png`} alt={`${product.country} flag`} onError={e=>{e.currentTarget.style.display="none";}}/> {product.country} <span className="sample-pill">Demo</span></div><div className="card-bottom"><button onClick={()=>onInquiry(product)} className="inquiry-btn"><MessageSquare size={15}/> Inquiry now</button><Link className="chat-link" href={"/products/"+product.slug} aria-label="See product details"><Package size={17}/></Link></div></div>
+ <div className="card-body"><Link href={"/products/"+product.slug} className="product-name">{product.name}</Link><div className="product-price">{cash(product.price)} <span>/ {product.unit}</span></div><p className="product-moq">Min. order: {product.moq}</p><div className="supplier-name">{product.supplier}</div><div className="country"><CountryFlag country={product.country} compact/> {product.country} <span className="sample-pill">Demo</span></div><div className="card-bottom"><button onClick={()=>onInquiry(product)} className="inquiry-btn"><MessageSquare size={15}/> Inquiry now</button><Link className="chat-link" href={"/products/"+product.slug} aria-label="See product details"><Package size={17}/></Link></div></div>
  </article>;
 }
 export function HomePage(){
@@ -63,9 +64,9 @@ export function HomePage(){
  return <><Header search={query} setSearch={setQuery}/><main>
   <section className="fresh-hero reference-hero">
    <div className="fresh-hero-inner container">
-     <span className="hero-eyebrow">SYLUTION • GLOBAL TRADE PLATFORM</span>
-     <h1>{searchMode==="Products"?"Explore a world of wholesale opportunities":"Connect with suppliers worldwide"}</h1>
-     <p className="hero-description">Discover products, source new opportunities and grow your business across borders.</p>
+     <span className="hero-eyebrow">SYLUTION / YOUR SOURCING COMMAND CENTER</span>
+     <h1>{searchMode==="Products"?"Source globally. Decide confidently.":"Discover your next supplier connection"}</h1>
+     <p className="hero-description">Explore cross-border sourcing with comparison tools, supplier profiles and structured wholesale requests.</p>
      <div className="hero-search-panel">
        <div className="hero-search">
          <div className="hero-search-category-wrap"><button className="hero-search-category" type="button" aria-expanded={showCategories} onClick={()=>setShowCategories(!showCategories)}>{searchMode==="Products"?"Find Products":"Find Suppliers"} <ChevronDown size={15}/></button>
@@ -79,7 +80,7 @@ export function HomePage(){
      <div className="hero-benefits"><span><Globe2 size={17}/> International sourcing</span><span><Building2 size={17}/> Business suppliers</span><span><MessageSquare size={17}/> Direct enquiries</span></div>
    </div>
   </section>
-  <section className="quick-actions container"><strong>Welcome to SYLUTION</strong><div><a href="#how-it-works">Post Buying Request</a><a href="#products">Top Products</a><a href="#category-explorer">Categories</a></div></section>
+  <section className="quick-actions container"><strong>Build smarter trade relationships with SYLUTION</strong><div><a href="#how-it-works">Post Buying Request</a><a href="#products">Top Products</a><a href="#category-explorer">Categories</a></div></section>
   <section className="container discovery-row" id="category-explorer">
     <div className="discovery-column category-directory"><h3>All Categories</h3>{categories.slice(1).map(c=><button key={c} onClick={()=>{setCategory(c);goProducts();}}><span>{c}</span><ChevronDown size={15}/></button>)}</div>
     <div className="discovery-column"><div className="discovery-heading"><h3>Frequently searched</h3><span>Agriculture</span></div><div className="discovery-feature"><img src="https://images.unsplash.com/photo-1509358271058-acd22cc93898?w=550&q=80" alt="Wholesale seeds and agricultural commodities" loading="lazy"/><div><strong>Seeds & Grains</strong><button onClick={()=>quickSearch("Sesame")}>Explore products</button></div></div></div>
@@ -88,7 +89,7 @@ export function HomePage(){
     <div className="discovery-promo"><div className="promo-kicker">SOURCE SMARTER</div><h3>Connect with more business opportunities.</h3><p>Explore suppliers and request wholesale quotations in one place.</p><button onClick={goProducts}>Browse products <span>→</span></button></div>
   </section>
   <section className="container marketplace-layout" id="products"><div className="market-main">
-    <div className="section-head"><div><h2>Top Products</h2><p>Explore wholesale sourcing opportunities</p></div><div className="result-count">{filtered.length} example products</div></div>
+    <div className="section-head"><div><h2>Explore the trade catalog</h2><p>Browse industries, compare origins and build your sourcing shortlist.</p></div><div className="result-count">{filtered.length} example products</div></div>
     <div className="listing-toolbar"><div className="category-tabs">{categories.map(c=><button key={c} className={category===c?"selected":""} onClick={()=>{setCategory(c);setVisibleCount(24);}}>{c}</button>)}</div><select className="product-sort" aria-label="Sort products" value={sort} onChange={e=>setSort(e.target.value as "featured"|"name")}><option value="featured">Featured</option><option value="name">Name A–Z</option></select></div>
     <div className="listing-extra-filters"><label>Supplier country <select value={countryFilter} onChange={e=>{setCountryFilter(e.target.value);setVisibleCount(24);}}>{countryOptions.map(c=><option key={c} value={c}>{c}</option>)}</select></label><span>{filtered.length} sample listings · {countryOptions.length-1} countries</span></div>
     <div className="product-grid">{filtered.slice(0,visibleCount).map(p=><ProductCard key={p.id} product={p} onInquiry={setSelected}/>)}</div>
@@ -153,7 +154,7 @@ export function ProductDetail({product}:{product:Product}){
    if(navigator.share){navigator.share({title:product.name,url}).catch(()=>{});}
    else if(navigator.clipboard){navigator.clipboard.writeText(url).then(()=>{setCopied(true);window.setTimeout(()=>setCopied(false),2400);}).catch(()=>{});}
  }
- const countryNames:Record<string,string>={Nigeria:"ng",China:"cn",USA:"us",UAE:"ae",Türkiye:"tr"};
+
  return <><Header/><div className="product-page">
    {showSticky&&<div className="product-sticky-bar">
      <div className="product-sticky-inner">
@@ -232,7 +233,7 @@ export function ProductDetail({product}:{product:Product}){
         <span className="demo-trust-badge"><ShieldCheck size={14}/> Verified L3 <sup>DEMO</sup></span>
         <span className="demo-star-rating">4.3 <span>★</span> <small>DEMO</small></span>
         <span className="supplier-separator">•</span>
-        <span className="supplier-country"><span className="supplier-country-flag">{product.flag}</span>{product.country}</span>
+        <span className="supplier-country"><CountryFlag country={product.country} compact/>{product.country}</span>
         <span className="supplier-separator">•</span>
         <span>Distributor / Wholesaler · Trading Company (demo)</span>
       </div>
@@ -252,7 +253,7 @@ export function ProductDetail({product}:{product:Product}){
         <h3>Export Markets</h3>
         <p>Example distribution — illustrative data only.</p>
         <div className="demo-market-flags">
-          {demoMarkets.map(m=><span key={m.code} className="demo-market-chip"><span className="market-flag">{m.flag}</span> {m.name}</span>)}
+          {demoMarkets.map(m=><span key={m.code} className="demo-market-chip"><CountryFlag country={m.name} compact/> {m.name}</span>)}
         </div>
         <div className="demo-market-bars">
           {demoRegions.map(r=><div className="demo-market-bar" key={r.name}>
@@ -288,7 +289,7 @@ export function ProductDetail({product}:{product:Product}){
          <section className="detail-section"><div className="detail-section-title"><h2>Products of this Supplier</h2></div><div className="related-grid">{supplierProducts.map(p=><ProductCard key={p.id} product={p} onInquiry={setSelected}/>)}</div></section>
        </div>
        <aside className="product-detail-aside">
-         <div className="detail-supplier-card"><div className="aside-heading"><h3>Contact this Supplier</h3><span className="demo-trust-badge"><ShieldCheck size={13}/> Verified L3 <sup>DEMO</sup></span></div><div className="aside-supplier-heading"><div className="supplier-avatar"><Building2 size={24}/></div><div><strong>{product.supplier}</strong><p><span className="supplier-country">{({Nigeria:"ng",China:"cn",USA:"us",UAE:"ae",Türkiye:"tr"} as Record<string,string>)[product.country] ? <img className="country-flag-image" src={`https://flagcdn.com/w40/${({Nigeria:"ng",China:"cn",USA:"us",UAE:"ae",Türkiye:"tr"} as Record<string,string>)[product.country]}.png`} alt={`${product.country} flag`} onError={e=>{e.currentTarget.style.display="none";}}/> : <span className="supplier-country-flag">{product.flag}</span>} {product.country}</span></p></div></div><div className="aside-demo-rating"><span>4.3 <b>★</b> <small>Demo rating</small></span><span>Example supplier profile</span></div><div className="aside-attributes"><div><span>Company type</span><strong>Distributor / Wholesaler (demo)</strong></div><div><span>Location</span><strong>{product.country}</strong></div><div><span>Established</span><strong>2013 (demo)</strong></div></div><button className="aside-chat" onClick={()=>setSelected(product)}><MessageSquare size={17}/> Contact supplier</button><button className="detail-action-green" onClick={()=>setSelected(product)}><Send size={17}/> Inquiry now</button></div>
+         <div className="detail-supplier-card"><div className="aside-heading"><h3>Contact this Supplier</h3><span className="demo-trust-badge"><ShieldCheck size={13}/> Verified L3 <sup>DEMO</sup></span></div><div className="aside-supplier-heading"><div className="supplier-avatar"><Building2 size={24}/></div><div><strong>{product.supplier}</strong><p><span className="supplier-country"><CountryFlag country={product.country} compact/> {product.country}</span></p></div></div><div className="aside-demo-rating"><span>4.3 <b>★</b> <small>Demo rating</small></span><span>Example supplier profile</span></div><div className="aside-attributes"><div><span>Company type</span><strong>Distributor / Wholesaler (demo)</strong></div><div><span>Location</span><strong>{product.country}</strong></div><div><span>Established</span><strong>2013 (demo)</strong></div></div><button className="aside-chat" onClick={()=>setSelected(product)}><MessageSquare size={17}/> Contact supplier</button><button className="detail-action-green" onClick={()=>setSelected(product)}><Send size={17}/> Inquiry now</button></div>
          <div className="aside-products"><h3><span className="ad-label">Explore</span> Top Products</h3>{products.filter(p=>p.id!==product.id).slice(0,6).map(p=><Link className="aside-product-row" key={p.id} href={"/products/"+p.slug}><img src={p.image} alt="" loading="lazy" onError={e=>e.currentTarget.style.display="none"}/><div><strong>{p.name}</strong><b>{p.price}</b><small>Min. order: {p.moq}</small><span>{p.country}</span></div></Link>)}</div>
        </aside>
      </div>
