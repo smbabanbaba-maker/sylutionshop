@@ -286,3 +286,12 @@ body{background:#F2F5F9}
  .catalog-home .product-card{box-shadow:0 2px 9px #0B19300D!important}
  .sy-buyer-theme .sy-stat-tiles>div,.sy-buyer-theme .sy-performance-grid>div{border-top-width:2px!important}
 }
+
+/* The RFQ product inquiry is an emerald transaction action; purple remains for
+   RFQ workspace/draft management only. Avoid purple override of final button. */
+.si-quote.si-quote-premium .si-premium-footer .si-submit,
+.si-quote.si-quote-premium .si-premium-success .si-submit{
+ background:#007B60!important;color:#fff!important;border-color:#007B60!important;
+}
+.si-quote.si-quote-premium .si-premium-footer .si-submit:hover,
+.si-quote.si-quote-premium .si-premium-success .si-submit:hover{background:#00654E!important}
