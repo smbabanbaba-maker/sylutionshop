@@ -1,0 +1,63 @@
+
+/* SYLUTION verification UI — semantic statuses; no fraudulent verified states */
+.sv-page{display:grid;gap:12px;min-width:0}
+.sv-topline{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;padding:4px}
+.sv-eyebrow{font-size:10px;color:#0c8d75;font-weight:850;letter-spacing:1.1px}
+.sv-topline h2{font-size:24px;color:#172d43;margin:6px 0}
+.sv-topline p{font-size:12px;color:#647f8f;margin:0;line-height:1.4}
+.sv-demo-label{display:inline-flex;align-items:center;gap:6px;background:#fff4e1;color:#a26e17;border:1px solid #eedaa9;border-radius:20px;padding:7px 9px;font-size:11px;font-weight:750;white-space:nowrap}
+.sv-progress{border-radius:11px;padding:16px;background:linear-gradient(115deg,#e8f8f3,#f5fafe);border:1px solid #ccece2}
+.sv-progress>div:first-child{display:flex;align-items:center;gap:8px;flex-wrap:wrap;color:#0a7159;font-size:12px}
+.sv-progress>div:first-child span{margin-left:auto;font-weight:600;color:#5d7a8b}
+.sv-progress-track{height:7px;background:#d5e9e5;border-radius:10px;overflow:hidden;margin:12px 0 8px}
+.sv-progress-track>div{height:100%;background:#009b7d;border-radius:10px;transition:width .15s}
+.sv-progress p{font-size:11px;color:#667f8d;line-height:1.5;margin:0}
+.sv-card{background:#fff;border:1px solid #dee7ed;border-radius:11px;padding:17px;box-shadow:0 3px 10px #142c4209;display:grid;gap:12px;min-width:0}
+.sv-section-header{display:flex;justify-content:space-between;gap:12px;align-items:center}
+.sv-title-with-icon{display:flex;align-items:center;gap:10px}
+.sv-title-with-icon h3{font-size:17px;color:#172f45;margin:0 0 4px;font-weight:750}
+.sv-title-with-icon p{font-size:11px;color:#6d8190;line-height:1.45;margin:0}
+.sv-icon{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;flex-shrink:0}
+.sv-phone{background:#e9f8ef;color:#028c49}
+.sv-doc{background:#e6f3fa;color:#167aa4}
+.sv-mail{background:#e7f7f2;color:#09865d}
+.sv-identity{background:#f1efff;color:#6b63b6}
+.sv-status{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;font-size:11px;font-weight:750;padding:6px 9px;border-radius:20px}
+.sv-status-verified{color:#087d45;background:#e0f7eb;border:1px solid #aadfc0}
+.sv-status-unverified{color:#b24b3c;background:#fff0ed;border:1px solid #efc6bd}
+.sv-status-pending{color:#a67518;background:#fff5de;border:1px solid #eed8a8}
+.sv-status-rejected{color:#c02e2e;background:#ffe8e8;border:1px solid #efb6b6}
+.sv-inline-field{display:flex;align-items:center;gap:7px;flex-wrap:wrap;max-width:660px}
+.sv-inline-field input{flex:1;min-width:160px;border:1px solid #cad7e1;border-radius:7px;background:#fafcfd;color:#1c3e53;padding:12px;font-size:12px}
+.sv-inline-field button{border:1px solid #00945e;background:#fff;color:#008452;padding:11px 16px;border-radius:7px;font-size:12px;font-weight:800;white-space:nowrap}
+.sv-inline-field button:hover{background:#e7f8f2}
+.sv-country-code{display:inline-flex;align-items:center;gap:6px;background:#f1f5f7;border:1px solid #d7e1e8;border-radius:7px;padding:10px;font-size:12px;color:#435c70}
+.sv-field-hint{color:#607988;margin:0;font-size:11px;line-height:1.45}
+.sv-doc-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.sv-doc-card{border:1px solid #e3eaf0;border-radius:9px;padding:13px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.sv-doc-title{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.sv-doc-title h4{font-size:13px;color:#20394b;margin:0}
+.sv-doc-title .sv-status{font-size:9px;padding:4px 6px}
+.sv-doc-card>p{font-size:11px;color:#5e7587;line-height:1.5;margin:0;flex:1}
+.sv-guide-toggle{display:inline-flex;align-items:center;gap:6px;color:#0875a9;border:0;background:none;padding:6px 0;font-size:11px;justify-content:center}
+.sv-guide-toggle:hover{text-decoration:underline}
+.sv-document-guide{background:#f2f8fb;color:#4b6d7d;font-size:11px;line-height:1.5;border-radius:6px;padding:10px}
+.sv-upload-zone{position:relative;border:1px dashed #bdcad6;background:#fafcfd;border-radius:9px;min-height:92px;padding:13px 8px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:5px;color:#5e7182;cursor:pointer;overflow:hidden}
+.sv-upload-zone:hover,.sv-upload-zone:focus-within{background:#eef9f5;border-color:#099977}
+.sv-upload-zone strong{font-size:10px;color:#324f5f;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.sv-upload-zone small{font-size:9px;color:#8494a2}
+.sv-upload-zone input{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer}
+.sv-selected{display:flex;align-items:center;gap:5px;font-size:10px;color:#8a6a28;background:#fff8e7;padding:6px 9px;border-radius:5px}
+.sv-private-note{display:flex;align-items:center;gap:8px;color:#4b7a70;background:#f0faf7;border-radius:6px;padding:10px;font-size:11px;line-height:1.5;margin:0}
+.sv-email-field>svg{color:#607b8a}
+.sv-identity-card{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.sv-identity-card>.sv-title-with-icon{flex:1}
+.sv-identity-card>button{border:1px solid #c6e5d8;color:#078050;background:#f4fbf8;border-radius:7px;display:inline-flex;align-items:center;gap:5px;padding:10px;font-size:11px;font-weight:750}
+.sv-legend{padding:15px;background:#f8fafc;border:1px solid #dee8ef;border-radius:11px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.sv-legend>strong{grid-column:1/-1;font-size:13px;color:#1d3c53}
+.sv-legend>div{display:flex;align-items:center;gap:8px}
+.sv-legend>div>span:last-child{font-size:10px;color:#6d8190}
+.sv-feedback{display:flex;gap:8px;align-items:center;background:#e9f7fc;color:#24627d;border:1px solid #b9dde9;border-radius:9px;padding:12px;font-size:12px}
+@media(max-width:1100px){.sv-doc-grid{grid-template-columns:1fr}.sv-doc-card{min-height:0}}
+@media(max-width:700px){.sv-topline{flex-wrap:wrap}.sv-section-header{align-items:flex-start;flex-wrap:wrap}.sv-legend{grid-template-columns:1fr}.sv-progress>div:first-child span{margin-left:0}.sv-card{padding:12px}}
+@media(max-width:420px){.sv-inline-field input{min-width:100%;}.sv-inline-field button{width:100%}.sv-identity-card>button{width:100%;justify-content:center}}
