@@ -2,6 +2,7 @@
 import Link from "next/link";
 import {createPortal} from "react-dom";
 import {SupplierProductDrafts} from "@/components/SupplierProductDrafts";
+import {SupplierInboxPreview} from "@/components/SupplierInboxPreview";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { UserRound, ChevronDown, LayoutDashboard, Search, MessageSquare, Send, ClipboardList, UsersRound, PenSquare, Heart, LockKeyhole, LogOut, Store, Settings, ShieldCheck, X, Mail, Building2, Package, Globe2, Menu, Bell, CheckCircle, ArrowRight, Trash2 } from "lucide-react";
@@ -136,7 +137,7 @@ export function DemoAccountPage(){
      <div className="sy-dashboard-bottom"><div className="sy-panel"><h3>Recent buying requests <span className="sy-count">{recentRfqs}</span></h3>{recentRfqs?rfqs.filter(r=>r.createdAt&&Date.now()-new Date(r.createdAt).getTime()<=range*86400000).slice(-3).reverse().map((r,i)=><p key={i} className="sy-list-line"><Package size={16}/>{r.product||"Buying request"} <span>{r.destinationCountry||"Destination not specified"}</span></p>):<p className="sy-empty-msg">No RFQs saved during this period.</p>}<button onClick={()=>switchTo("requests")}>Manage requests</button></div><div className="sy-panel"><h3>Your profile completion</h3><div className="sy-profile-meter"><div style={{width:completeness+"%"}}/></div><strong>{completeness}% complete</strong><p>Complete your company details and describe what you source. Identity verification remains separate.</p><button onClick={()=>switchTo("profile")}>Complete profile</button></div></div>
     </>}
     {section==="products"&&<div className="sy-panel sy-promo-panel"><Search size={30}/><h3>Find wholesale products</h3><p>Search the sample catalog by industry, origin or product type.</p><Link className="sy-green-action" href="/#products">Browse 48 sample listings <ArrowRight size={16}/></Link></div>}
-    {section==="messages"&&<MessagesPreview onFind={()=>switchTo("products")} onRequest={()=>switchTo("post-rfq")}/>}
+    {section==="messages"&&(profile.role==="supplier"?<SupplierInboxPreview company={profile.company}/>:<MessagesPreview onFind={()=>switchTo("products")} onRequest={()=>switchTo("post-rfq")}/>)}
     {section==="post-rfq"&&<PostBuyingRequest onSaved={()=>{setRfqs(getRfqs());setNotice("Saved to Buying Requests");}}/>}
     {section==="requests"&&<RequestManager onCreate={()=>switchTo("post-rfq")}/>}
     {section==="contacts"&&<div className="sy-panel sy-promo-panel"><UsersRound size={29}/><h3>My supplier contacts</h3><p>There are no confirmed business contacts. Once suppliers can respond to RFQs, your supplier relationships will appear here.</p><Link href="/#products">Discover sample suppliers <ArrowRight size={16}/></Link></div>}
@@ -146,7 +147,7 @@ export function DemoAccountPage(){
     {section==="report"&&<div className="sy-panel sy-promo-panel"><LayoutDashboard size={30}/><h3>Sourcing reports</h3><p>No live traffic, messages or supplier analytics have been collected yet. After connecting Supabase and product analytics, you will see your verified sourcing history here.</p><div className="sy-supplier-teaser"><div><ClipboardList size={20}/><strong>{rfqs.length} demo RFQs</strong><small>Saved in this browser</small></div><div><Heart size={20}/><strong>{saved.length} favorites</strong><small>Local shortlist</small></div><div><MessageSquare size={20}/><strong>0 conversations</strong><small>Not connected</small></div></div></div>}
     {section==="security"&&<div className="sy-panel sy-promo-panel"><LockKeyhole size={29}/><h3>Account security</h3><p>This demonstration does not store passwords or provide real sign-in protection. Do not enter real credentials here.</p><div className="sy-demo-alert">Production: Supabase Auth, email verification, password reset, secure sessions and role-based access.</div></div>}
     {profile.role==="supplier"&&section==="add-product"&&<SupplierProductDrafts key={profile.email} country={profile.country} email={profile.email}/>}
-    {profile.role==="supplier"&&section==="incoming"&&<div className="sy-panel"><h3>Incoming Requests</h3><p>Buyer requests will appear here when supplier delivery is connected.</p></div>}
+    {profile.role==="supplier"&&section==="incoming"&&<SupplierInboxPreview company={profile.company}/>}
     {section==="supplier"&&<div className="sy-supplier-workspace">
      <div className="sy-supplier-intro"><div><span className="sy-mini-overline">SYLUTION / SUPPLIER WORKSPACE</span><h3>Grow your wholesale business</h3><p>Store tools and buyer-lead preview. Supplier statistics are not connected to real customers.</p></div><span className="sy-free-plan">Free plan · Demo</span></div>
      <div className="trade-supplier-actions"><button className="sy-green-action" onClick={()=>switchTo("add-product")}>Add Product</button><button className="sy-green-action" onClick={()=>switchTo("incoming")}>Incoming Requests</button></div>
