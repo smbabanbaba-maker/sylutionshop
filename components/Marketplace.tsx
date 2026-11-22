@@ -23,7 +23,7 @@ function Header({search,setSearch}:{search?:string;setSearch?:(value:string)=>vo
   </>;
 }
 const cash = (s:string)=>s;
-export export function ProductCard({product,onInquiry}:{product:Product;onInquiry:(p:Product)=>void}){
+export function ProductCard({product,onInquiry}:{product:Product;onInquiry:(p:Product)=>void}){
  const [liked,setLiked]=useState(false);
  useEffect(()=>{const sync=()=>{try{const saved=JSON.parse(localStorage.getItem("sylution_saved_products")||"[]") as string[];setLiked(saved.includes(product.slug));}catch{}};sync();window.addEventListener("sylution-shortlist-change",sync);window.addEventListener("storage",sync);return()=>{window.removeEventListener("sylution-shortlist-change",sync);window.removeEventListener("storage",sync)};},[product.slug]);
  function toggleFavorite(){const next=!liked;setLiked(next);try{const stored=JSON.parse(localStorage.getItem("sylution_saved_products")||"[]") as string[];localStorage.setItem("sylution_saved_products",JSON.stringify(next?[...new Set([...stored,product.slug])]:stored.filter(s=>s!==product.slug)));window.dispatchEvent(new Event("sylution-shortlist-change"));}catch{}}
