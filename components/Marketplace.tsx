@@ -71,7 +71,7 @@ export function HomePage(){
   (groups[key]??=[]).push(listing);
   return groups;
  },{}));
- const spotlight=filtered.filter(listing=>listing.featured).slice(0,4);
+ const spotlight=filtered.filter(listing=>listing.featured).slice(0,6);
  const goProducts=()=>document.getElementById("products")?.scrollIntoView({behavior:"smooth"});
  const setCollectionAndBrowse=(value:string)=>{setMode("Products");setCollection(value);setLimit(24);goProducts();};
  const setSearch=(value:string)=>{setQuery(value);setLimit(24);};
@@ -102,13 +102,16 @@ export function HomePage(){
    <button type="button" onClick={()=>setCollectionAndBrowse("deals")}>Good Deals</button><button type="button" onClick={()=>setCollectionAndBrowse("new")}>New Products</button><a href="#how-it-works">Help</a>
   </div>
   <section className="container catalog-listing" id="products">
+   <div className="catalog-controls">
+   <div className="catalog-category-row">
    <header className="catalog-results-head"><h2>{mode==="Suppliers"?"Supplier directory":collection==="deals"?"Good Deals":collection==="new"?"New Products":collection==="featured"?"Featured Products":"Suggested Products"}</h2><span aria-live="polite">{mode==="Suppliers"?suppliers.length:filtered.length} sample {mode.toLowerCase()}</span></header>
-   <div className="catalog-categories" aria-label="Browse categories">{categories.map(option=><button type="button" key={option} aria-pressed={category===option} onClick={()=>{setCategory(option);setLimit(24);}}>{option} <small>{option==="All Categories"?products.length:products.filter(product=>product.category===option).length}</small></button>)}</div>
+   <div className="catalog-categories" aria-label="Browse categories">{categories.map(option=><button type="button" key={option} aria-pressed={category===option} onClick={()=>{setCategory(option);setLimit(24);}}>{option==="All Categories"?"All":option} <small>{option==="All Categories"?products.length:products.filter(product=>product.category===option).length}</small></button>)}</div>
+   </div>
    <div className="catalog-toolbar">
     <CatalogFilters value={filters} onChange={value=>{setFilters(value);setLimit(24);}}/>
     <label>Sort <select value={sort} onChange={event=>{setSort(event.target.value);setLimit(24);}}><option value="suggested">Suggested</option><option value="latest">Latest</option><option value="name">Name A–Z</option><option value="rating">Sample rating</option></select></label>
    </div>
-   <p className="catalog-demo-note">Demo catalog. Prices, ratings, markets and trade terms are examples.</p>
+   </div>
    {collection!=="all"&&<button className="catalog-text-button" type="button" onClick={()=>setCollectionAndBrowse("all")}>Back to all products</button>}
    {mode==="Products"&&collection==="all"&&!query.trim()&&category==="All Categories"&&!Object.values(filters).some(values=>values.length)&&spotlight.length>0&&<section className="catalog-feature">
     <header><h3>Featured Products</h3><button className="catalog-text-button" type="button" onClick={()=>setCollectionAndBrowse("featured")}>View all featured</button></header>
@@ -120,6 +123,7 @@ export function HomePage(){
    })}</div>:<div className="product-grid">{filtered.slice(0,limit).map(listing=><ProductCard key={listing.product.id} product={listing.product} preview={listing} onInquiry={setSelected}/>)}</div>}
    {(mode==="Suppliers"?suppliers.length:filtered.length)>limit&&<div className="load-more-listings"><button type="button" onClick={()=>setLimit(value=>value+24)}>Load more {mode.toLowerCase()}</button></div>}
    {!filtered.length&&<div className="empty-state">No matches. Try another search or clear your filters. <button type="button" onClick={clear}>Clear search and filters</button></div>}
+   <p className="catalog-demo-note">Demo catalog. Prices, ratings, markets and trade terms are examples.</p>
   </section>
   <section className="container catalog-help" id="how-it-works"><h2>How it works</h2><p>Browse the catalog, open a product and select Request Quote. Your quote drafts are available in My Requests.</p><Link href="/account?tab=requests">Open My Requests</Link></section>
   <aside className="catalog-tools" aria-label="Quick links"><a href="#how-it-works">Help</a><Link href="/account?tab=post-rfq">RFQ</Link><Link href="/account?tab=messages">Messages</Link><a href="#home-top">Top</a></aside>
