@@ -14,11 +14,11 @@ function Header({search,setSearch}:{search?:string;setSearch?:(value:string)=>vo
     <div className="header-inner">
       <Link className="brand" href="/"><span className="brand-mark"><span className="sy-brand-letter">S</span><i className="sy-brand-orbit"/></span><span><strong>SYLUTION</strong><small>Global B2B Marketplace</small></span></Link>
       <div className="header-search"><span className="search-category">All categories <ChevronDown size={13}/></span><input aria-label="Search products" placeholder="Search products and suppliers..." value={search??""} onChange={e=>setSearch?.(e.target.value)} /><button className="search-submit" aria-label="Search marketplace" onClick={()=>document.getElementById("products")?.scrollIntoView({behavior:"smooth"})}><Search size={18}/> Search</button></div>
-      <nav className="header-actions"><Link href="/#products">Find Products</Link><Link href="/#supplier-leads">Suppliers</Link><Link href="/#how-it-works">Post Buying Request</Link><span><Globe2 size={17}/> EN</span><DemoAccountMenu/></nav>
-      <button aria-label="Toggle menu" className="menu-toggle" onClick={()=>setMobile(!mobile)}><Menu size={23}/></button>
+      <nav className="header-actions"><Link href="/#products">Find Products</Link><Link href="/#products">Suppliers</Link><Link href="/account?tab=post-rfq">Post Buying Request</Link><span className="sy-language-label"><Globe2 size={17}/> English</span><DemoAccountMenu/></nav>
+      <button type="button" aria-label={mobile?"Close navigation menu":"Open navigation menu"} aria-expanded={mobile} aria-controls="sy-mobile-navigation" className="menu-toggle" onClick={()=>setMobile(!mobile)}>{mobile?<X size={23}/>:<Menu size={23}/>}</button>
     </div>
   </header>
-  {mobile&&<div className="mobile-menu"><Link href="/">Home</Link><Link href="/#products">Products</Link><Link href="/#how-it-works">How It Works</Link><Link href="/account">My Account</Link></div>}
+  {mobile&&<div id="sy-mobile-navigation" className="mobile-menu"><Link href="/" onClick={()=>setMobile(false)}>Home</Link><Link href="/#products" onClick={()=>setMobile(false)}>Products</Link><Link href="/account?tab=post-rfq" onClick={()=>setMobile(false)}>Post Buying Request</Link><Link href="/account" onClick={()=>setMobile(false)}>My Account</Link></div>}
   </>;
 }
 const cash = (s:string)=>s;
@@ -41,7 +41,9 @@ export function InquiryModal({product,close}:{product:Product;close:()=>void}) {
 }
 export function ProductCard({product,onInquiry}:{product:Product;onInquiry:(p:Product)=>void}){
  const [liked,setLiked]=useState(false);
- return <article className="product-card"><Link href={"/products/"+product.slug} className="product-image"><span className="image-fallback" aria-hidden="true">{product.category==="Agriculture"?"🌾":product.category==="Electronics"?"🔌":product.category==="Energy"?"☀️":product.category==="Industrial"?"⚙️":"📦"}</span><img src={product.image} alt={product.name} loading="lazy" onError={e=>{e.currentTarget.style.display="none";}}/><span className="new-chip">New</span></Link><button className={"favorite"+(liked?" active":"")} aria-label="Save favorite" onClick={()=>setLiked(!liked)}><Heart size={18} fill={liked?"currentColor":"none"}/></button>
+ useEffect(()=>{const sync=()=>{try{const saved=JSON.parse(localStorage.getItem("sylution_saved_products")||"[]") as string[];setLiked(saved.includes(product.slug));}catch{}};sync();window.addEventListener("sylution-shortlist-change",sync);window.addEventListener("storage",sync);return()=>{window.removeEventListener("sylution-shortlist-change",sync);window.removeEventListener("storage",sync)};},[product.slug]);
+ function toggleFavorite(){const next=!liked;setLiked(next);try{const stored=JSON.parse(localStorage.getItem("sylution_saved_products")||"[]") as string[];localStorage.setItem("sylution_saved_products",JSON.stringify(next?[...new Set([...stored,product.slug])]:stored.filter(s=>s!==product.slug)));window.dispatchEvent(new Event("sylution-shortlist-change"));}catch{}}
+ return <article className="product-card"><Link href={"/products/"+product.slug} className="product-image"><span className="image-fallback" aria-hidden="true">{product.category==="Agriculture"?"🌾":product.category==="Electronics"?"🔌":product.category==="Energy"?"☀️":product.category==="Industrial"?"⚙️":"📦"}</span><img src={product.image} alt={product.name} loading="lazy" decoding="async" onError={e=>{e.currentTarget.style.display="none";}}/><span className="new-chip">Sample</span></Link><button className={"favorite"+(liked?" active":"")} aria-label={liked?"Remove from favorites":"Save to favorites"} aria-pressed={liked} onClick={toggleFavorite}><Heart size={18} fill={liked?"currentColor":"none"}/></button>
  <div className="card-body"><Link href={"/products/"+product.slug} className="product-name">{product.name}</Link><div className="product-price">{cash(product.price)} <span>/ {product.unit}</span></div><p className="product-moq">Min. order: {product.moq}</p><div className="supplier-name">{product.supplier}</div><div className="country"><CountryFlag country={product.country} compact/> {product.country} <span className="sample-pill">Demo</span></div><div className="card-bottom"><button onClick={()=>onInquiry(product)} className="inquiry-btn"><MessageSquare size={15}/> Inquiry now</button><Link className="chat-link" href={"/products/"+product.slug} aria-label="See product details"><Package size={17}/></Link></div></div>
  </article>;
 }
@@ -80,7 +82,7 @@ export function HomePage(){
      <div className="hero-benefits"><span><Globe2 size={17}/> International sourcing</span><span><Building2 size={17}/> Business suppliers</span><span><MessageSquare size={17}/> Direct enquiries</span></div>
    </div>
   </section>
-  <section className="quick-actions container"><strong>Build smarter trade relationships with SYLUTION</strong><div><a href="#how-it-works">Post Buying Request</a><a href="#products">Top Products</a><a href="#category-explorer">Categories</a></div></section>
+  <section className="quick-actions container"><strong>Build smarter trade relationships with SYLUTION</strong><div><Link href="/account?tab=post-rfq">Post Buying Request</Link><a href="#products">Top Products</a><a href="#category-explorer">Categories</a></div></section>
   <section className="container discovery-row" id="category-explorer">
     <div className="discovery-column category-directory"><h3>All Categories</h3>{categories.slice(1).map(c=><button key={c} onClick={()=>{setCategory(c);goProducts();}}><span>{c}</span><ChevronDown size={15}/></button>)}</div>
     <div className="discovery-column"><div className="discovery-heading"><h3>Frequently searched</h3><span>Agriculture</span></div><div className="discovery-feature"><img src="https://images.unsplash.com/photo-1509358271058-acd22cc93898?w=550&q=80" alt="Wholesale seeds and agricultural commodities" loading="lazy"/><div><strong>Seeds & Grains</strong><button onClick={()=>quickSearch("Sesame")}>Explore products</button></div></div></div>
@@ -103,7 +105,6 @@ export function HomePage(){
 }
 export function ProductDetail({product}:{product:Product}){
  const [selected,setSelected]=useState<Product|null>(null);
- const [photoIndex,setPhotoIndex]=useState(0);
  const [saved,setSaved]=useState(false);
  const [showSticky,setShowSticky]=useState(false);
  const [copied,setCopied]=useState(false);
@@ -117,6 +118,7 @@ export function ProductDetail({product}:{product:Product}){
    try{const stored=JSON.parse(localStorage.getItem("sylution_saved_products")||"[]") as string[];
      localStorage.setItem("sylution_saved_products",JSON.stringify(next?[...new Set([...stored,product.slug])]:stored.filter((s:string)=>s!==product.slug)));
    }catch{}
+   window.dispatchEvent(new Event("sylution-shortlist-change"));
    setSaveNotice(next?"Added to your local shortlist":"Removed from your local shortlist");
  }
  const checklist=[
@@ -169,8 +171,7 @@ export function ProductDetail({product}:{product:Product}){
        <div className="product-left-column">
          <section className="product-primary-card">
            <div className="product-gallery">
-             <div className="gallery-thumbnails">{[0,1,2,3].map(i=><button key={i} aria-label={"View product image "+(i+1)} aria-pressed={photoIndex===i} className={photoIndex===i?"active":""} onClick={()=>setPhotoIndex(i)}><img src={product.image} alt="" onError={e=>e.currentTarget.style.display="none"}/></button>)}</div>
-             <div className="gallery-image-wrap"><div className="gallery-image-main"><span className="gallery-placeholder">📦</span><img key={product.image} src={product.image} alt={product.name} style={{objectPosition:photoIndex===1?"35% center":photoIndex===2?"65% center":"center",transform:photoIndex===3?"scale(1.16)":"none"}} onError={e=>{e.currentTarget.style.display="none";}}/></div><button className="gallery-prev" aria-label="Previous image crop" onClick={()=>setPhotoIndex((photoIndex+3)%4)}><ChevronLeft size={23}/></button><button className="gallery-next" aria-label="Next image crop" onClick={()=>setPhotoIndex((photoIndex+1)%4)}><ChevronRight size={23}/></button><div className="gallery-count">View {photoIndex+1} / 4</div></div>
+             <div className="gallery-image-wrap sy-single-image-gallery"><div className="gallery-image-main"><span className="gallery-placeholder">📦</span><img src={product.image} alt={product.name} loading="eager" decoding="async" onError={e=>{e.currentTarget.style.display="none";}}/></div><div className="gallery-count">Illustrative product photo</div></div>
              <div className="gallery-share brand-share-section">
                <span className="share-label">Share on</span>
                <div className="brand-share-icons">

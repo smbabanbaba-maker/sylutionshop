@@ -90,12 +90,12 @@ export function DemoAccountPage(){
   const p=readProfile();setProfile(p);setName(p?.name||"");setCompany(p?.company||"");setCountry(p?.country||"Nigeria");
   setRfqs(getRfqs());setSaved(getSaves());
   const sync=()=>{const next=readProfile();setProfile(next);setRfqs(getRfqs());setSaved(getSaves())};
-  window.addEventListener("sylution-profile-change",sync);return()=>window.removeEventListener("sylution-profile-change",sync)
+  window.addEventListener("sylution-profile-change",sync);window.addEventListener("sylution-shortlist-change",sync);window.addEventListener("storage",sync);return()=>{window.removeEventListener("sylution-profile-change",sync);window.removeEventListener("sylution-shortlist-change",sync);window.removeEventListener("storage",sync)}
  },[]);
  function switchTo(id:Section){setSection(id);setNotice("");router.replace("/account?tab="+id,{scroll:false})}
  function saveDetails(e:React.FormEvent){e.preventDefault();if(!profile)return;const next={...profile,name:name.trim(),company:company.trim(),country:country.trim()};localStorage.setItem(PROFILE_KEY,JSON.stringify(next));setProfile(next);window.dispatchEvent(new Event("sylution-profile-change"));setNotice("Demo profile updated in this browser.")}
  function deleteRfq(index:number){const next=rfqs.filter((_,i)=>i!==index);localStorage.setItem(RFQ_KEY,JSON.stringify(next));setRfqs(next)}
- function unsave(slug:string){const next=saved.filter(s=>s!==slug);localStorage.setItem(SAVE_KEY,JSON.stringify(next));setSaved(next)}
+ function unsave(slug:string){const next=saved.filter(s=>s!==slug);localStorage.setItem(SAVE_KEY,JSON.stringify(next));setSaved(next);window.dispatchEvent(new Event("sylution-shortlist-change"))}
  const favoriteProducts=products.filter(p=>saved.includes(p.slug));
  const completeness=[!!profile?.name,!!profile?.email,!!profile?.company,!!profile?.country,!!profile?.role].filter(Boolean).length*20;
  const recentRfqs=rfqs.filter(r=>r.createdAt&&Date.now()-new Date(r.createdAt).getTime()<=range*86400000).length;
