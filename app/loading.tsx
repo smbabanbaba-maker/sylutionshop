@@ -1,0 +1,1 @@
+export default function Loading(){return <main className="sy-state-page" aria-busy="true"><div className="sy-loading-wheel" role="status" aria-label="Loading page"/><h1>Loading SYLUTION</h1><p>Preparing your sourcing workspace...</p></main>}

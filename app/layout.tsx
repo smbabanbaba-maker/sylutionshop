@@ -5,8 +5,12 @@ import "./styles/dashboard.css";
 import "./styles/brand.css";
 import "./styles/workflows.css";
 export const metadata: Metadata = {
-  title: "SYLUTION | Global B2B Marketplace",
-  description: "Discover global wholesale products, find suppliers and request quotations on SYLUTION TRADE."
+  metadataBase: new URL("https://sylutionshop.vercel.app"),
+  title: {default:"SYLUTION | Global B2B Marketplace",template:"%s | SYLUTION"},
+  description: "Explore international wholesale products, compare suppliers and prepare sourcing requests in the SYLUTION B2B Marketplace demo.",
+  applicationName:"SYLUTION",
+  openGraph:{title:"SYLUTION | Global B2B Marketplace",description:"Explore wholesale sourcing opportunities with SYLUTION.",type:"website",siteName:"SYLUTION"},
+  robots:{index:false,follow:false}
 };
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return <html lang="en"><body>{children}</body></html>;
