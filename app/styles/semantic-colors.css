@@ -1,0 +1,151 @@
+/*
+ SYLUTION TRADE — semantic colour architecture, Nov 2026.
+ Brand foundation: navy + teal. Area accents provide recognition, never status.
+ Verified, pending, unverified and destructive remain factual status colors.
+ Loaded after mobile-polish.css so desktop and phone share the same meanings.
+*/
+:root{
+ --sy-ink:#132c40;
+ --sy-muted:#526c7b;
+ --sy-brand:#007e76;
+ --sy-brand-dark:#00655e;
+ --sy-brand-pale:#e8f7f4;
+ --sy-buyer:#1764a0;
+ --sy-buyer-pale:#edf6fd;
+ --sy-supplier:#08784a;
+ --sy-supplier-pale:#eaf7f0;
+ --sy-trade:#0a7f78;
+ --sy-trade-pale:#e9f7f5;
+ --sy-message:#5267a8;
+ --sy-message-pale:#edf0fb;
+ --sy-rfq:#8751a1;
+ --sy-rfq-pale:#f6effa;
+ --sy-profile:#176c83;
+ --sy-profile-pale:#eaf6fa;
+ --sy-verify:#176c83;
+ --sy-verify-pale:#edf7fa;
+ --sy-ok:#137743;
+ --sy-ok-pale:#e5f6eb;
+ --sy-pending:#96610c;
+ --sy-pending-pale:#fff3d9;
+ --sy-error:#b52f39;
+ --sy-error-pale:#fff0f1;
+ --sy-border:#d9e6e9;
+}
+:where(.catalog-home,.product-page,.sy-account-page) {color:var(--sy-ink)}
+/* Shared visual language: neutral surfaces, meaningful colored details */
+.site-header,.sy-account-header{border-bottom-color:var(--sy-border)!important}
+.trade-bottom-nav{border-top-color:#cfe1df;background:#fff}
+.trade-bottom-nav a{color:#304c60}
+.trade-bottom-nav a:focus-visible,.trade-bottom-nav a:hover{color:var(--sy-brand)}
+:where(.catalog-home,.product-page,.sy-account-page) :is(button,a,input,select,textarea):focus-visible{
+ outline:3px solid #52b5aa;
+ outline-offset:2px;
+}
+/* Marketplace / discover products = teal */
+.catalog-home .catalog-hero{background-color:#e8f3f1}
+.catalog-home .catalog-mode button[aria-pressed=true],
+.catalog-home .catalog-primary,
+.catalog-home .catalog-search-form .catalog-primary{background:var(--sy-trade)!important;border-color:var(--sy-trade)!important;color:#fff!important}
+.catalog-home .catalog-mode button[aria-pressed=true]:hover,
+.catalog-home .catalog-primary:hover{background:var(--sy-brand-dark)!important}
+.catalog-home .catalog-controls{border-color:#cee4df}
+.catalog-home .catalog-toolbar{background:#f0f8f6}
+.catalog-home .catalog-categories button[aria-pressed=true],
+.catalog-home .catalog-category-row button[aria-pressed=true]{background:#ddf4eb!important;border-color:#6fb9a3!important;color:#006b56!important}
+.catalog-home .catalog-feature{background:#eaf7f6;border-color:#c1e1dd}
+.catalog-home .product-card .product-price{color:#163b49}
+.catalog-home .product-card .inquiry-btn{background:var(--sy-trade)!important;border-color:var(--sy-trade)!important;color:#fff!important}
+.catalog-home .product-card .inquiry-btn:hover{background:var(--sy-brand-dark)!important}
+.catalog-home .catalog-text-button,
+.catalog-home .catalog-help a,
+.catalog-home .catalog-supplier-grid a{color:#006b61}
+.catalog-home .catalog-card-meta span{background:#edf6f5;color:#38645d}
+.catalog-home .catalog-supplier-grid article{border-top:3px solid #73bfb3}
+.catalog-home .catalog-menu-group h3{color:#086e65}
+.catalog-home .catalog-category-menu-body{border-color:#bbdcd4}
+.catalog-home .catalog-filter-dialog .catalog-primary{background:var(--sy-trade)!important;color:white!important}
+.product-page .detail-action-green{background:var(--sy-trade)!important;color:#fff!important}
+.product-page .buyer-tools-panel{border-color:#a9d9d5;background:linear-gradient(120deg,#edfaf6,#fff 62%,#f1f7ff)!important}
+.product-page .buyer-tools-kicker{color:var(--sy-trade)}
+.product-page .product-review-line{color:#547181}
+/* Buyer / analytics = blue. Do not recolor numerical zero as success. */
+.sy-buyer-theme .sy-mini-overline,
+.sy-buyer-theme .sy-workspace-heading>span,
+.sy-buyer-theme .sy-content-topline .sy-mini-overline{color:var(--sy-buyer)!important}
+.sy-buyer-theme .sy-performance-grid>div,
+.sy-buyer-theme .sy-stat-tiles>div{border-top:3px solid #4989b5!important}
+.sy-buyer-theme .sy-performance-grid>div svg,
+.sy-buyer-theme .sy-stat-tiles svg{color:var(--sy-buyer)}
+.sy-buyer-theme .sy-account-sidebar>button.active{color:#125a89!important;background:var(--sy-buyer-pale)!important;border-left-color:#1764a0!important}
+.sy-buyer-theme .sy-profile-nudge{background:var(--sy-buyer-pale)!important;border-left-color:#287cb6!important}
+.sy-buyer-theme .sy-content-topline h2{color:#123f64!important}
+.sy-buyer-theme .sy-recommended-heading>a{color:#125d92}
+.sy-buyer-theme .sy-recommended-card{border-color:#d9e8ef}
+.sy-buyer-theme .sy-premium-data>div{background:#f7fbfe!important}
+/* Supplier / inventory = green. A green accent is not a verification claim. */
+.sy-supplier-theme .sy-supplier-intro h3,
+.sy-supplier-theme .sy-supplier-title-row h3{color:#114f39}
+.sy-supplier-theme .sy-store-stats>div{border-top:3px solid #4aaf83;background:#fff}
+.sy-supplier-theme .sy-store-stats svg{color:var(--sy-supplier)}
+.sy-supplier-theme .sy-store-steps button:hover{background:var(--sy-supplier-pale);border-color:#82c9a2}
+.sy-supplier-theme .sy-visit-store{color:var(--sy-supplier)}
+.sy-supplier-theme .sy-premium-card{background:linear-gradient(135deg,#ecf8f1,#e8f5f5)!important;border-color:#b5dbca!important}
+.sy-supplier-theme .sy-premium-card button{background:#086f48!important;color:white!important}
+.sy-supplier-theme .sy-premium-card button:hover{background:#055737!important}
+/* Messages = indigo, kept separate from approval / error status */
+.sy-inbox-shell{border-color:#d7dcf1}
+.sy-inbox-tabs button.active{color:#3e579c!important;background:var(--sy-message-pale)!important;border-color:#a8b6e5!important}
+.sy-inbox-illustration{background:#eef0fb;color:var(--sy-message)}
+.sy-inbox-content{background:radial-gradient(circle at 50% 40%,#f0f1fc,transparent 48%),#fff}
+.sy-inbox-content h2{color:#293e77}
+.sy-inbox-benefits span{background:#f3f5ff;border-color:#dce3f4;color:#445c91}
+/* RFQ drafts = violet; submitting a draft does not imply supplier delivery */
+.sy-post-rfq .sy-mini-overline{color:var(--sy-rfq)!important}
+.sy-post-rfq .sy-rfq-builder{border-top:3px solid #ad80c6}
+.sy-post-rfq .sy-rfq-attrs{background:#faf6fc;border-color:#d9bfe5}
+.sy-post-rfq .sy-attr-add{color:#744392}
+.sy-post-rfq .sy-rfq-save-note{background:var(--sy-rfq-pale);color:#68457c}
+.sy-post-rfq .sy-rfq-how>div>div{background:#fcf9fd;border-color:#e7dced}
+.si-quote .si-heading{border-bottom-color:#e5d8ee}
+.si-quote .si-heading h2{color:#4b2e62}
+.si-quote .si-submit{background:#6d397e!important;color:#fff!important}
+.si-quote .si-submit:hover{background:#562b65!important}
+.si-quote .si-quote-success>svg{color:var(--sy-ok)}
+/* Profile & account security = calm blue/cyan */
+.sy-profile-modern .sy-profile-title h2,
+.sy-profile-modern .sy-profile-section-head h3{color:#164f68}
+.sy-profile-modern .sy-profile-tabs button.active{color:var(--sy-profile);border-bottom-color:var(--sy-profile)}
+.sy-profile-modern .sy-profile-score-card{border-top:3px solid #58a9be}
+.sy-profile-modern .sy-profile-save-bar{background:var(--sy-profile-pale);border-color:#c9e4ed}
+.sy-profile-modern .sy-profile-edit-btn{color:#17667e;border-color:#bfdae4}
+/* Verification status MUST retain meaning, independent of decorative palette */
+.sy-account-page .sv-progress{background:linear-gradient(110deg,#e8f5fa,#f7fbfc)!important;border-color:#c6e2eb!important}
+.sy-account-page .sv-progress-track>div{background:var(--sy-verify)}
+.sy-account-page .sv-status-verified{color:var(--sy-ok)!important;background:var(--sy-ok-pale)!important;border-color:#a8d9bc!important}
+.sy-account-page .sv-status-pending{color:var(--sy-pending)!important;background:var(--sy-pending-pale)!important;border-color:#ebd5a4!important}
+.sy-account-page .sv-status-unverified,
+.sy-account-page .sv-status-rejected{color:var(--sy-error)!important;background:var(--sy-error-pale)!important;border-color:#edbfc3!important}
+.sy-account-page .sv-status-verified svg{color:var(--sy-ok)!important}
+.sy-account-page .sv-status-pending svg{color:var(--sy-pending)!important}
+.sy-account-page .sv-status-unverified svg,
+.sy-account-page .sv-status-rejected svg{color:var(--sy-error)!important}
+.sy-account-page .sv-icon.sv-doc{background:#e8f3fc;color:#216b9c}
+.sy-account-page .sv-icon.sv-phone{background:#e9f8ef;color:#0a8150}
+.sy-account-page .sv-icon.sv-mail{background:#e9f4fb;color:#24739b}
+.sy-account-page .sv-icon.sv-identity{background:#f1edfb;color:#7159aa}
+/* Destructive / warnings are never replaced by brand green */
+.sy-account-page .sy-manager td button,
+.sy-account-page .sy-request-row>button{color:var(--sy-error)!important;background:var(--sy-error-pale)!important}
+.sy-account-page .sy-request-draft{color:var(--sy-pending)!important;background:var(--sy-pending-pale)!important}
+.sy-account-page .sy-error,.si-error{color:var(--sy-error)}
+.sy-account-page .sy-demo-alert{background:#fff7e8;color:#805717;border-color:#e9d4ae}
+@media(max-width:767px){
+ .catalog-home .catalog-feature{background:#ebf8f6}
+ .catalog-home .catalog-supplier-grid article{border-top-width:2px}
+ .sy-buyer-theme .sy-performance-grid>div,
+ .sy-buyer-theme .sy-stat-tiles>div{border-top-width:2px!important}
+ .sy-supplier-theme .sy-store-stats>div{border-top-width:2px}
+ .sy-post-rfq .sy-rfq-builder{border-top-width:2px}
+ .sy-account-page .sy-profile-nudge{color:#234f6a}
+}
