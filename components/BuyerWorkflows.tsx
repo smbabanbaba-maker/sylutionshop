@@ -3,7 +3,7 @@ import {CountryField} from "@/components/CountryFlag";
 import {useEffect,useState} from "react";
 import Link from "next/link";
 import {MessageSquare, Search, Settings, Send, Package, ArrowRight, Plus, Trash2, ShieldCheck, ClipboardList, CheckCircle2} from "lucide-react";
-type StoredRfq={product?:string;productId?:string;quantity?:number;unit?:string;targetPrice?:string;destinationCountry?:string;port?:string;incoterm?:string;paymentTerm?:string;shippingMethod?:string;preferredCountry?:string;leadTime?:string;documents?:string;company?:string;email?:string;message?:string;createdAt?:string;status?:string;attributes?:{name:string;value:string}[]};
+type StoredRfq={product?:string;productId?:string;quantity?:number;unit?:string;targetPrice?:string;destinationCountry?:string;port?:string;incoterm?:string;paymentTerm?:string;shippingMethod?:string;preferredCountry?:string;leadTime?:string;documents?:string;company?:string;email?:string;message?:string;createdAt?:string;status?:string;attachmentNames?:string[];attributes?:{name:string;value:string}[]};
 const KEY="sylution_demo_rfqs";
 function readStored():StoredRfq[]{try{const value=JSON.parse(localStorage.getItem(KEY)||"[]");return Array.isArray(value)?value:[]}catch{return []}}
 export function MessagesPreview({onFind,onRequest}:{onFind:()=>void;onRequest:()=>void}){
@@ -63,8 +63,58 @@ export function PostBuyingRequest({onSaved}:{onSaved:()=>void}){
 export function RequestManager({onCreate}:{onCreate:()=>void}){
  const [rfqs,setRfqs]=useState<StoredRfq[]>([]);
  const [query,setQuery]=useState("");
- const [state,setState]=useState("All requests");
- useEffect(()=>{const refresh=()=>setRfqs(readStored());refresh();window.addEventListener("sylution-rfq-change",refresh);return()=>window.removeEventListener("sylution-rfq-change",refresh)},[]);
- const visible=rfqs.map((r,i)=>({r,i})).filter(({r})=>(r.product||"").toLowerCase().includes(query.toLowerCase())&&(state==="All requests"||(r.status||"Draft · browser only").includes("Draft"))).reverse();
- return <div className="sy-manager"><div className="sy-manager-head"><div><h2>My Requests</h2><span>{rfqs.length} locally saved requests</span></div><button className="sy-green-action" onClick={onCreate}><Plus size={16}/> Post Buying Request</button></div><div className="sy-manager-filters"><Search size={17}/><input placeholder="Search buying requests" aria-label="Search buying requests" value={query} onChange={e=>setQuery(e.target.value)}/><select aria-label="Filter buying requests" value={state} onChange={e=>setState(e.target.value)}><option>All requests</option><option>Draft only</option></select></div><div className="sy-manager-scroll"><table><thead><tr><th>Buying request</th><th>Quantity</th><th>Status</th><th>Posted</th><th>Actions</th></tr></thead><tbody>{visible.map(({r,i})=><tr key={i}><td><strong>{r.product||"Unnamed product"}</strong><small>{[r.destinationCountry,r.port].filter(Boolean).join(" · ")||"Location not provided"}</small></td><td>{r.quantity||"—"} {r.unit||""}</td><td><span className="sy-request-draft">{r.status||"Demo draft"}</span></td><td>{r.createdAt?new Date(r.createdAt).toLocaleDateString():"—"}</td><td><button aria-label={"Delete "+r.product} onClick={()=>{if(!window.confirm("Delete this demo request?"))return;const next=rfqs.filter((_,j)=>j!==i);localStorage.setItem(KEY,JSON.stringify(next));setRfqs(next);window.dispatchEvent(new Event("sylution-rfq-change"));}}><Trash2 size={16}/></button></td></tr>)}</tbody></table></div>{!visible.length&&<div className="sy-manager-empty"><Package size={34}/><strong>No matching buying requests</strong><p>Create your first request or change the search filters.</p><button className="sy-green-action" onClick={onCreate}>Create request <ArrowRight size={15}/></button></div>}<small className="sy-manager-disclaimer">Prototype — no request is publicly posted and no supplier can respond yet.</small></div>
+ const [expanded,setExpanded]=useState<number|null>(null);
+ useEffect(()=>{
+  const refresh=()=>{setRfqs(readStored());setExpanded(null);};
+  refresh();
+  window.addEventListener("sylution-rfq-change",refresh);
+  window.addEventListener("storage",refresh);
+  return ()=>{
+   window.removeEventListener("sylution-rfq-change",refresh);
+   window.removeEventListener("storage",refresh);
+  };
+ },[]);
+ const visible=rfqs.map((request,index)=>({request,index})).filter(({request})=>
+  [request.product,request.destinationCountry].some(value=>value?.toLowerCase().includes(query.trim().toLowerCase()))
+ ).reverse();
+
+ return (
+  <section className="sy-manager">
+   <div className="sy-manager-head">
+    <div><h2>My Requests</h2><span>{rfqs.length} locally saved requests</span></div>
+    <button className="sy-green-action" onClick={onCreate}><Plus size={16}/> New Request</button>
+   </div>
+   {rfqs.length>0&&<div className="sy-manager-filters"><Search size={17}/><input placeholder="Search products or destinations" aria-label="Search requests" value={query} onChange={e=>setQuery(e.target.value)}/></div>}
+   {visible.length>0&&<table className="trade-requests">
+    <thead><tr><th scope="col">Product</th><th scope="col">Quantity</th><th scope="col">Status</th><th scope="col">Saved</th><th scope="col">Actions</th></tr></thead>
+    <tbody>{visible.map(({request,index})=><RequestRows key={index} request={request} index={index} expanded={expanded===index} onToggle={()=>setExpanded(expanded===index?null:index)} onDelete={()=>{
+      if(!window.confirm("Delete this demo request?"))return;
+      localStorage.setItem(KEY,JSON.stringify(rfqs.filter((_,i)=>i!==index)));
+      window.dispatchEvent(new Event("sylution-rfq-change"));
+    }}/>)}</tbody>
+   </table>}
+   {!visible.length&&<div className="sy-manager-empty"><Package size={30}/><strong>{rfqs.length?"No matching requests":"No saved requests yet"}</strong><p>{rfqs.length?"Try a different product or destination.":"Browse products and save a quote draft to find it here."}</p>{!rfqs.length&&<Link href="/#products">Browse Products <ArrowRight size={15}/></Link>}</div>}
+   <small className="sy-manager-disclaimer">Demo drafts are saved in this browser.</small>
+  </section>
+ );
+}
+
+function RequestRows({request,index,expanded,onToggle,onDelete}:{request:StoredRfq;index:number;expanded:boolean;onToggle:()=>void;onDelete:()=>void}){
+ const detailId="request-details-"+index;
+ return <>
+  <tr className="trade-request-row">
+   <td><strong>{request.product||"Unnamed product"}</strong><small>{[request.destinationCountry,request.port].filter(Boolean).join(" · ")||"Location not provided"}</small></td>
+   <td><span className="trade-cell-label">Quantity </span>{request.quantity??"—"} {request.unit}</td>
+   <td><span className="sy-request-draft">{request.status||"Demo draft"}</span></td>
+   <td><span className="trade-cell-label">Saved </span>{request.createdAt?new Date(request.createdAt).toLocaleDateString():"—"}</td>
+   <td className="trade-request-actions"><button type="button" aria-expanded={expanded} aria-controls={detailId} onClick={onToggle}>{expanded?"Hide Draft":"View Draft"}</button><button type="button" aria-label={"Delete "+(request.product||"draft")} onClick={onDelete}><Trash2 size={16}/></button></td>
+  </tr>
+  <tr className="trade-request-detail" id={detailId} hidden={!expanded}><td colSpan={5}>
+   <strong>Message</strong><p>{request.message?.trim()||"No message added."}</p>
+   {!!request.attachmentNames?.length&&<><strong>Attachment names</strong><ul>{request.attachmentNames.map((name,i)=><li key={i}>{name}</li>)}</ul></>}
+   {request.incoterm&&<p>Trade terms: {request.incoterm}</p>}
+   {request.paymentTerm&&<p>Payment terms: {request.paymentTerm}</p>}
+   {!!request.attributes?.length&&<dl>{request.attributes.map(({name,value},i)=><div key={i}><dt>{name}</dt><dd>{value}</dd></div>)}</dl>}
+  </td></tr>
+ </>;
 }

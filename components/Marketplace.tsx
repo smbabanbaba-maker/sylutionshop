@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import {TradeNavigation} from "@/components/TradeNavigation";
 import { DemoAccountMenu } from "@/components/DemoAccount";
 import { CountryFlag, COUNTRIES } from "@/components/CountryFlag";
 import {InquiryModal} from "@/components/InquiryModal";
@@ -14,8 +15,8 @@ function Header({search,setSearch}:{search?:string;setSearch?:(value:string)=>vo
   return <><header className="site-header">
     <div className="header-inner">
       <Link className="brand" href="/"><span className="brand-mark"><span className="sy-brand-letter">S</span><i className="sy-brand-orbit"/></span><span><strong>SYLUTION</strong><small>Global B2B Marketplace</small></span></Link>
-      <div className="header-search"><span className="search-category">All categories <ChevronDown size={13}/></span><input aria-label="Search products" placeholder="Search products and suppliers..." value={search??""} onChange={e=>setSearch?.(e.target.value)} /><button className="search-submit" aria-label="Search marketplace" onClick={()=>document.getElementById("products")?.scrollIntoView({behavior:"smooth"})}><Search size={18}/> Search</button></div>
-      <nav className="header-actions"><Link href="/#products">Find Products</Link><Link href="/#products">Suppliers</Link><Link href="/account?tab=post-rfq">Post Buying Request</Link><span className="sy-language-label"><Globe2 size={17}/> English</span><DemoAccountMenu/></nav>
+      {setSearch&&<div className="header-search"><span className="search-category">All categories <ChevronDown size={13}/></span><input aria-label="Search products" placeholder="Search products and suppliers..." value={search??""} onChange={e=>setSearch?.(e.target.value)} /><button className="search-submit" aria-label="Search marketplace" onClick={()=>document.getElementById("products")?.scrollIntoView({behavior:"smooth"})}><Search size={18}/> Search</button></div>}
+      <div className="header-actions"><TradeNavigation/><DemoAccountMenu/></div>
       <button type="button" aria-label={mobile?"Close navigation menu":"Open navigation menu"} aria-expanded={mobile} aria-controls="sy-mobile-navigation" className="menu-toggle" onClick={()=>setMobile(!mobile)}>{mobile?<X size={23}/>:<Menu size={23}/>}</button>
     </div>
   </header>
@@ -39,9 +40,9 @@ export function HomePage(){
  const [showCategories,setShowCategories]=useState(false);
  const [sort,setSort]=useState<"featured"|"name">("featured");
  const [visibleCount,setVisibleCount]=useState(24);
+ const [filtersOpen,setFiltersOpen]=useState(false);
  const [countryFilter,setCountryFilter]=useState("All Countries");
  const countryOptions=["All Countries",...COUNTRIES.map(c=>c.name)];
- const listedCountryCount=new Set(products.map(p=>p.country)).size;
  const filtered=useMemo(()=>{
    const matched=products.filter(p=>(category==="All Categories"||p.category===category)&&(countryFilter==="All Countries"||p.country===countryFilter)&&([p.name,p.supplier,p.country,p.category].join(" ").toLowerCase().includes(query.trim().toLowerCase())));
    return sort==="name"?[...matched].sort((a,b)=>a.name.localeCompare(b.name)):matched;
@@ -77,12 +78,21 @@ export function HomePage(){
   </section>
   <section className="container marketplace-layout" id="products"><div className="market-main">
     <div className="section-head"><div><h2>Explore the trade catalog</h2><p>Browse industries, compare origins and build your sourcing shortlist.</p></div><div className="result-count">{filtered.length} example products</div></div>
-    <div className="listing-toolbar"><div className="category-tabs">{categories.map(c=><button key={c} className={category===c?"selected":""} onClick={()=>{setCategory(c);setVisibleCount(24);}}>{c}</button>)}</div><select className="product-sort" aria-label="Sort products" value={sort} onChange={e=>setSort(e.target.value as "featured"|"name")}><option value="featured">Featured</option><option value="name">Name A–Z</option></select></div>
-    <div className="listing-extra-filters"><label>Supplier country <select value={countryFilter} onChange={e=>{setCountryFilter(e.target.value);setVisibleCount(24);}}>{countryOptions.map(c=><option key={c} value={c}>{COUNTRIES.find(x=>x.name===c)?.emoji||"🌐"} {c}</option>)}</select></label><span>{filtered.length} sample listings · {listedCountryCount} origins in demo catalog · Worldwide country filter</span></div>
+    <label className="trade-catalog-search"><Search size={18}/><input type="search" aria-label="Search catalog" placeholder="Search products and suppliers" value={query} onChange={event=>{setQuery(event.target.value);setVisibleCount(24);}}/></label>
+    <div className="trade-catalog-layout">
+    <div className={"trade-filters"+(filtersOpen?" is-open":"")}>
+      <button className="trade-filter-toggle" type="button" aria-expanded={filtersOpen} aria-controls="catalog-filters" onClick={()=>setFiltersOpen(open=>!open)}><SlidersHorizontal size={17}/> Filters{(category!=="All Categories"||countryFilter!=="All Countries")?" · Active":""}</button>
+      <div className="trade-filter-fields" id="catalog-filters">
+        <label>Category <select value={category} onChange={e=>{setCategory(e.target.value);setVisibleCount(24);}}>{categories.map(c=><option key={c}>{c}</option>)}</select></label>
+        <label>Supplier country <select value={countryFilter} onChange={e=>{setCountryFilter(e.target.value);setVisibleCount(24);}}>{countryOptions.map(c=><option key={c} value={c}>{c}</option>)}</select></label>
+        <label>Sort products <select value={sort} onChange={e=>setSort(e.target.value as "featured"|"name")}><option value="featured">Featured</option><option value="name">Name A–Z</option></select></label>
+      </div>
+    </div>
+    <div className="trade-catalog-results">
     <div className="product-grid">{filtered.slice(0,visibleCount).map(p=><ProductCard key={p.id} product={p} onInquiry={setSelected}/>)}</div>
     {filtered.length>visibleCount&&<div className="load-more-listings"><button onClick={()=>setVisibleCount(v=>v+24)}>Load more products <span>({filtered.length-visibleCount} remaining)</span></button></div>}
-    {!filtered.length&&<div className="empty-state">No matching products yet. Try a different keyword or category. <button onClick={()=>{setQuery("");setCategory("All Categories");}}>Clear search</button></div>}
-  </div></section>
+    {!filtered.length&&<div className="empty-state">No matching products yet. Try a different keyword or category. <button onClick={()=>{setQuery("");setCategory("All Categories");setCountryFilter("All Countries");setVisibleCount(24);}}>Clear search</button></div>}
+  </div></div></div></section>
   <section className="container why-section" id="how-it-works"><div className="why-copy"><div className="why-label">WHY SYLUTION</div><h2>A simpler way to source and connect.</h2><p>Explore product opportunities, compare details and send structured requests for quotations.</p></div><div className="why-item"><Search size={24}/><strong>Discover</strong><span>Find products fast</span></div><div className="why-item"><MessageSquare size={24}/><strong>Enquire</strong><span>Send clear RFQs</span></div><div className="why-item"><Globe2 size={24}/><strong>Connect</strong><span>Explore global markets</span></div></section>
   </main><footer><div className="container footer-inner"><div><strong>SYLUTION</strong><p>Global B2B Marketplace</p></div><span>© 2026 SYLUTION • Demo marketplace</span></div></footer>
   {selected&&<InquiryModal product={selected} close={()=>setSelected(null)}/>}

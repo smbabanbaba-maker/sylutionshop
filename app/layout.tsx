@@ -1,3 +1,4 @@
+import {TradeNavigation} from "@/components/TradeNavigation";
 import type { Metadata } from "next";
 import "./globals.css";
 import "./styles/product.css";
@@ -9,6 +10,7 @@ import "./styles/verification.css";
 import "./styles/theme.css";
 import "./styles/inquiry.css";
 import "./styles/countries.css";
+import "./styles/responsive.css";
 export const metadata: Metadata = {
   metadataBase: new URL("https://sylutionshop.vercel.app"),
   title: {default:"SYLUTION | Global B2B Marketplace",template:"%s | SYLUTION"},
@@ -18,5 +20,5 @@ export const metadata: Metadata = {
   robots:{index:false,follow:false}
 };
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en"><body>{children}</body></html>;
+  return <html lang="en"><body>{children}<TradeNavigation mobile/></body></html>;
 }
