@@ -334,3 +334,18 @@
 .load-more-listings button:hover{background:#e7f7ec}.load-more-listings span{font-weight:500;color:#617789}
 @media(max-width:450px){.listing-extra-filters{align-items:flex-start}.listing-extra-filters label{flex-wrap:wrap}.listing-extra-filters>span{width:100%}}
 
+
+.detail-mobile-quote { display: none; }
+@media (max-width: 650px) {
+  .detail-mobile-quote {
+    position: fixed;
+    z-index: 30;
+    inset: auto 0 0;
+    display: block;
+    padding: 8px 12px calc(8px + env(safe-area-inset-bottom));
+    background: white;
+    border-top: 1px solid #d9e5ea;
+  }
+  .detail-mobile-quote button { width: 100%; }
+  .detail-footer { padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
+}

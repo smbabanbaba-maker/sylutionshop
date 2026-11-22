@@ -19,7 +19,7 @@ const sections=[
  {id:"products",name:"Find products",Icon:Search},
  {id:"messages",name:"Messages",Icon:MessageSquare},
  {id:"post-rfq",name:"Post buying request",Icon:Send},
- {id:"requests",name:"Buying Request",Icon:ClipboardList},
+ {id:"requests",name:"My Requests",Icon:ClipboardList},
  {id:"contacts",name:"My contacts",Icon:UsersRound},
  {id:"profile",name:"Profile",Icon:PenSquare},
  {id:"favorites",name:"Favorites",Icon:Heart},
@@ -104,7 +104,7 @@ export function DemoAccountPage(){
  const recentRfqs=rfqs.filter(r=>r.createdAt&&Date.now()-new Date(r.createdAt).getTime()<=range*86400000).length;
  return <main className={"sy-account-page "+(section==="supplier"?"sy-supplier-theme":"sy-buyer-theme")}>
   <div className="sy-account-banner"><span className="sy-mini-overline">SYLUTION BUYER WORKSPACE</span><h1>{profile?"Welcome back, "+profile.name:"Your SYLUTION workspace"}</h1><p>Manage sourcing, saved products and business information from one place.</p><div className="sy-demo-alert"><ShieldCheck size={16}/> Interactive preview: records stay in this browser. No live authentication, messaging or supplier verification yet.</div></div>
-  {!profile?<div className="sy-account-empty"><UserRound size={36}/><h2>Explore the SYLUTION member dashboard</h2><p>Use the Log in or Sign up control above to create a local demo profile and unlock the preview.</p><Link href="/#products">Browse products <ArrowRight size={16}/></Link></div>:
+  {!profile&&section==="requests"?<RequestManager onCreate={()=>window.location.assign("/#products")}/>:!profile?<div className="sy-account-empty"><UserRound size={36}/><h2>Explore the SYLUTION member dashboard</h2><p>Use the Log in or Sign up control above to create a local demo profile and unlock the preview.</p><Link href="/#products">Browse products <ArrowRight size={16}/></Link></div>:
   <div className="sy-account-layout">
    <nav className="sy-account-sidebar" aria-label="Account navigation"><div className="sy-account-identity"><span className="sy-avatar sy-avatar-large"><UserRound size={22}/></span><div><strong>{profile.name}</strong><small>{profile.company||"Member account"}</small></div></div><button className="sy-sidebar-primary" onClick={()=>switchTo(section==="supplier"?"supplier":"post-rfq")}><span className="sy-plus-sign">＋</span> {section==="supplier"?"Post New Product (demo)":"Post Buying Request"}</button>{sections.map(({id,name,Icon})=><button key={id} className={section===id?"active":""} onClick={()=>switchTo(id)}><Icon size={17}/>{name}</button>)}</nav>
    <div className="sy-dashboard-content">
