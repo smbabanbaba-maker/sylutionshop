@@ -149,3 +149,140 @@
  .sy-post-rfq .sy-rfq-builder{border-top-width:2px}
  .sy-account-page .sy-profile-nudge{color:#234f6a}
 }
+
+
+/* Premium 2026 palette — polished hierarchy, rich accents, accessible text.
+   Inspired by enterprise commerce design, not a rainbow of competing buttons. */
+:root{
+ --sy-color-navy:#0B1930;
+ --sy-color-ink:#11283C;
+ --sy-color-brand:#007B60;
+ --sy-color-brand-hover:#00664F;
+ --sy-color-brand-soft:#E3F6EF;
+ --sy-color-brand-ring:#52BD9B;
+ --sy-color-royal:#2354B8;
+ --sy-color-canvas:#F2F5F9;
+ --sy-color-border:#DAE3EC;
+ --sy-color-muted:#526679;
+ --sy-ink:#11283C;
+ --sy-brand:#007B60;
+ --sy-brand-dark:#00664F;
+ --sy-trade:#007B60;
+ --sy-buyer:#2354B8;
+ --sy-buyer-pale:#EAF0FF;
+ --sy-supplier:#06734F;
+ --sy-supplier-pale:#E5F6EE;
+ --sy-message:#5546A8;
+ --sy-message-pale:#F0EEFF;
+ --sy-rfq:#693AB0;
+ --sy-rfq-pale:#F3EDFF;
+ --sy-profile:#176C86;
+ --sy-profile-pale:#E7F5F9;
+ --sy-border:#D9E4EA;
+ --sy-gold:#BD8525;
+}
+body{background:#F2F5F9}
+.site-header,.sy-account-header{background:#fff!important;box-shadow:0 3px 18px #071b3410!important}
+.site-header .brand-mark,.sy-account-logo-mark{
+ background:linear-gradient(145deg,#0E2E55,#006C63 74%,#18AD83)!important;
+ box-shadow:0 5px 13px #064F6540!important;
+}
+.sy-account-logo>b{background:linear-gradient(145deg,#0E2E55,#006C63 74%,#18AD83)!important}
+.trade-bottom-nav{box-shadow:0 -6px 25px #0B19301A}
+.trade-bottom-nav a:hover,.trade-bottom-nav a:focus-visible{color:#005D49}
+.catalog-home{background:#F2F5F9;color:#11283C}
+.catalog-home .catalog-hero{
+ background-image:linear-gradient(105deg,#071C39DD,#0C3559C8 54%,#005D4FBF),url("https://images.unsplash.com/photo-1494412519320-aa613dfb7738?w=1800&q=85");
+ background-size:cover;
+ background-position:center;
+}
+.catalog-home .catalog-search-box .catalog-mode button{
+ border-color:#C6DED8;
+ box-shadow:0 2px 7px #051c3010;
+}
+.catalog-home .catalog-search-box .catalog-mode button[aria-pressed=true]{
+ background:#007B60!important;
+ color:#fff!important;
+ box-shadow:0 4px 12px #002E2B35;
+}
+.catalog-home .catalog-search-form{border-color:#C6D7D9;box-shadow:0 12px 30px #041A3440}
+.catalog-home .catalog-feature{
+ background:linear-gradient(135deg,#E7F7F1,#ECF7FB 80%)!important;
+ border-color:#BFDCD4!important;
+}
+.catalog-home .catalog-feature h3,
+.catalog-home .catalog-results-head h2{color:#112E4D!important}
+.catalog-home .product-card{
+ border-color:#DFE7ED!important;
+ box-shadow:0 5px 15px #0B193010!important;
+}
+.catalog-home .product-card:hover{box-shadow:0 9px 25px #0B19301D!important}
+.catalog-home .product-card .product-name{color:#132E48!important}
+.catalog-home .product-card .product-price{color:#0A3540!important}
+.catalog-home .product-card .inquiry-btn{
+ background:#007B60!important;
+ border-color:#007B60!important;
+ box-shadow:0 2px 7px #00493628;
+}
+.catalog-home .product-card .inquiry-btn:hover{background:#005F4C!important}
+.catalog-home .catalog-category-row button[aria-pressed=true]{
+ background:#E3F5EC!important;
+ border-color:#69B99C!important;
+ color:#075E46!important;
+}
+.catalog-home .catalog-toolbar{background:#EDF4F5}
+.catalog-home .catalog-supplier-grid article{border-top-color:#13A77D}
+.catalog-home .catalog-menu-group h3{color:#075F50}
+.product-page{background:#F2F5F9!important}
+.product-page .detail-action-green{background:#007B60!important;box-shadow:0 3px 11px #005B4533}
+.product-page .buyer-tools-panel{background:linear-gradient(110deg,#F2FAF7,#FFFFFF 53%,#ECF3FB)!important}
+/* The blue buyer workspace uses deep blue for editorial emphasis, not zeros. */
+.sy-buyer-theme .sy-content-topline h2{color:#15365B!important}
+.sy-buyer-theme .sy-stat-tiles>div,
+.sy-buyer-theme .sy-performance-grid>div{
+ border-top-color:#2354B8!important;
+ box-shadow:0 4px 16px #103A7C0E;
+}
+.sy-buyer-theme .sy-stat-tiles svg,
+.sy-buyer-theme .sy-performance-grid svg{color:#2354B8}
+.sy-buyer-theme .sy-account-sidebar>button.active{
+ background:#EAF0FF!important;
+ color:#1D4EA2!important;
+ border-left-color:#2354B8!important;
+}
+.sy-buyer-theme .sy-profile-nudge{background:#EEF4FE!important;border-left-color:#2354B8!important}
+.sy-buyer-theme .sy-recommended-card{border-color:#DEE6F1}
+/* Supplier commerce reads as premium green, not green on every surface. */
+.sy-supplier-theme .sy-account-sidebar{background:#0B1930!important}
+.sy-supplier-theme .sy-account-sidebar>button.active{
+ background:#183750!important;
+ color:#66E5B4!important;
+ border-left-color:#26C58D!important;
+}
+.sy-supplier-theme .sy-store-stats>div{border-top-color:#07956B!important;box-shadow:0 3px 12px #065A3A0C}
+.sy-supplier-theme .sy-store-steps button:hover{border-color:#72CDA6;background:#EBFAF2}
+.sy-supplier-theme .sy-premium-card{background:linear-gradient(125deg,#F6F1E4,#ECF6F2)!important;border-color:#E5D6A8!important}
+.sy-supplier-theme .sy-premium-card>span{color:#946318!important}
+.sy-supplier-theme .sy-premium-card h3{color:#173C34!important}
+/* Messaging / RFQ distinction */
+.sy-inbox-tabs button.active{color:#5546A8!important;background:#F0EEFF!important;border-color:#B9B1EB!important}
+.sy-inbox-illustration{background:#F0EEFF;color:#5546A8}
+.sy-post-rfq .sy-rfq-builder{border-top-color:#8251BF!important}
+.sy-post-rfq .sy-mini-overline{color:#693AB0!important}
+.si-quote .si-submit{background:#693AB0!important}
+.si-quote .si-submit:hover{background:#542C92!important}
+/* Gold is reserved for premium/featured treatment, never fake verification. */
+.sy-free-plan,.sy-preview-tag{border-color:#DFE3E8}
+.sy-supplier-theme .sy-premium-card{box-shadow:0 6px 22px #6748140E}
+.sy-supplier-theme .sy-premium-card button{background:#076B50!important}
+.sy-profile-modern .sy-profile-tabs button.active{color:#176C86;border-bottom-color:#176C86}
+.sy-account-page .sv-status-verified{color:#137743!important;background:#E5F6EB!important}
+.sy-account-page .sv-status-pending{color:#96610C!important;background:#FFF3D9!important}
+.sy-account-page .sv-status-unverified,
+.sy-account-page .sv-status-rejected{color:#B52F39!important;background:#FFF0F1!important}
+@media(max-width:767px){
+ .catalog-home .catalog-hero{background-position:center}
+ .catalog-home .catalog-feature{background:linear-gradient(135deg,#E7F7F1,#F1F8FB)!important}
+ .catalog-home .product-card{box-shadow:0 2px 9px #0B19300D!important}
+ .sy-buyer-theme .sy-stat-tiles>div,.sy-buyer-theme .sy-performance-grid>div{border-top-width:2px!important}
+}
