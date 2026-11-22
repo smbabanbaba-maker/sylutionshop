@@ -4,6 +4,7 @@ import "./styles/product.css";
 import "./styles/dashboard.css";
 import "./styles/brand.css";
 import "./styles/workflows.css";
+import "./styles/profile.css";
 export const metadata: Metadata = {
   metadataBase: new URL("https://sylutionshop.vercel.app"),
   title: {default:"SYLUTION | Global B2B Marketplace",template:"%s | SYLUTION"},
