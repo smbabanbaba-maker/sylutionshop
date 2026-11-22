@@ -1,0 +1,195 @@
+
+/*
+ * SYLUTION Design System 2026
+ * Navy = trust / structure; teal = brand actions; green = genuinely successful;
+ * amber = awaiting review; red = errors, missing verification, destructive.
+ * Last-loaded coordinated visual layer. Components inherit shared tokens.
+ */
+:root{
+  --sy-color-ink:#102b42;
+  --sy-color-ink-soft:#3c596c;
+  --sy-color-muted:#647e90;
+  --sy-color-brand:#007e76;
+  --sy-color-brand-hover:#00645d;
+  --sy-color-brand-soft:#e4f6f2;
+  --sy-color-brand-ring:#79cfc2;
+  --sy-color-navy:#10283f;
+  --sy-color-royal:#1658a5;
+  --sy-color-success:#087d42;
+  --sy-color-success-soft:#e6f7ed;
+  --sy-color-warning:#a46911;
+  --sy-color-warning-soft:#fff5df;
+  --sy-color-danger:#b53c35;
+  --sy-color-danger-soft:#fff0ed;
+  --sy-color-info:#206b9b;
+  --sy-color-info-soft:#ebf5fc;
+  --sy-color-surface:#ffffff;
+  --sy-color-canvas:#edf3f7;
+  --sy-color-surface-soft:#f7fafc;
+  --sy-color-border:#d7e3e9;
+  --sy-radius-sm:7px;
+  --sy-radius-md:11px;
+  --sy-radius-lg:16px;
+  --sy-shadow-card:0 4px 17px rgba(16,43,66,.065);
+  --sy-shadow-float:0 15px 35px rgba(16,43,66,.16);
+  --sy-space-1:4px;
+  --sy-space-2:8px;
+  --sy-space-3:12px;
+  --sy-space-4:16px;
+  --sy-space-5:24px;
+  --sy-space-6:32px;
+  accent-color:var(--sy-color-brand);
+}
+html{scroll-behavior:smooth}
+body{background:var(--sy-color-canvas);color:var(--sy-color-ink);-webkit-font-smoothing:antialiased}
+:where(button,input,select,textarea){font:inherit}
+:where(button,a,input,select,textarea):focus-visible{
+  outline:3px solid var(--sy-color-brand-ring);
+  outline-offset:2px;
+}
+:where(button[disabled],input[disabled]){cursor:not-allowed}
+:where(button,a){-webkit-tap-highlight-color:transparent}
+:where(.sy-account-page,.product-page,.marketplace-page) :is(h1,h2,h3){text-wrap:balance}
+:where(.sy-account-page,.product-page,.marketplace-page) :is(p,small){overflow-wrap:break-word}
+
+/* Consistent header and page frame */
+.site-header,.sy-account-header{
+  background:var(--sy-color-surface)!important;
+  border-bottom:1px solid var(--sy-color-border)!important;
+  box-shadow:0 2px 15px #102b4210!important;
+}
+.sy-account-page,.product-page{background:var(--sy-color-canvas)!important}
+.sy-account-header .sy-account-logo-mark,.site-header .brand-mark{
+  background:linear-gradient(130deg,#1658a5,#007e76 75%,#00a47e)!important;
+}
+.sy-account-logo strong,.site-header .brand strong{color:var(--sy-color-ink)!important}
+
+/* Primary calls to action appear consistently across public and workspace pages */
+:where(.site-header,.marketplace-page,.product-page,.sy-account-page)
+ :is(.primary-btn,.inquiry-btn,.detail-action-green,.hero-search-button,.sy-green-action,.sy-sidebar-primary,.sy-post-submit){
+  background:var(--sy-color-brand)!important;
+  border-color:var(--sy-color-brand)!important;
+  color:#fff!important;
+  border-radius:var(--sy-radius-sm)!important;
+  font-weight:750;
+  box-shadow:0 2px 5px #00645d19;
+  transition:background-color .16s ease,transform .16s ease,box-shadow .16s ease;
+}
+:where(.site-header,.marketplace-page,.product-page,.sy-account-page)
+ :is(.primary-btn,.inquiry-btn,.detail-action-green,.hero-search-button,.sy-green-action,.sy-sidebar-primary,.sy-post-submit):hover:not(:disabled){
+  background:var(--sy-color-brand-hover)!important;
+  border-color:var(--sy-color-brand-hover)!important;
+  box-shadow:0 4px 12px #00645d25;
+}
+:where(.sy-account-page,.product-page) :is(.sy-profile-secondary,.sy-visit-store,.sv-inline-field button,.sy-profile-edit-btn,.sy-soft-action){
+  background:#fff;
+  color:var(--sy-color-brand);
+  border:1px solid #b9dbd5;
+  border-radius:var(--sy-radius-sm);
+}
+:where(.sy-account-page,.product-page) :is(.sy-profile-secondary,.sy-visit-store,.sv-inline-field button,.sy-profile-edit-btn,.sy-soft-action):hover{
+  background:var(--sy-color-brand-soft);
+}
+
+/* Card surfaces, headings, input geometry */
+:where(.sy-account-page,.product-page)
+ :is(.sy-panel,.sy-profile-summary-card,.sy-profile-detail-card,.sy-profile-score-card,.sv-card,.sy-rfq-builder,.sy-recommended-card,.sy-inbox-shell,.sy-manager-scroll,.sy-supplier-primary>.sy-panel,.sy-supplier-side>.sy-panel){
+  background:var(--sy-color-surface);
+  border:1px solid var(--sy-color-border);
+  border-radius:var(--sy-radius-md);
+  box-shadow:var(--sy-shadow-card);
+}
+:where(.sy-account-page,.product-page)
+ :is(.sy-panel h3,.sv-card h3,.sy-profile-section-head h3,.sy-profile-title h2,.sy-rfq-top h2,.sy-inbox-content h2){
+  color:var(--sy-color-ink);
+}
+:where(.sy-account-page,.product-page)
+ :is(.sy-auth-modal input,.sy-auth-modal select,.sy-rfq-builder input,.sy-rfq-builder textarea,.sy-rfq-builder select,.sy-profile-field input:not(:disabled),.sy-profile-field select:not(:disabled),.sy-profile-field textarea:not(:disabled),.sv-inline-field input,.sy-manager-filters input,.sy-manager-filters select){
+  background:#fff;
+  border:1px solid #cbdce5;
+  border-radius:var(--sy-radius-sm);
+  color:var(--sy-color-ink);
+}
+:where(.sy-account-page,.product-page)
+ :is(.sy-auth-modal input,.sy-rfq-builder input,.sy-rfq-builder textarea,.sy-profile-field input):focus-visible{
+  border-color:var(--sy-color-brand);
+}
+
+/* Marketplace cards & filters — distinct and consistent */
+.product-card{border:1px solid var(--sy-color-border)!important;border-radius:var(--sy-radius-md)!important;box-shadow:var(--sy-shadow-card)!important}
+.product-card:hover{box-shadow:0 10px 25px #102b421b!important}
+.product-card .inquiry-btn{background:var(--sy-color-brand)!important}
+.listing-extra-filters,.buyer-compare-controls{border-color:#cde5e0!important;background:#f4fbf9!important}
+.buyer-tools-panel{background:linear-gradient(125deg,#f4fbfa,#fff 58%,#eff6fb)!important;border-color:#bce2db!important;border-radius:var(--sy-radius-md)}
+.supplier-profile-section{background:linear-gradient(125deg,#dfedfa,#e5f7f2)!important;border-color:#c6e2e7!important;border-radius:var(--sy-radius-md)!important}
+
+/* Buyer navigation: teal active; supplier navigation: dark navy */
+.sy-buyer-theme .sy-account-sidebar{
+  border:1px solid var(--sy-color-border)!important;
+  border-radius:var(--sy-radius-md)!important;
+  background:#fff!important;
+}
+.sy-buyer-theme .sy-account-sidebar>button.active{
+  color:var(--sy-color-brand)!important;
+  background:var(--sy-color-brand-soft)!important;
+  border-left-color:var(--sy-color-brand)!important;
+}
+.sy-supplier-theme .sy-account-sidebar{background:var(--sy-color-navy)!important;border-radius:var(--sy-radius-md)!important}
+.sy-supplier-theme .sy-account-sidebar>button.active{
+  background:#1b4859!important;
+  color:#58e1c5!important;
+  border-left-color:#17c6a3!important;
+}
+.sy-account-page .sy-preview-tag,.sy-profile-tabs button.active{
+  color:var(--sy-color-brand);
+}
+.sy-account-page .sy-performance-grid>div{border-top-color:var(--sy-color-brand)!important}
+.sy-account-page .sy-profile-nudge{background:var(--sy-color-info-soft)!important;border:1px solid #c6e0f0!important;border-left:4px solid var(--sy-color-info)!important}
+.sy-account-page .sy-profile-nudge strong{color:#18587d!important}
+.sy-account-page .sy-profile-nudge button{background:var(--sy-color-info)!important}
+.sy-account-page .sy-profile-nudge button:hover{background:#155477!important}
+
+/* Verification semantics: status meaning has precedence over brand style */
+.sv-status-verified{color:var(--sy-color-success);background:var(--sy-color-success-soft);border-color:#addfc5}
+.sv-status-pending{color:var(--sy-color-warning);background:var(--sy-color-warning-soft);border-color:#ead8aa}
+.sv-status-unverified{color:var(--sy-color-danger);background:var(--sy-color-danger-soft);border-color:#f2c4bf}
+.sv-status-rejected{color:#a82029;background:#ffe4e6;border-color:#e9b2b8}
+.sv-status-verified svg{color:var(--sy-color-success)}
+.sv-status-unverified svg,.sv-status-rejected svg{color:var(--sy-color-danger)}
+.sv-status-pending svg{color:var(--sy-color-warning)}
+.sv-card .sv-doc-card{border-color:#dce6ea;border-radius:var(--sy-radius-md)}
+.sv-progress{background:linear-gradient(120deg,#e6f7f2,#eef7fd);border-color:#cbe6df}
+.sv-progress-track>div,.sy-score-progress>div{background:var(--sy-color-brand)}
+.sv-upload-zone{border-radius:var(--sy-radius-md);background:var(--sy-color-surface-soft)}
+.sv-upload-zone:hover{border-color:var(--sy-color-brand);background:var(--sy-color-brand-soft)}
+.sv-feedback{background:var(--sy-color-info-soft);border-color:#c1deed;color:#215f7d}
+.sv-private-note{background:var(--sy-color-brand-soft);color:#146957}
+
+/* Inboxes / tables / status emphasis */
+.sy-manager th{background:var(--sy-color-navy);color:#fff}
+.sy-inbox-tabs button.active{border-color:var(--sy-color-brand);background:var(--sy-color-brand-soft);color:var(--sy-color-brand)}
+.sy-manager td button,.sy-request-row>button{background:var(--sy-color-danger-soft);color:var(--sy-color-danger)}
+.sy-manager td button:hover,.sy-request-row>button:hover{background:#ffdfda}
+.sy-request-draft{background:var(--sy-color-warning-soft);color:var(--sy-color-warning)}
+.sy-profile-pending,.sy-profile-preview-badge,.sy-demo-alert{color:var(--sy-color-warning)}
+.sy-profile-score-card>button{background:var(--sy-color-brand)}
+.sy-profile-score-card>button:hover{background:var(--sy-color-brand-hover)}
+.sy-profile-tabs button.active{border-bottom-color:var(--sy-color-brand)}
+
+/* Compact readable layout for mobile and touch */
+@media(max-width:800px){
+  .site-header .menu-toggle{min-width:44px;min-height:44px}
+  .sy-account-sidebar>button{min-height:44px}
+  .sv-status{white-space:normal;line-height:1.3}
+  .sy-account-dropdown{max-width:min(320px,calc(100vw - 24px))}
+}
+@media(max-width:550px){
+  .sy-profile-score-card{position:static}
+  .sy-rfq-builder,.sv-card,.sy-profile-detail-card{padding:14px}
+  .sv-doc-grid{grid-template-columns:1fr}
+  .sy-account-page,.product-page{overflow-x:clip}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  :where(button,a,.product-card){transition:none!important}
+}
