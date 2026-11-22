@@ -88,12 +88,25 @@ export function HomePage(){
       <input type="search" aria-label="Search catalog" placeholder={mode==="Products"?"Search products":"Search suppliers"} value={query} onFocus={()=>setCategoryMenuOpen(false)} onChange={event=>setSearch(event.target.value)}/>
       <button className="catalog-primary" type="submit" aria-label="Search"><Search size={18}/><span>Search</span></button>
      </form>
-     {categoryMenuOpen&&<div id="hero-category-menu" className="catalog-category-menu-body">
-      <div aria-label="Preview category"><button type="button" onClick={()=>{clear();setCategoryMenuOpen(false);goProducts();}}>All categories</button>{categories.slice(1).map(option=><button type="button" key={option} aria-pressed={categoryPreview===option} onClick={()=>setCategoryPreview(option)}>{option}</button>)}</div>
-      <div><button type="button" onClick={()=>{clear();setMode("Products");setCategory(categoryPreview);setCategoryMenuOpen(false);goProducts();}}>Browse {categoryPreview}</button>
-       {products.filter(product=>product.category===categoryPreview).slice(0,6).map(product=><Link href={"/products/"+product.slug} key={product.id}>{product.name}</Link>)}
+     {categoryMenuOpen&&<section id="hero-category-menu" className="catalog-category-menu-body" aria-label="Explore product categories">
+      <nav className="catalog-menu-sections" aria-label="Product categories">
+       <button type="button" onClick={()=>{clear();setMode("Products");setCategoryMenuOpen(false);goProducts();}}><Grid2X2 size={17} aria-hidden="true"/> All products</button>
+       {categories.slice(1).map(option=><button type="button" key={option} aria-pressed={categoryPreview===option} onClick={()=>setCategoryPreview(option)}>
+        <Package size={17} aria-hidden="true"/><span>{option}</span><ChevronRight size={15} aria-hidden="true"/>
+       </button>)}
+      </nav>
+      <div className="catalog-menu-preview">
+       <header className="catalog-menu-heading">
+        <div><h2>{categoryPreview}</h2><button type="button" onClick={()=>{clear();setMode("Products");setCategory(categoryPreview);setCategoryMenuOpen(false);goProducts();}}>Browse all {categoryPreview} <ChevronRight size={15} aria-hidden="true"/></button></div>
+        <button type="button" className="catalog-menu-close" aria-label="Close categories" onClick={()=>{setCategoryMenuOpen(false);document.getElementById("hero-categories-toggle")?.focus();}}><X size={20}/></button>
+       </header>
+       <ul className="catalog-menu-products">
+        {products.filter(product=>product.category===categoryPreview).map(product=>(
+         <li key={product.id}><Link href={"/products/"+product.slug}><span>{product.name}</span><small>{product.country} · Min. {product.moq}</small></Link></li>
+        ))}
+       </ul>
       </div>
-     </div>}
+     </section>}
     </div>
    </div>
   </section>
