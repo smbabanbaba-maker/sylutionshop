@@ -86,7 +86,7 @@ export function HomePage(){
      <form className="catalog-search-form" onSubmit={event=>{event.preventDefault();setCategoryMenuOpen(false);goProducts();}}>
       <button id="hero-categories-toggle" className="catalog-category-trigger" type="button" aria-expanded={categoryMenuOpen} aria-controls="hero-category-menu" onClick={()=>setCategoryMenuOpen(open=>!open)}><Menu size={18}/><span>{category==="All Categories"?"All categories":category}</span><ChevronDown size={15}/></button>
       <input type="search" aria-label="Search catalog" placeholder={mode==="Products"?"Search products":"Search suppliers"} value={query} onFocus={()=>setCategoryMenuOpen(false)} onChange={event=>setSearch(event.target.value)}/>
-      <button className="catalog-primary" type="submit"><Search size={18}/> Search</button>
+      <button className="catalog-primary" type="submit" aria-label="Search"><Search size={18}/><span>Search</span></button>
      </form>
      {categoryMenuOpen&&<div id="hero-category-menu" className="catalog-category-menu-body">
       <div aria-label="Preview category"><button type="button" onClick={()=>{clear();setCategoryMenuOpen(false);goProducts();}}>All categories</button>{categories.slice(1).map(option=><button type="button" key={option} aria-pressed={categoryPreview===option} onClick={()=>setCategoryPreview(option)}>{option}</button>)}</div>
