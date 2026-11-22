@@ -8,7 +8,6 @@ type StoredRfq={product?:string;productId?:string;quantity?:number;unit?:string;
 const KEY="sylution_demo_rfqs";
 function readStored():StoredRfq[]{try{const value=JSON.parse(localStorage.getItem(KEY)||"[]");return Array.isArray(value)?value:[]}catch{return []}}
 export function MessagesPreview({onFind,onRequest}:{onFind:()=>void;onRequest:()=>void}){
- const [filter,setFilter]=useState<"All"|"Unread"|"Need reply">("All");
  const [search,setSearch]=useState("");
  const [drafts,setDrafts]=useState<SupplierMessageDraft[]>([]);
  const [selectedDraft,setSelectedDraft]=useState<string|null>(null);
@@ -18,12 +17,12 @@ export function MessagesPreview({onFind,onRequest}:{onFind:()=>void;onRequest:()
   return()=>{window.removeEventListener("sylution-message-drafts-change",load);window.removeEventListener("storage",load);};
  },[]);
  const visible=drafts.filter(d=>([d.supplier,d.product,d.subject,d.message].join(" ").toLowerCase().includes(search.toLowerCase())));
- const active=drafts.find(d=>d.id===selectedDraft)||visible[0];
+ const active=visible.find(d=>d.id===selectedDraft)||visible[0];
  function deleteDraft(id:string){if(!window.confirm("Delete this locally saved message draft?"))return;const next=drafts.filter(d=>d.id!==id);try{localStorage.setItem(MESSAGE_DRAFT_KEY,JSON.stringify(next));setDrafts(next);if(selectedDraft===id)setSelectedDraft(null);}catch{}}
  return <div className="sy-inbox-shell">
    <section className="sy-inbox-list" aria-label="Message conversations">
-    <div className="sy-inbox-actions"><div className="sy-inbox-tabs">{(["All","Unread","Need reply"] as const).map(t=><button className={filter===t?"active":""} onClick={()=>setFilter(t)} key={t} aria-pressed={filter===t}>{t}</button>)}</div><button aria-label="Messaging settings preview" title="Settings available when messaging launches" onClick={()=>setFilter("All")}><Settings size={18}/></button></div>
-    <label className="sy-inbox-search"><Search size={17}/><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search conversations" aria-label="Search conversations"/></label>
+    <div className="sy-inbox-actions"><div className="sy-inbox-tabs"><span className="sy-draft-tab"><MessageSquare size={15}/> Message drafts <b>{drafts.length}</b></span></div></div>
+    <label className="sy-inbox-search"><Search size={17}/><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search saved drafts" aria-label="Search saved message drafts"/></label>
     {visible.length>0?<div className="sy-draft-list">{visible.map(d=><button key={d.id} type="button" className={"sy-draft-row"+(active?.id===d.id?" active":"")} onClick={()=>setSelectedDraft(d.id)}><span className="sy-draft-row-top"><strong>{d.supplier}</strong><small>Draft</small></span><b>{d.subject}</b><span>{d.message}</span></button>)}</div>:<div className="sy-inbox-none"><MessageSquare size={33}/><strong>{drafts.length&&search?"No matching drafts":"No supplier conversations yet"}</strong><p>{search?"No messages match your search.":"Messages and quotations will appear here after real messaging is connected."}</p><button className="sy-green-action" onClick={onFind}>Find products</button><button className="sy-soft-action" onClick={onRequest}>Post a buying request</button></div>}
    </section>
    <section className="sy-inbox-content">{active?<div className="sy-draft-detail"><div className="sy-draft-detail-top"><span>Saved message · Not sent</span><button type="button" onClick={()=>deleteDraft(active.id)}><Trash2 size={16}/> Delete draft</button></div><h2>{active.subject}</h2><p><strong>To:</strong> {active.supplier} ({active.country})</p><p><strong>Product:</strong> {active.product}</p><div className="sy-draft-message">{active.message}</div><small>Local draft only. Messaging delivery is not available in this demo.</small><button type="button" className="sy-soft-action" onClick={onFind}>Browse more products</button></div>:<><div className="sy-inbox-illustration"><MessageSquare size={50}/><span className="sy-inbox-orb one"/><span className="sy-inbox-orb two"/></div><h2>Welcome to SYLUTION Messages</h2><p>Keep quotations, supplier conversations, and follow-ups organized in one workspace.</p><div className="sy-inbox-benefits"><span><ShieldCheck size={16}/> Private conversations</span><span><ClipboardList size={16}/> RFQ-linked messages</span><span><CheckCircle2 size={16}/> Easy follow-up</span></div><small>Preview only — no messages are sent or received yet.</small></>}</section>
