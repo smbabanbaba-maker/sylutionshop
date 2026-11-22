@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { DemoAccountMenu } from "@/components/DemoAccount";
 import { CountryFlag } from "@/components/CountryFlag";
+import {InquiryModal} from "@/components/InquiryModal";
 import { FaFacebookF, FaLinkedinIn, FaWhatsapp, FaTelegramPlane, FaPinterestP, FaEnvelope } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { useEffect, useMemo, useState } from "react";
@@ -22,24 +23,7 @@ function Header({search,setSearch}:{search?:string;setSearch?:(value:string)=>vo
   </>;
 }
 const cash = (s:string)=>s;
-export function InquiryModal({product,close}:{product:Product;close:()=>void}) {
-  const [qty,setQty]=useState("");const [country,setCountry]=useState("");const [port,setPort]=useState("");const [incoterm,setIncoterm]=useState("FOB");const [email,setEmail]=useState("");const [company,setCompany]=useState("");const [message,setMessage]=useState("");const [submitted,setSubmitted]=useState(false);
-  function submit(e:React.FormEvent){e.preventDefault();if(!Number(qty)||Number(qty)<=0)return;const data={product:product.name,productId:product.id,quantity:Number(qty),unit:product.unit,destinationCountry:country,port,incoterm,email,company,message,createdAt:new Date().toISOString()};try{const prev=JSON.parse(localStorage.getItem("sylution_demo_rfqs")||"[]");localStorage.setItem("sylution_demo_rfqs",JSON.stringify([...prev,data]));}catch{}setSubmitted(true);}
-  useEffect(()=>{function onKey(e:KeyboardEvent){if(e.key==="Escape")close();}document.addEventListener("keydown",onKey);return()=>document.removeEventListener("keydown",onKey)},[close]);
-  return <div className="modal-backdrop" onMouseDown={e=>{if(e.target===e.currentTarget)close()}}><section className="rfq-modal" role="dialog" aria-modal="true" aria-label="Request for Quotation">
-    <button aria-label="Close quotation" className="modal-close" onClick={close}><X size={22}/></button>
-    {!submitted?<><div className="section-kicker"><ClipboardList size={16}/> REQUEST FOR QUOTATION</div><h2>Get a wholesale quotation</h2><p className="muted">For: <strong>{product.name}</strong></p>
-      <form className="rfq-form" onSubmit={submit}>
-        <div className="form-grid"><label>Quantity ({product.unit}) <input required type="number" min="0.01" step="any" value={qty} onChange={e=>setQty(e.target.value)} placeholder={"MOQ: "+product.moq}/></label><label>Destination country <input required value={country} onChange={e=>setCountry(e.target.value)} placeholder="e.g. Nigeria"/></label></div>
-        <div className="form-grid"><label>Port / City <input value={port} onChange={e=>setPort(e.target.value)} placeholder="e.g. Lagos"/></label><label>Preferred Incoterm <select value={incoterm} onChange={e=>setIncoterm(e.target.value)}><option>FOB</option><option>CIF</option><option>EXW</option><option>FCA</option><option>DAP</option><option>DDP</option></select></label></div>
-        <div className="form-grid"><label>Your company <input required value={company} onChange={e=>setCompany(e.target.value)} placeholder="Company name"/></label><label>Business email <input required type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="name@company.com"/></label></div>
-        <label>Additional requirements <textarea rows={4} value={message} onChange={e=>setMessage(e.target.value)} placeholder="Quality, packaging, timeline or certification requirements"/></label>
-        <div className="demo-notice"><ShieldCheck size={18}/> Demo mode: requests are saved only in this browser. They are not delivered to suppliers yet.</div>
-        <button className="primary-btn full" type="submit"><Send size={17}/> Save demo RFQ</button>
-      </form></>:<div className="success-view"><div className="success-icon">✓</div><h2>Demo RFQ saved</h2><p>Your request was saved locally in this browser. No supplier has been contacted.</p><button className="primary-btn" onClick={close}>Continue browsing</button></div>}
-  </section></div>;
-}
-export function ProductCard({product,onInquiry}:{product:Product;onInquiry:(p:Product)=>void}){
+export export function ProductCard({product,onInquiry}:{product:Product;onInquiry:(p:Product)=>void}){
  const [liked,setLiked]=useState(false);
  useEffect(()=>{const sync=()=>{try{const saved=JSON.parse(localStorage.getItem("sylution_saved_products")||"[]") as string[];setLiked(saved.includes(product.slug));}catch{}};sync();window.addEventListener("sylution-shortlist-change",sync);window.addEventListener("storage",sync);return()=>{window.removeEventListener("sylution-shortlist-change",sync);window.removeEventListener("storage",sync)};},[product.slug]);
  function toggleFavorite(){const next=!liked;setLiked(next);try{const stored=JSON.parse(localStorage.getItem("sylution_saved_products")||"[]") as string[];localStorage.setItem("sylution_saved_products",JSON.stringify(next?[...new Set([...stored,product.slug])]:stored.filter(s=>s!==product.slug)));window.dispatchEvent(new Event("sylution-shortlist-change"));}catch{}}
