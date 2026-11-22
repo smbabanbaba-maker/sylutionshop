@@ -6,6 +6,7 @@ import {TradeNavigation} from "@/components/TradeNavigation";
 import { DemoAccountMenu } from "@/components/DemoAccount";
 import { CountryFlag, COUNTRIES } from "@/components/CountryFlag";
 import {InquiryModal} from "@/components/InquiryModal";
+import {SupplierContactModal} from "@/components/SupplierContactModal";
 import { FaFacebookF, FaLinkedinIn, FaWhatsapp, FaTelegramPlane, FaPinterestP, FaEnvelope } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { useEffect, useMemo, useState } from "react";
@@ -157,6 +158,7 @@ export function HomePage(){
 }
 export function ProductDetail({product}:{product:Product}){
  const [selected,setSelected]=useState<Product|null>(null);
+ const [contactOpen,setContactOpen]=useState(false);
  const [saved,setSaved]=useState(false);
  const [showSticky,setShowSticky]=useState(false);
  const [copied,setCopied]=useState(false);
@@ -342,10 +344,10 @@ export function ProductDetail({product}:{product:Product}){
          <section className="detail-section"><div className="detail-section-title"><h2>Products of this Supplier</h2></div><div className="related-grid">{supplierProducts.map(p=><ProductCard key={p.id} product={p} onInquiry={setSelected}/>)}</div></section>
        </div>
        <aside className="product-detail-aside">
-         <div className="detail-supplier-card"><div className="aside-heading"><h3>Contact this Supplier</h3><span className="demo-trust-badge"><ShieldCheck size={13}/> Verified L3 <sup>DEMO</sup></span></div><div className="aside-supplier-heading"><div className="supplier-avatar"><Building2 size={24}/></div><div><strong>{product.supplier}</strong><p><span className="supplier-country"><CountryFlag country={product.country} compact/> {product.country}</span></p></div></div><div className="aside-demo-rating"><span>4.3 <b>★</b> <small>Demo rating</small></span><span>Example supplier profile</span></div><div className="aside-attributes"><div><span>Company type</span><strong>Distributor / Wholesaler (demo)</strong></div><div><span>Location</span><strong>{product.country}</strong></div><div><span>Established</span><strong>2013 (demo)</strong></div></div><button className="aside-chat" onClick={()=>setSelected(product)}><MessageSquare size={17}/> Contact supplier</button><button className="detail-action-green" onClick={()=>setSelected(product)}><Send size={17}/> Request Quote</button></div>
+         <div className="detail-supplier-card"><div className="aside-heading"><h3>Contact this Supplier</h3><span className="sy-supplier-demo-badge">Demo supplier · Unverified</span></div><div className="aside-supplier-heading"><div className="supplier-avatar"><Building2 size={24}/></div><div><strong>{product.supplier}</strong><p><span className="supplier-country"><CountryFlag country={product.country} compact/> {product.country}</span></p></div></div><div className="aside-demo-rating"><span>4.3 <b>★</b> <small>Demo rating</small></span><span>Example supplier profile</span></div><div className="aside-attributes"><div><span>Company type</span><strong>Distributor / Wholesaler (demo)</strong></div><div><span>Location</span><strong>{product.country}</strong></div><div><span>Established</span><strong>Not independently confirmed</strong></div></div><button className="aside-chat" onClick={()=>setContactOpen(true)}><MessageSquare size={17}/> Message supplier</button><button className="detail-action-green" onClick={()=>setSelected(product)}><Send size={17}/> Request Quote</button></div>
          <div className="aside-products"><h3><span className="ad-label">Explore</span> Top Products</h3>{products.filter(p=>p.id!==product.id).slice(0,6).map(p=><Link className="aside-product-row" key={p.id} href={"/products/"+p.slug}><img src={p.image} alt="" loading="lazy" onError={e=>e.currentTarget.style.display="none"}/><div><strong>{p.name}</strong><b>{p.price}</b><small>Min. order: {p.moq}</small><span>{p.country}</span></div></Link>)}</div>
        </aside>
      </div>
    </div>
- <div className="detail-mobile-quote"><button className="detail-action-green" onClick={()=>setSelected(product)}><Send size={18}/> Request Quote</button></div></div><footer className="detail-footer"><div className="container footer-inner"><strong>SYLUTION</strong><span>Global B2B Marketplace · Demo product data</span></div></footer>{selected&&<InquiryModal product={selected} close={()=>setSelected(null)}/>}</>;
+ <div className="detail-mobile-quote"><button className="detail-action-green" onClick={()=>setSelected(product)}><Send size={18}/> Request Quote</button></div></div><footer className="detail-footer"><div className="container footer-inner"><strong>SYLUTION</strong><span>Global B2B Marketplace · Demo product data</span></div></footer>{selected&&<InquiryModal product={selected} close={()=>setSelected(null)}/ >}{contactOpen&&<SupplierContactModal product={product} onClose={()=>setContactOpen(false)}/>}</>;
 }
