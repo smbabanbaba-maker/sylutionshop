@@ -1,5 +1,5 @@
-import {DirectTradeNotice} from "@/components/DirectTradeNotice";
 "use client";
+import {DirectTradeNotice} from "@/components/DirectTradeNotice";
 import {useEffect,useMemo,useState} from "react";
 import Link from "next/link";
 import {ArrowLeft,Building2,Check,Grid2X2,Heart,MapPin,MessageCircle,Package,Search,ShieldAlert,Store} from "lucide-react";
