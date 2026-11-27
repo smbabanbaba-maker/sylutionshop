@@ -1,0 +1,104 @@
+/* SYLUTION TRADE — High-density and Ultra-HD layout.
+   High resolution is not achieved by scaling CSS or upscaling low-res bitmap photos.
+   Instead serve responsive image sources, crisp vector assets, and comfortable
+   container widths at 1920 / 2560 / 3840 CSS pixels. */
+
+:root{--sy-ultra-content:1920px}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+img,svg{vertical-align:middle}
+img{max-width:100%}
+img.sy-original-brand-logo,.sy-country-flag img{object-fit:contain}
+.catalog-home,.product-page,.sy-account-page,.sy-store-page{min-width:0}
+.catalog-home :is(.product-card,.product-grid,.card-body),
+.product-page :is(.product-primary-card,.product-gallery,.product-offer,.product-detail-aside),
+.sy-account-page :is(.sy-account-layout,.sy-dashboard-content),
+.sy-store-page :is(.sy-store-product-grid,.sy-store-product){min-width:0}
+@media(min-width:1920px){
+  .container,.header-inner,.product-page-container,.product-sticky-inner,
+  .catalog-home .container,.catalog-home .marketplace-layout.container,
+  .catalog-home .quick-actions.container,.catalog-home .discovery-row.container,
+  .catalog-home .why-section.container{
+    max-width:1920px!important;
+  }
+  .header-inner{gap:24px;padding-inline:30px!important}
+  .site-header .brand strong{font-size:23px}
+  .site-header .brand small{font-size:11px}
+  .catalog-home .marketplace-layout.container,
+  .catalog-home .discovery-row.container,
+  .catalog-home .quick-actions.container{padding-inline:28px!important}
+  .catalog-home .product-grid,.catalog-home .catalog-feature .product-grid{grid-template-columns:repeat(6,minmax(0,1fr));gap:15px}
+  .catalog-home .product-name{font-size:15px;line-height:1.45}
+  .catalog-home .product-price{font-size:17px}
+  .catalog-home .product-card .card-body{padding:15px}
+  .catalog-home .product-moq,.catalog-home .supplier-name{font-size:12px}
+  .product-page-container{padding-inline:28px}
+  .product-content-layout{grid-template-columns:minmax(0,1fr) 365px;gap:17px}
+  .product-primary-card{gap:18px;padding:17px;min-height:580px}
+  .gallery-image-wrap{min-height:470px}
+  .product-page .related-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:15px}
+  .sy-account-page{padding-inline:max(24px,calc((100vw - 1880px)/2))!important}
+  .sy-account-layout{grid-template-columns:280px minmax(0,1fr);gap:24px}
+  .sy-account-sidebar>button{font-size:13px;min-height:43px}
+  .sy-dashboard-content{gap:20px}
+  .sy-store-hero,.sy-store-meta,.sy-store-tabs,.sy-store-content,.sy-store-contact{max-width:1550px}
+  .sy-store-product-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:16px}
+  .sy-store-trade-notice{max-width:1550px}
+  .sy-profile-modern{max-width:none}
+  .sy-product-form-card,.sy-trade-form,.sy-trade-card{padding:21px}
+}
+@media(min-width:2560px){
+  :root{--sy-ultra-content:2360px}
+  .container,.header-inner,.product-page-container,.product-sticky-inner,
+  .catalog-home .container,.catalog-home .marketplace-layout.container,
+  .catalog-home .quick-actions.container,.catalog-home .discovery-row.container,
+  .catalog-home .why-section.container{max-width:2360px!important}
+  .catalog-home .marketplace-layout.container,
+  .catalog-home .discovery-row.container,
+  .catalog-home .quick-actions.container{padding-inline:34px!important}
+  .catalog-home .product-grid,.catalog-home .catalog-feature .product-grid{grid-template-columns:repeat(7,minmax(0,1fr));gap:18px}
+  .catalog-home .product-card .card-body{padding:17px}
+  .catalog-home .product-image{aspect-ratio:1.08}
+  .catalog-home .product-name{font-size:16px}
+  .catalog-home .product-price{font-size:19px}
+  .catalog-home .product-moq,.catalog-home .supplier-name{font-size:13px}
+  .product-content-layout{grid-template-columns:minmax(0,1fr) 425px;gap:22px}
+  .product-primary-card{grid-template-columns:minmax(0,45%) minmax(0,55%);gap:22px;min-height:700px;padding:22px}
+  .gallery-image-wrap{min-height:570px}
+  .product-page .related-grid{grid-template-columns:repeat(6,minmax(0,1fr))}
+  .sy-account-page{padding-inline:max(28px,calc((100vw - 2250px)/2))!important}
+  .sy-account-layout{grid-template-columns:310px minmax(0,1fr);gap:30px}
+  .sy-account-sidebar>button{font-size:14px;min-height:46px}
+  .sy-store-hero,.sy-store-meta,.sy-store-tabs,.sy-store-content,.sy-store-contact{max-width:1900px}
+  .sy-store-product-grid{grid-template-columns:repeat(6,minmax(0,1fr));gap:18px}
+  .sy-store-trade-notice{max-width:1900px}
+}
+@media(min-width:3200px){
+  .container,.header-inner,.product-page-container,.product-sticky-inner,
+  .catalog-home .container,.catalog-home .marketplace-layout.container,
+  .catalog-home .quick-actions.container,.catalog-home .discovery-row.container,
+  .catalog-home .why-section.container{max-width:2860px!important}
+  .catalog-home .product-grid,.catalog-home .catalog-feature .product-grid{grid-template-columns:repeat(8,minmax(0,1fr));gap:20px}
+  .catalog-home .product-name{font-size:17px}
+  .catalog-home .product-price{font-size:20px}
+  .catalog-home .product-card .card-body{padding:19px}
+  .product-content-layout{grid-template-columns:minmax(0,1fr) 490px;gap:24px}
+  .product-primary-card{min-height:770px}
+  .gallery-image-wrap{min-height:640px}
+  .sy-account-page{padding-inline:max(35px,calc((100vw - 2700px)/2))!important}
+  .sy-account-layout{grid-template-columns:340px minmax(0,1fr);gap:34px}
+  .sy-store-hero,.sy-store-meta,.sy-store-tabs,.sy-store-content,.sy-store-contact{max-width:2300px}
+  .sy-store-trade-notice{max-width:2300px}
+  .sy-store-product-grid{grid-template-columns:repeat(7,minmax(0,1fr));gap:20px}
+}
+/* Preserve the user's requested two-across image cards on phones. */
+@media(max-width:600px){
+ .catalog-home .product-grid,.catalog-home .catalog-feature .product-grid,
+ .catalog-home .catalog-listing .product-grid,.sy-store-page .sy-store-product-grid,
+ .sy-account-page .sy-recommended-products,.sy-seller-products-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ }
+ .product-page .related-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(prefers-reduced-motion:reduce){
+ .catalog-home .product-card,.sy-store-page .sy-store-product{transition:none!important}
+}
