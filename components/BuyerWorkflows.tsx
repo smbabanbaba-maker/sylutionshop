@@ -1,6 +1,7 @@
 "use client";
 import {DirectTradeNotice} from "@/components/DirectTradeNotice";
-import {CountryField} from "@/components/CountryFlag";
+import {CountryField,CountryFlag} from "@/components/CountryFlag";
+import {useAccountDefaults} from "@/lib/account-defaults";
 import {TRADE_CURRENCIES,currencyLabel} from "@/lib/global-currencies";
 import {useEffect,useRef,useState} from "react";
 import Link from "next/link";
@@ -76,11 +77,16 @@ export function MessagesPreview({onFind,onRequest}:{onFind:()=>void;onRequest:()
  </div>
 }
 export function PostBuyingRequest({onSaved}:{onSaved:()=>void}){
+ const account=useAccountDefaults();
+ const [destinationCountry,setDestinationCountry]=useState("");
+ const [currencyChanged,setCurrencyChanged]=useState(false);
+ const [destinationChanged,setDestinationChanged]=useState(false);
  const [product,setProduct]=useState("");
  const [quantity,setQuantity]=useState("");
  const [unit,setUnit]=useState("MT");
  const [price,setPrice]=useState("");
  const [currency,setCurrency]=useState("USD");
+ useEffect(()=>{if(account.country&&!destinationChanged)setDestinationCountry(account.country);if(account.country&&!currencyChanged)setCurrency(account.currency)},[account.country,account.currency,currencyChanged,destinationChanged]);
  const [trade,setTrade]=useState("FOB");
  const [payment,setPayment]=useState("Bank transfer");
  const [port,setPort]=useState("");
@@ -101,12 +107,13 @@ export function PostBuyingRequest({onSaved}:{onSaved:()=>void}){
   setRfqImages(picked);setNotice("");
  }
 
- function save(e:React.FormEvent){e.preventDefault();if(!product.trim()||!Number(quantity)||Number(quantity)<=0||!port.trim()){setNotice("Complete the product, quantity and destination fields.");return}
- const rfq:StoredRfq={product:product.trim(),quantity:Number(quantity),unit,targetPrice:price?currency+" "+price:"",destinationCountry:preferred.trim(),port:port.trim(),incoterm:trade,paymentTerm:payment,shippingMethod:shipping,preferredCountry:preferred,leadTime:lead,documents:docs,message:notes,attachmentNames:rfqImages.map(file=>file.name),attributes:attributes.filter(a=>a.name.trim()&&a.value.trim()),createdAt:new Date().toISOString(),status:"Draft · browser only"};
+ function save(e:React.FormEvent){e.preventDefault();if(!product.trim()||!Number(quantity)||Number(quantity)<=0||!port.trim()||!destinationCountry.trim()){setNotice("Complete the product, quantity and delivery destination fields.");return}
+ const rfq:StoredRfq={product:product.trim(),quantity:Number(quantity),unit,targetPrice:price?currency+" "+price:"",destinationCountry:destinationCountry.trim(),port:port.trim(),incoterm:trade,paymentTerm:payment,shippingMethod:shipping,preferredCountry:preferred,leadTime:lead,documents:docs,message:notes,attachmentNames:rfqImages.map(file=>file.name),attributes:attributes.filter(a=>a.name.trim()&&a.value.trim()),createdAt:new Date().toISOString(),status:"Draft · browser only"};
  try{const records=readStored();localStorage.setItem(KEY,JSON.stringify([...records,rfq]));window.dispatchEvent(new Event("sylution-rfq-change"));setNotice("Demo buying request saved. No supplier has been contacted.");onSaved()}catch{setNotice("Could not save. Your browser may have blocked local storage.")}}
  return <div className="sy-post-rfq">
    <div className="sy-rfq-top"><span className="sy-mini-overline">SYLUTION SOURCING</span><h2>Post a buying request</h2><p>Describe exactly what you need. Use structured requirements to compare supplier quotations later.</p><span className="sy-rfq-demo-tag">Demo · Saves only to this browser</span></div>
    <form className="sy-rfq-builder" onSubmit={save}>
+     {account.country&&<div className="sy-account-origin-hint"><CountryFlag country={account.country} compact/> <span>Registered in <strong>{account.country}</strong>. Your delivery country and currency are pre-filled, but you can change them for international orders.</span></div>}
      <label className="sy-rfq-full">What product are you sourcing? <span>*</span><input value={product} onChange={e=>setProduct(e.target.value)} required placeholder="e.g. Export-grade Nigerian ginger"/></label>
      <div className="sy-rfq-image-field">
        <div className="sy-rfq-image-heading"><strong>Product reference images <span>(optional)</span></strong><small>Help suppliers understand what you need</small></div>
@@ -117,9 +124,10 @@ export function PostBuyingRequest({onSaved}:{onSaved:()=>void}){
      <div className="sy-rfq-attrs"><div><strong>Custom attributes</strong><small>Grade, packaging, origin, specifications...</small></div>{attributes.map((a,i)=><div className="sy-rfq-attr-row" key={i}><input aria-label={"Attribute name "+(i+1)} placeholder="Attribute name" value={a.name} onChange={e=>setAttributes(items=>items.map((x,j)=>i===j?{...x,name:e.target.value}:x))}/><input aria-label={"Attribute value "+(i+1)} placeholder="Value" value={a.value} onChange={e=>setAttributes(items=>items.map((x,j)=>i===j?{...x,value:e.target.value}:x))}/><button type="button" onClick={()=>setAttributes(items=>items.filter((_,j)=>j!==i))} aria-label="Remove attribute"><Trash2 size={16}/></button></div>)}<button type="button" className="sy-attr-add" onClick={()=>setAttributes(items=>[...items,{name:"",value:""}])}><Plus size={16}/> Add custom attribute</button></div>
      <div className="sy-rfq-fields">
        <label>Quantity <span>*</span><div className="sy-quantity-control"><input required type="number" min=".01" step="any" value={quantity} onChange={e=>setQuantity(e.target.value)} placeholder="100"/><select value={unit} aria-label="Quantity unit" onChange={e=>setUnit(e.target.value)}>{["MT","KG","Tons","Pieces","Sets","Containers","Litres","Bags"].map(x=><option key={x}>{x}</option>)}</select></div></label>
-       <label>Target price (optional)<div className="sy-quantity-control"><select value={currency} aria-label="Price currency" onChange={e=>setCurrency(e.target.value)}>{TRADE_CURRENCIES.map(code=><option key={code} value={code}>{currencyLabel(code)}</option>)}</select><input type="number" min="0" value={price} onChange={e=>setPrice(e.target.value)} placeholder="Budget"/></div></label>
+       <label>Target price (optional)<div className="sy-quantity-control"><select value={currency} aria-label="Price currency" onChange={e=>{setCurrencyChanged(true);setCurrency(e.target.value)}}>{TRADE_CURRENCIES.map(code=><option key={code} value={code}>{currencyLabel(code)}</option>)}</select><input type="number" min="0" value={price} onChange={e=>setPrice(e.target.value)} placeholder="Budget"/></div></label>
        <label>Trade term<select value={trade} onChange={e=>setTrade(e.target.value)}>{["FOB","CIF","EXW","FCA","DAP","DDP","Flexible"].map(x=><option key={x}>{x}</option>)}</select></label>
        <label>Payment term<select value={payment} onChange={e=>setPayment(e.target.value)}>{["Bank transfer","Letter of credit","Independent escrow (external)","Negotiable"].map(x=><option key={x}>{x}</option>)}</select></label>
+       <label>Destination country / region <span>*</span><CountryField value={destinationCountry} onChange={v=>{setDestinationChanged(true);setDestinationCountry(v)}} required label="Delivery destination country"/></label>
        <label>Destination city / port <span>*</span><input value={port} required onChange={e=>setPort(e.target.value)} placeholder="e.g. Lagos Apapa Port"/></label>
        <label>Shipping method<select value={shipping} onChange={e=>setShipping(e.target.value)}><option>Sea freight</option><option>Air freight</option><option>Road freight</option><option>Flexible</option></select></label>
        <label>Preferred supplier country<CountryField value={preferred} onChange={setPreferred} includeAny label="Preferred supplier country"/></label>
