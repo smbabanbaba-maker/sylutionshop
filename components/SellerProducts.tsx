@@ -18,7 +18,7 @@ export function SellerProducts({email}:{email:string}){
   <div className="sy-seller-products-grid">{shown.length?shown.map(({draft,index})=><article className="sy-seller-product-card" key={draft.id||index}>
     <div className="sy-seller-product-photo"><ImageOff size={27}/><span>Image not uploaded</span></div>
     <div className="sy-seller-product-copy"><span className="sy-trade-status pending">Draft · Local only</span><h3>{draft.name}</h3><p>{draft.category||"Uncategorised"} · {draft.country||"Origin not set"}</p><strong>{draft.currency||""} {draft.price||"Price not set"}</strong><small>MOQ: {draft.minimum||"Not set"}</small>{!!draft.imageNames?.length&&<small>{draft.imageNames.length} image filename(s) saved, images not uploaded</small>}</div>
-    <div className="sy-seller-product-actions"><Link href="/account?tab=add-product"><Pencil size={15}/>Open form</Link><button type="button" onClick={()=>remove(index)}><Trash2 size={15}/>Delete</button></div>
+    <div className="sy-seller-product-actions"><Link href={"/account?tab=add-product&edit="+index}><Pencil size={15}/>Edit</Link><button type="button" onClick={()=>remove(index)}><Trash2 size={15}/>Delete</button></div>
    </article>):<div className="sy-trade-empty"><Package size={32}/><strong>{drafts.length?"No matching products":"No product drafts yet"}</strong><p>Use Add New Product to prepare your first wholesale listing.</p><Link href="/account?tab=add-product" className="sy-green-action"><Plus size={16}/>Add New Product</Link></div>}</div>
   <p className="sy-trade-demo-footnote"><ShieldAlert size={14}/> Draft filenames are saved, but actual photos and published listings require secure file storage and a database.</p>
  </section>;
