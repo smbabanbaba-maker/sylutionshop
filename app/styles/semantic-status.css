@@ -1,0 +1,94 @@
+/* SYLUTION TRADE: semantic statuses — meaning before decoration.
+   Red = action needed / unverified / failure; amber = pending;
+   green = confirmed success; blue = information. Never infer a status. */
+:root {
+ --sy-state-error:#B42332;
+ --sy-state-error-bg:#FFF0F1;
+ --sy-state-error-border:#EDBDC3;
+ --sy-state-warning:#95610F;
+ --sy-state-warning-bg:#FFF6E5;
+ --sy-state-warning-border:#E9D19F;
+ --sy-state-success:#117642;
+ --sy-state-success-bg:#E7F7EB;
+ --sy-state-success-border:#B7DEBE;
+ --sy-state-info:#1A5D91;
+ --sy-state-info-bg:#EBF4FF;
+ --sy-state-info-border:#BFD9EE;
+}
+.sy-status-error,.sy-status-warning,.sy-status-success,.sy-status-info{
+ display:flex;align-items:center;gap:8px;border-radius:9px;border:1px solid;
+ padding:10px 12px;font-size:12px;line-height:1.5;font-weight:600;
+}
+.sy-status-error{color:var(--sy-state-error)!important;background:var(--sy-state-error-bg)!important;border-color:var(--sy-state-error-border)!important}
+.sy-status-warning{color:var(--sy-state-warning)!important;background:var(--sy-state-warning-bg)!important;border-color:var(--sy-state-warning-border)!important}
+.sy-status-success{color:var(--sy-state-success)!important;background:var(--sy-state-success-bg)!important;border-color:var(--sy-state-success-border)!important}
+.sy-status-info{color:var(--sy-state-info)!important;background:var(--sy-state-info-bg)!important;border-color:var(--sy-state-info-border)!important}
+/* Verification states — mutually exclusive and legible without relying on colour alone */
+.sy-account-page .sv-status-verified{
+ color:var(--sy-state-success)!important;background:var(--sy-state-success-bg)!important;border:1px solid var(--sy-state-success-border)!important;
+}
+.sy-account-page .sv-status-unverified,
+.sy-account-page .sv-status-rejected{
+ color:var(--sy-state-error)!important;background:var(--sy-state-error-bg)!important;border:1px solid var(--sy-state-error-border)!important;
+}
+.sy-account-page .sv-status-pending{
+ color:var(--sy-state-warning)!important;background:var(--sy-state-warning-bg)!important;border:1px solid var(--sy-state-warning-border)!important;
+}
+.sy-account-page .sv-status svg{color:inherit!important}
+/* The demo identity lacks verification. Badge is red, not a verified-looking green. */
+.sy-account-card small:has(svg){
+ display:inline-flex!important;align-items:center;gap:5px;
+ width:max-content;max-width:100%;
+ padding:5px 8px;border-radius:20px;
+ color:var(--sy-state-error)!important;background:var(--sy-state-error-bg)!important;
+ border:1px solid var(--sy-state-error-border);
+ font-size:10px;font-weight:750;
+}
+.sy-account-card small:has(svg) svg{color:var(--sy-state-error)!important}
+.sy-account-page .sy-demo-alert{
+ color:var(--sy-state-warning)!important;background:var(--sy-state-warning-bg)!important;
+ border:1px solid var(--sy-state-warning-border)!important;
+}
+/* Explicit errors from auth, RFQ, supplier message and checkout only */
+.sy-error,.si-error,.sy-contact-error,
+.sy-account-page [role="alert"],.si-quote [role="alert"]{
+ color:var(--sy-state-error)!important;
+}
+.sy-account-page .sy-error,.sy-account-page [role="alert"],.si-quote .si-error{
+ border-color:var(--sy-state-error-border)!important;
+ background:var(--sy-state-error-bg)!important;
+}
+.sy-account-page .sy-request-draft,
+.sy-account-page .sy-rfq-demo-tag,
+.sy-draft-tab,
+.sy-draft-row-top small,
+.sy-supplier-demo-warning{
+ color:var(--sy-state-warning)!important;
+ background:var(--sy-state-warning-bg)!important;
+ border-color:var(--sy-state-warning-border)!important;
+}
+.sy-contact-success>svg,.si-quote-success>svg{color:var(--sy-state-success)!important}
+/* Selected locally is not uploaded or verified: informational rather than green success. */
+.sy-account-page .sv-selected{
+ color:var(--sy-state-info)!important;
+ background:var(--sy-state-info-bg)!important;
+ border:1px solid var(--sy-state-info-border)!important;
+}
+.sy-account-page .sv-feedback.sy-status-error,.sy-account-page .sv-feedback.sy-status-warning,.sy-account-page .sv-feedback.sy-status-info{
+ padding:10px 12px;
+}
+/* Neutral elements stay neutral: no success colour on fake metrics or pending requests. */
+.sy-account-page .sy-profile-score-card,
+.sy-account-page .sy-preview-tag{border-color:#d8e3eb}
+/* Destructive actions use red; neutral navigation and primary submit stay brand emerald. */
+.sy-account-page .sy-logout-action,
+.sy-account-page .sy-manager td button[aria-label*="Delete"],
+.sy-supplier-inbox button[aria-label*="Delete"]{
+ color:var(--sy-state-error)!important;
+}
+.sy-account-page .sy-green-action:not(:disabled),
+.sy-contact-primary:not(:disabled){color:#fff}
+@media(max-width:650px){
+ .sy-status-error,.sy-status-warning,.sy-status-success,.sy-status-info{font-size:11px;padding:9px 10px}
+ .sy-account-card small:has(svg){font-size:10px;white-space:normal}
+}
