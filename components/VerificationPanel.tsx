@@ -1,7 +1,7 @@
 "use client";
-import {useState} from "react";
+import {useEffect,useState} from "react";
 import {Check, CheckCircle2, CircleAlert, FileText, HelpCircle, Mail, Phone, ShieldCheck, UploadCloud, XCircle, LockKeyhole, Info, ArrowRight, Building2} from "lucide-react";
-import {CountryFlag,getDialingCode} from "@/components/CountryFlag";
+import {CountryField,getDialingCode,getCountry} from "@/components/CountryFlag";
 type Status="verified"|"pending"|"unverified"|"rejected";
 type FileKind="license"|"import"|"tax";
 function VerificationStatus({status,text}:{status:Status;text?:string}){
@@ -15,7 +15,9 @@ const docs=[
  {id:"import" as const,title:"Proof of prior import",description:"Evidence of previous international trade, if your business has imported goods.",guide:"Examples include commercial invoices, bills of lading or import declarations. Do not provide these in the demo."},
  {id:"tax" as const,title:"Tax certificate",description:"Tax registration or compliance document issued by an appropriate authority.",guide:"Only an authorized verification process should collect tax documents."}
 ];
-export function VerificationPanel({country="Nigeria",onProfile}:{country?:string;onProfile:()=>void}){
+export function VerificationPanel({country="",onProfile}:{country?:string;onProfile:()=>void}){
+ const [phoneCountry,setPhoneCountry]=useState(country);
+ useEffect(()=>{setPhoneCountry(country)},[country]);
  const [workEmail,setWorkEmail]=useState("");
  const [selected,setSelected]=useState<Partial<Record<FileKind,{name:string;size:number}>>>({});
  const [guides,setGuides]=useState<FileKind[]>([]);
@@ -37,7 +39,13 @@ export function VerificationPanel({country="Nigeria",onProfile}:{country?:string
   <div className="sv-progress"><div><ShieldCheck size={18}/><strong>Verification progress</strong><span>{prepared}/3 document types selected locally</span></div><div className="sv-progress-track"><div style={{width:(prepared/3*100)+"%"}}/></div><p>Files and contact details on this page are not sent to a server. Verification remains inactive until a secure backend is connected.</p></div>
   <section className="sv-card">
    <header className="sv-section-header"><div className="sv-title-with-icon"><span className="sv-icon sv-phone"><Phone size={20}/></span><div><h3>Verify phone number</h3><p>Allow suppliers to reach a verified business phone after confirmation.</p></div></div><VerificationStatus status="unverified"/></header>
-   <div className="sv-inline-field"><div className="sv-country-code"><CountryFlag country={country} compact/><span>{getDialingCode(country)||"Code unavailable"}</span></div><input type="tel" inputMode="tel" value={phone} onChange={e=>setPhone(e.target.value)} placeholder="Enter business phone number" aria-label="Business phone number"/><button type="button" onClick={()=>setNotice("SMS/OTP verification needs the secure backend. No message has been sent.")}>Verify phone</button></div>
+   <div className="sv-global-phone-row">
+    <label className="sv-global-country"><span>Phone country / region</span><CountryField value={phoneCountry} onChange={value=>{setPhoneCountry(value);setPhone("");setNotice("");}} label="Phone country or region"/></label>
+    <label className="sv-global-dial"><span>Dialling code</span><output>{phoneCountry?(getDialingCode(phoneCountry)||"Not listed"):"Select country"}</output></label>
+    <label className="sv-global-number"><span>Business phone number</span><input type="tel" inputMode="tel" autoComplete="tel-national" value={phone} onChange={e=>setPhone(e.target.value)} placeholder="Local phone number" aria-label="Business phone number"/></label>
+    <button type="button" className="sv-global-phone-action" onClick={()=>setNotice(!getCountry(phoneCountry)?"Select a valid country or region first.":!phone.trim()?"Enter a business phone number first.":"SMS/OTP verification requires the secure backend. No message has been sent.")}>Verify phone</button>
+   </div>
+   <p className="sv-field-hint">Select any supported country or territory. Dialling codes follow international telephone data. The selected phone country can differ from the company's registration country.</p>
    <p className="sv-field-hint">No SMS or OTP is sent in demo mode. Never enter a one-time code into this preview.</p>
   </section>
   <section className="sv-card">
