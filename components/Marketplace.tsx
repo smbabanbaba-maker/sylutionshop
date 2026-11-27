@@ -1,5 +1,5 @@
-import {DirectTradeNotice} from "@/components/DirectTradeNotice";
 "use client";
+import {DirectTradeNotice} from "@/components/DirectTradeNotice";
 import Link from "next/link";
 import {CatalogFilters,emptySelection} from "@/components/CatalogFilters";
 import {previewListing} from "@/lib/catalog-preview";
