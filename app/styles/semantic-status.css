@@ -92,3 +92,108 @@
  .sy-status-error,.sy-status-warning,.sy-status-success,.sy-status-info{font-size:11px;padding:9px 10px}
  .sy-account-card small:has(svg){font-size:10px;white-space:normal}
 }
+
+
+/* High-visibility state treatment. Never use a status colour as an ungrounded
+   claim (a locally saved draft is not a delivered or approved transaction). */
+:root {
+ --sy-state-error:#AD1729;
+ --sy-state-error-bg:#FFE3E7;
+ --sy-state-error-border:#E87987;
+ --sy-state-warning:#885300;
+ --sy-state-warning-bg:#FFF0C7;
+ --sy-state-warning-border:#D9AB50;
+ --sy-state-success:#086A3C;
+ --sy-state-success-bg:#D5F5E2;
+ --sy-state-success-border:#58B985;
+ --sy-state-info:#134E90;
+ --sy-state-info-bg:#DEEDFF;
+ --sy-state-info-border:#7BACDE;
+}
+.sy-status-error,.sy-status-warning,.sy-status-success,.sy-status-info{
+ border-width:1.5px!important;
+ font-weight:750!important;
+ box-shadow:inset 4px 0 0 currentColor;
+}
+.sy-account-page .sv-status{
+ font-weight:850!important;
+ font-size:11px!important;
+ padding:8px 11px!important;
+ border-width:1.5px!important;
+ letter-spacing:.1px;
+ gap:6px!important;
+ box-shadow:0 2px 7px #0b19300a;
+}
+.sy-account-page .sv-status-verified{box-shadow:inset 3px 0 0 var(--sy-state-success),0 2px 7px #0b19300a}
+.sy-account-page .sv-status-unverified,
+.sy-account-page .sv-status-rejected{box-shadow:inset 3px 0 0 var(--sy-state-error),0 2px 7px #0b19300a}
+.sy-account-page .sv-status-pending{box-shadow:inset 3px 0 0 var(--sy-state-warning),0 2px 7px #0b19300a}
+.sy-account-page .sv-doc-title .sv-status{
+ font-size:10px!important;
+ padding:6px 9px!important;
+}
+.sy-account-card small:has(svg){
+ background:var(--sy-state-error-bg)!important;
+ border:1.5px solid var(--sy-state-error-border)!important;
+ color:var(--sy-state-error)!important;
+ font-weight:850!important;
+}
+.sy-account-page .sy-request-draft,
+.sy-account-page .sy-rfq-demo-tag,
+.sy-draft-tab,.sy-draft-row-top small{
+ border:1px solid var(--sy-state-warning-border)!important;
+ font-weight:750!important;
+}
+.sy-account-page .sy-error,
+.sy-auth-modal .sy-error,
+.sy-contact-error,.si-error{
+ display:block;
+ padding:9px 11px;
+ border:1.5px solid var(--sy-state-error-border)!important;
+ border-left:4px solid var(--sy-state-error)!important;
+ border-radius:8px;
+ background:var(--sy-state-error-bg)!important;
+ color:var(--sy-state-error)!important;
+ font-weight:750!important;
+ line-height:1.5;
+}
+.sy-account-page .sv-feedback.sy-status-info,
+.sy-account-page .sv-feedback.sy-status-warning,
+.sy-account-page .sv-feedback.sy-status-error,
+.sy-account-page .sy-profile-feedback.sy-status-info,
+.sy-account-page .sy-profile-feedback.sy-status-error{
+ border-width:1.5px!important;
+ border-left:4px solid currentColor!important;
+ margin:10px 0!important;
+ font-size:12px!important;
+}
+.sy-account-page .sy-demo-alert,
+.sy-supplier-demo-warning{
+ border-width:1.5px!important;
+ border-left:4px solid var(--sy-state-warning)!important;
+ color:var(--sy-state-warning)!important;
+ background:var(--sy-state-warning-bg)!important;
+}
+.sy-account-page .sv-selected{
+ border-width:1.5px!important;
+ border-left:4px solid var(--sy-state-info)!important;
+ font-weight:750;
+}
+/* Demo status must not resemble an approved account. */
+.sy-account-page .sy-preview-tag{
+ background:#E8EFF6!important;
+ color:#38556B!important;
+ border:1px solid #BFD0DC!important;
+ font-weight:800;
+}
+.sy-contact-success{border-top:4px solid var(--sy-state-info)}
+.sy-contact-success>svg{color:var(--sy-state-info)!important}
+.sy-contact-success h3{color:var(--sy-state-info)!important}
+/* Icon + label keep state legible to people who cannot distinguish colours. */
+.sy-account-page .sv-status svg,
+.sy-account-card small svg{width:15px!important;height:15px!important;flex:0 0 auto}
+@media(max-width:650px){
+ .sy-account-page .sv-status{font-size:10px!important;padding:6px 8px!important}
+ .sy-account-page .sv-doc-title .sv-status{font-size:9px!important;padding:5px 7px!important}
+ .sy-status-error,.sy-status-warning,.sy-status-success,.sy-status-info{font-size:11px!important}
+}
