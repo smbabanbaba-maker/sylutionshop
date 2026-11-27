@@ -3,6 +3,7 @@
 import {useEffect,useId,useState} from "react";
 import {CountryField,CountryFlag} from "@/components/CountryFlag";
 import {useAccountDefaults} from "@/lib/account-defaults";
+import {StatusNotice} from "@/components/StatusUI";
 import {categories} from "@/lib/catalog";
 import {TRADE_CURRENCIES,currencyLabel} from "@/lib/global-currencies";
 import {PackagePlus,Save,Trash2,UploadCloud,X} from "lucide-react";
@@ -125,7 +126,7 @@ export function SupplierProductDrafts({country,email}:{country:string;email:stri
      <div className="sy-product-options"><label><input type="checkbox" name="sampleAvailable" defaultChecked={initial?.sampleAvailable||false}/> Samples available</label><label><input type="checkbox" name="customPackaging" defaultChecked={initial?.customPackaging||false}/> Custom packaging available</label></div>
     </section>
     <div className="sy-product-form-actions"><div><strong>Ready to save?</strong><small>Your listing will remain a local draft; nothing is published.</small></div><button className="sy-green-action" type="submit"><Save size={17}/> {editIndex===null?"Save Product Draft":"Save Changes"}</button>{editIndex!==null&&<button className="sy-product-cancel" type="button" onClick={reset}>Cancel edit</button>}</div>
-    {notice&&<p className={noticeError?"sy-status-error":"sy-status-info"} role={noticeError?"alert":"status"}>{notice}</p>}
+    {notice&&<StatusNotice tone={noticeError?"error":"info"}>{notice}</StatusNotice>}
    </form>
    {drafts.length>0&&<section className="sy-product-saved-drafts"><div className="sy-product-saved-head"><h3>Saved drafts <span>{drafts.length}</span></h3><p>Stored only on this device</p></div><div className="sy-product-saved-list">{drafts.map((d,index)=><article key={d.id||index} className="sy-product-saved-item"><div className="sy-product-saved-icon"><PackagePlus size={20}/></div><div className="sy-product-saved-copy"><strong>{d.name}</strong><small>{d.country} · {d.category||"Uncategorized"} · {d.currency||""} {d.price||"Price not set"}</small></div><button type="button" onClick={()=>loadDraft(d,index)}>Edit</button><button type="button" className="sy-product-draft-delete" aria-label={"Delete "+d.name} onClick={()=>deleteDraft(index)}><Trash2 size={16}/></button></article>)}</div></section>}
  </section>;
