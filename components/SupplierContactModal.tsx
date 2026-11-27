@@ -1,4 +1,5 @@
 "use client";
+import {DirectTradeNotice} from "@/components/DirectTradeNotice";
 import {useEffect,useId,useRef,useState} from "react";
 import Link from "next/link";
 import {ArrowRight,Building2,CheckCircle2,MessageSquare,Send,X} from "lucide-react";
@@ -67,6 +68,7 @@ export function SupplierContactModal({product,onClose}:{product:Product;onClose:
      {suggestions.map(text=><button key={text} type="button" onClick={()=>setMessage(current=>(current.trim()?current.trim()+"\n":"")+text)}>{text}</button>)}
     </div>
     {error&&<p className="sy-contact-error" role="alert">{error}</p>}
+    <DirectTradeNotice compact/>
     <p className="sy-contact-privacy">Demo preview: your message is saved on this device, not sent to the supplier.</p>
     <button type="submit" className="sy-contact-primary"><Send size={17}/> Save message</button>
    </form>}
