@@ -16,7 +16,7 @@ export function MessagesPreview({onFind,onRequest}:{onFind:()=>void;onRequest:()
  const [notice,setNotice]=useState("");
  const [mobileOpen,setMobileOpen]=useState(false);
  const [emojiOpen,setEmojiOpen]=useState(false);
- const [showProductCard,setShowProductCard]=useState(true);
+ const [showProductCard,setShowProductCard]=useState(false);
  const [rateOpen,setRateOpen]=useState(false);
  const [myRating,setMyRating]=useState(0);
  const attachmentInput=useRef<HTMLInputElement>(null);
@@ -51,7 +51,7 @@ export function MessagesPreview({onFind,onRequest}:{onFind:()=>void;onRequest:()
     <div className="sy-conversation-list-head"><Link href="/account?tab=overview" className="sy-messages-mobile-back" aria-label="Back to account"><ArrowLeft size={22}/></Link><h2>Messages</h2><span className="sy-messages-mobile-count">{groups.length}</span><small>Local preview</small></div>
     <label className="sy-inbox-search"><Search size={17}/><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search people or messages" aria-label="Search people or messages"/></label>
     
-    {visible.length?<div className="sy-conversation-list">{visible.map(g=><button key={g.key} type="button" className={"sy-conversation-row"+(active?.key===g.key?" active":"")} onClick={()=>{setSelected(g.key);setShowProductCard(true);setNotice("");setMobileOpen(true)}}>
+    {visible.length?<div className="sy-conversation-list">{visible.map(g=><button key={g.key} type="button" className={"sy-conversation-row"+(active?.key===g.key?" active":"")} onClick={()=>{setSelected(g.key);setShowProductCard(false);setNotice("");setMobileOpen(true)}}>
       <span className="sy-conversation-avatar"><Building2 size={19}/></span>
       <span className="sy-conversation-summary"><strong>{g.last.supplier}</strong><small>{g.last.message}</small></span>
       <span className="sy-conversation-date">{clock(g.last.createdAt)}</span>
@@ -68,7 +68,7 @@ export function MessagesPreview({onFind,onRequest}:{onFind:()=>void;onRequest:()
      <div className="sy-conversation-messages">{[...active.records].reverse().map(d=><div key={d.id} className="sy-conversation-exchange"><div className="sy-chat-bubble buyer"><span>My message · Draft</span><p>{d.message}</p></div>{d.reply&&<div className="sy-chat-bubble seller"><span>Seller reply · Local preview</span><p>{d.reply}</p></div>}</div>)}</div>
      <form className="sy-chat-composer sy-chat-interactive" onSubmit={addMessage}><div className="sy-chat-rate-wrap"><button type="button" className="sy-chat-rate-trigger" onClick={()=>setRateOpen(v=>!v)}><Star size={14}/> {myRating?"My rating: "+myRating+"/5":"Rate seller"}</button>{rateOpen&&<div className="sy-chat-rate-panel"><span>Rate this seller · Private demo</span><div>{[1,2,3,4,5].map(n=><button type="button" aria-label={"Rate "+n+" stars"} key={n} onClick={()=>rateSeller(n)}><Star size={23} fill={n<=myRating?"#E5B13D":"none"} color="#9F7520"/></button>)}</div></div>}</div>{linkedProduct&&showProductCard&&<div className="sy-chat-product-preview"><Link href={"/products/"+linkedProduct.slug}><img src={linkedProduct.image} alt=""/><span><strong>{linkedProduct.name}</strong><b>{linkedProduct.price}</b></span></Link><button type="button" aria-label="Dismiss product preview" onClick={()=>setShowProductCard(false)}><X size={17}/></button></div>}<label htmlFor="sy-chat-message">Message</label>
       {emojiOpen&&<div className="sy-emoji-panel" role="group" aria-label="Select an emoji">{["😀","😊","👍","❤️","🙏","🤝","🔥","✅","👋","🎉","📦","💬"].map(e=><button key={e} type="button" aria-label={"Insert "+e} onClick={()=>{setComposer(old=>old+e);setEmojiOpen(false)}}>{e}</button>)}</div>}
-      <div className="sy-chat-input-row"><textarea id="sy-chat-message" value={composer} onChange={e=>setComposer(e.target.value)} placeholder="Type your message here" maxLength={3000} rows={2}/>
+      <div className="sy-chat-input-row"><textarea id="sy-chat-message" value={composer} onChange={e=>setComposer(e.target.value)} placeholder="Type your message here" maxLength={3000} rows={1}/>
       <button className="sy-chat-tool" type="button" aria-label={emojiOpen?"Close emoji picker":"Add emoji"} title="Emoji" onClick={()=>setEmojiOpen(v=>!v)}>{emojiOpen?<X size={21}/>:<Smile size={22}/>}</button>
       <button className="sy-chat-tool" type="button" aria-label="Attach a file to draft" title="Attach file (local demo)" onClick={()=>attachmentInput.current?.click()}><Paperclip size={21}/></button>
       <input ref={attachmentInput} hidden type="file" accept="image/*,.pdf,.txt,.doc,.docx" onChange={e=>{const file=e.target.files?.[0];if(file){if(file.size>10*1024*1024){setNotice("File must be smaller than 10 MB.");}else{setComposer(current=>(current.trim()?current+"\n":"")+"[File to attach: "+file.name+"]");setNotice("Filename added to local draft. File is not uploaded.");}e.target.value=""}}}/>
