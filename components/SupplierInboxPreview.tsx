@@ -1,6 +1,6 @@
 "use client";
-import {useEffect,useState} from "react";
-import {MessageSquare,Search,Send,Package,ArrowLeft} from "lucide-react";
+import {useEffect,useRef,useState} from "react";
+import {MessageSquare,Search,Send,Package,ArrowLeft,Store,Smile,Paperclip,X} from "lucide-react";
 import Link from "next/link";
 import {MESSAGE_DRAFT_KEY,type SupplierMessageDraft} from "@/components/SupplierContactModal";
 
@@ -12,6 +12,8 @@ export function SupplierInboxPreview({company}:{company:string}){
  const [query,setQuery]=useState("");
  const [notice,setNotice]=useState("");
  const [mobileOpen,setMobileOpen]=useState(false);
+ const [emojiOpen,setEmojiOpen]=useState(false);
+ const fileInput=useRef<HTMLInputElement>(null);
  useEffect(()=>{
   const refresh=()=>setMessages(load());
   refresh();
@@ -51,9 +53,16 @@ export function SupplierInboxPreview({company}:{company:string}){
     </div>
     <div className="sy-supplier-inbox-detail">
       {active&&activeGroup?<div className="sy-conversation-detail">
-        <header className="sy-conversation-chat-head"><button className="sy-conversation-back" onClick={()=>setMobileOpen(false)} aria-label="Back to inbox"><ArrowLeft size={18}/></button><span className="sy-conversation-avatar"><Package size={18}/></span><div><strong>{active.product}</strong><small>Buyer enquiry · Demo conversation</small></div></header>
+        <header className="sy-conversation-chat-head"><button className="sy-conversation-back" onClick={()=>setMobileOpen(false)} aria-label="Back to inbox"><ArrowLeft size={18}/></button><span className="sy-conversation-avatar"><Package size={18}/></span><div><strong>{active.product}</strong><small>Buyer enquiry · Demo conversation</small></div><Link className="sy-conversation-profile" href={"/suppliers/"+encodeURIComponent(company)} title="Open my demo shop" aria-label="Open my demo shop"><Store size={21}/><span>Shop</span></Link></header>
         <div className="sy-conversation-messages">{[...activeGroup.records].reverse().map(m=><div className="sy-conversation-exchange" key={m.id}><div className="sy-chat-bubble seller"><span>Buyer message · Local draft</span><p>{m.message}</p></div>{m.reply&&<div className="sy-chat-bubble buyer"><span>Your demo reply</span><p>{m.reply}</p></div>}</div>)}</div>
-        <form className="sy-chat-composer" onSubmit={e=>{e.preventDefault();saveReply()}}><label htmlFor="sy-supplier-reply">Reply to buyer</label><div><textarea id="sy-supplier-reply" rows={2} value={reply} onChange={e=>setReply(e.target.value)} placeholder="Type a reply..."/><button type="submit" className="sy-green-action" disabled={!reply.trim()} aria-label="Save demo reply"><Send size={17}/></button></div>{notice&&<small role="status">{notice}</small>}<small>Saved only on this browser. The buyer is not notified.</small></form>
+        <form className="sy-chat-composer sy-chat-interactive" onSubmit={e=>{e.preventDefault();saveReply()}}><label htmlFor="sy-supplier-reply">Reply to buyer</label>
+        {emojiOpen&&<div className="sy-emoji-panel" role="group" aria-label="Select an emoji">{["😀","😊","👍","❤️","🙏","🤝","🔥","✅","👋","🎉","📦","💬"].map(e=><button key={e} type="button" onClick={()=>{setReply(v=>v+e);setEmojiOpen(false)}}>{e}</button>)}</div>}
+        <div className="sy-chat-input-row"><textarea id="sy-supplier-reply" rows={2} value={reply} onChange={e=>setReply(e.target.value)} placeholder="Type your message here"/>
+         <button type="button" className="sy-chat-tool" title="Emoji" aria-label="Emoji" onClick={()=>setEmojiOpen(v=>!v)}>{emojiOpen?<X size={21}/>:<Smile size={22}/>}</button>
+         <button type="button" className="sy-chat-tool" title="Attach file (local demo)" aria-label="Attach file to draft" onClick={()=>fileInput.current?.click()}><Paperclip size={21}/></button>
+         <input ref={fileInput} hidden type="file" accept="image/*,.pdf,.txt,.doc,.docx" onChange={e=>{const file=e.target.files?.[0];if(file){if(file.size>10*1024*1024){setNotice("File must be smaller than 10 MB.");}else{setReply(v=>(v.trim()?v+"\n":"")+"[File to attach: "+file.name+"]");setNotice("Filename added to demo reply, not uploaded.");}e.target.value=""}}}/>
+         <button type="submit" className="sy-green-action sy-chat-send" disabled={!reply.trim()} aria-label="Save demo reply"><Send size={18}/></button>
+        </div>{notice&&<small className={/blocked|smaller|unable|error/i.test(notice)?"sy-status-error":"sy-status-info"} role="status">{notice}</small>}<small className="sy-chat-demo-note">Demo · Messages and files are not delivered.</small></form>
       </div>:<div className="sy-supplier-inbox-empty"><MessageSquare size={30}/><strong>No messages yet</strong></div>}
     </div>
    </div>}
