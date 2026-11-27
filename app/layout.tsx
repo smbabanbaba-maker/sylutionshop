@@ -1,5 +1,5 @@
 import {TradeNavigation} from "@/components/TradeNavigation";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import "./styles/product.css";
 import "./styles/dashboard.css";
@@ -23,6 +23,7 @@ import "./styles/ultra-hd.css";
 import "./styles/analytics-dashboard.css";
 import "./styles/semantic-system.css";
 import "./styles/responsive-final.css";
+export const viewport: Viewport = {width:"device-width",initialScale:1,viewportFit:"cover"};
 export const metadata: Metadata = {
   metadataBase: new URL("https://sylutionshop.vercel.app"),
   title: {default:"SYLUTION | Global B2B Marketplace",template:"%s | SYLUTION"},
