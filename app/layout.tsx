@@ -16,6 +16,7 @@ import "./styles/mobile-polish.css";
 import "./styles/semantic-colors.css";
 import "./styles/supplier-contact.css";
 import "./styles/semantic-status.css";
+import "./styles/app-wide-colors.css";
 export const metadata: Metadata = {
   metadataBase: new URL("https://sylutionshop.vercel.app"),
   title: {default:"SYLUTION | Global B2B Marketplace",template:"%s | SYLUTION"},
