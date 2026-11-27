@@ -290,3 +290,104 @@
  .sy-direct-trade-notice small{font-size:10px}
  .sy-store-trade-notice{padding:6px 10px 10px}
 }
+
+/* Buyer/Seller trade workflow, orders, listings and trust center */
+.sy-trade-workflow,.sy-seller-products{display:grid;gap:14px;min-width:0;width:100%}
+.sy-trade-workflow-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.sy-trade-workflow-head>div{flex:1;min-width:185px}
+.sy-trade-workflow-head h2{color:#142D40;font-size:clamp(19px,2vw,25px);letter-spacing:-.03em;margin:6px 0}
+.sy-trade-workflow-head p{font-size:12px;color:#657A8A;line-height:1.55;margin:0}
+.sy-trade-workflow-head .sy-green-action,.sy-seller-products .sy-green-action,
+.sy-trade-form>.sy-green-action,.sy-trade-empty>.sy-green-action{
+ display:inline-flex;align-items:center;justify-content:center;gap:7px;text-decoration:none;
+ background:#007B60!important;color:#fff!important;border:0;padding:11px 15px;
+ border-radius:10px;font-size:12px;font-weight:800;min-height:41px
+}
+.sy-trade-feedback{padding:10px 13px;border-radius:9px;background:#E7F6F0;border:1px solid #C3E4D6;color:#00694F;font-size:12px;margin:0;line-height:1.5}
+.sy-trade-form{display:grid;gap:15px;background:white;border:1px solid #DBE7EC;border-radius:13px;padding:19px;min-width:0}
+.sy-trade-form h3{margin:0;color:#153348;font-size:17px}
+.sy-trade-form h3 span{font-size:10px;font-weight:700;color:#8D620D;background:#FFF3D5;border-radius:18px;padding:5px 9px;margin-left:8px}
+.sy-trade-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.sy-trade-form-grid label{display:flex;flex-direction:column;gap:7px;font-size:12px;font-weight:750;color:#314E61;min-width:0}
+.sy-trade-form-grid label.wide{grid-column:1/-1}
+.sy-trade-form-grid :is(input,select,textarea){font:inherit;font-size:14px;font-weight:450;background:#fff;color:#153348;border:1px solid #CDDDE5;min-height:43px;padding:10px 11px;border-radius:9px;min-width:0;width:100%;max-width:100%;box-sizing:border-box}
+.sy-trade-form-grid textarea{resize:vertical;min-height:95px}
+.sy-trade-form-total{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px;border-radius:10px;background:#F2F8F6}
+.sy-trade-form-total span{color:#5B746B;font-size:12px}.sy-trade-form-total strong{color:#006F55;font-size:19px}
+.sy-trade-search{display:flex;align-items:center;gap:8px;background:white;border:1px solid #D7E4E9;border-radius:10px;padding:10px 12px;color:#6A8591}
+.sy-trade-search input{background:transparent;border:0!important;outline:none!important;min-width:0;flex:1;font-size:13px;padding:1px!important;color:#243F52}
+.sy-trade-cards{display:grid;gap:12px}
+.sy-trade-card{background:#fff;border:1px solid #DFE9EE;border-radius:13px;padding:17px;display:grid;gap:14px;min-width:0}
+.sy-trade-card-top{display:flex;align-items:center;gap:11px;min-width:0}
+.sy-trade-card-icon{width:38px;height:38px;flex:none;display:grid;place-items:center;border-radius:10px;background:#E7F5EF;color:#007B60}
+.sy-trade-card-top>div{flex:1;min-width:0;display:grid;gap:4px}
+.sy-trade-card-top>div strong{color:#16374A;font-size:14px;overflow-wrap:anywhere}
+.sy-trade-card-top>div small{font-size:11px;color:#738A97}
+.sy-trade-status{display:inline-flex;align-items:center;white-space:nowrap;font-size:10px!important;font-weight:800!important;padding:5px 8px;border-radius:20px;border:1px solid #F0DCAD;color:#8C610A;background:#FFF5DB}
+.sy-trade-status.success{background:#E5F6EB;color:#067447;border-color:#C5E8D4}
+.sy-trade-status.danger{background:#FDEBEB;color:#A92D2D;border-color:#F5CCCC}
+.sy-trade-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.sy-trade-metrics>div{border:1px solid #E3EBEF;background:#F8FAFB;border-radius:9px;padding:11px;display:grid;gap:5px;min-width:0}
+.sy-trade-metrics small{font-size:10px;color:#718692}
+.sy-trade-metrics strong{font-size:13px;line-height:1.35;color:#17384D;overflow-wrap:anywhere}
+.sy-trade-extra{display:flex;flex-wrap:wrap;gap:7px}
+.sy-trade-extra span{font-size:10px;color:#597180;background:#F2F7F9;border-radius:7px;padding:7px 9px}
+.sy-trade-extra p{width:100%;margin:2px 0;font-size:11px;color:#657988;line-height:1.5}
+.sy-trade-actions{display:flex;gap:8px;flex-wrap:wrap}
+.sy-trade-actions button{display:inline-flex;gap:6px;align-items:center;padding:9px 11px;background:#EEF8F4;border:1px solid #CBE6D9;border-radius:8px;color:#05765C;font-size:11px;font-weight:750;cursor:pointer}
+.sy-trade-actions button.danger-text{background:#FEF3F3;border-color:#F4D6D6;color:#B02D35}
+.sy-trade-empty{display:grid;justify-items:center;text-align:center;gap:10px;padding:36px 17px;background:#fff;border:1px dashed #CCDCE4;border-radius:13px;color:#007B60}
+.sy-trade-empty strong{font-size:15px;color:#183A4C}.sy-trade-empty p{font-size:12px;color:#768997;line-height:1.6;max-width:410px;margin:0}
+.sy-trade-order-note,.sy-trade-demo-footnote{display:flex;gap:7px;align-items:flex-start;color:#7C8290;font-size:11px;line-height:1.55;margin:0}
+.sy-trade-demo-footnote svg{flex:none;margin-top:2px;color:#A77C27}
+.sy-seller-products-meta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.sy-seller-products-meta>div{background:#fff;border:1px solid #DAE7EC;border-radius:11px;display:grid;gap:5px;padding:14px}
+.sy-seller-products-meta strong{color:#143849;font-size:24px}.sy-seller-products-meta span{font-size:11px;color:#738793}
+.sy-seller-products-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.sy-seller-product-card{min-width:0;background:#fff;border:1px solid #DCE8EE;border-radius:12px;overflow:hidden}
+.sy-seller-product-photo{aspect-ratio:2/1;display:grid;place-content:center;justify-items:center;gap:6px;background:#EDF4F5;color:#8498A5}
+.sy-seller-product-photo span{font-size:10px;color:#718895}
+.sy-seller-product-copy{padding:12px;display:grid;gap:6px}
+.sy-seller-product-copy h3{margin:0;font-size:14px;color:#17374B;overflow-wrap:anywhere}
+.sy-seller-product-copy p{font-size:11px;color:#738895;margin:0}.sy-seller-product-copy strong{font-size:13px;color:#007B60}.sy-seller-product-copy small{font-size:10px;color:#718591}
+.sy-seller-product-actions{display:flex;gap:8px;padding:0 12px 12px}
+.sy-seller-product-actions :is(a,button){display:flex;align-items:center;justify-content:center;gap:6px;border-radius:8px;padding:9px 10px;border:1px solid #C8DED5;background:#F0F9F5;color:#007B60;text-decoration:none;font-weight:750;font-size:11px}
+.sy-seller-product-actions button{background:#FFF1F2;border-color:#F0CED2;color:#AC293C}
+.sy-safety-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}
+.sy-safety-grid article{padding:16px;border:1px solid #DCE8ED;border-radius:12px;background:#fff;display:grid;align-content:start;gap:8px}
+.sy-safety-grid article svg{color:#007B60}
+.sy-safety-grid h3{margin:0;color:#173649;font-size:13px}.sy-safety-grid p{margin:0;color:#6B8290;font-size:11px;line-height:1.55}
+.sy-safety-report{display:flex;align-items:flex-start;gap:10px;padding:12px;border:1px solid #E2EAEE;border-radius:10px}
+.sy-safety-report>span{color:#A97B20}.sy-safety-report>div{flex:1;display:grid;gap:5px;min-width:0}
+.sy-safety-report strong{color:#1B394D;font-size:12px}.sy-safety-report small{color:#788D9A;font-size:10px}
+.sy-safety-report p{color:#586F80;font-size:11px;line-height:1.5;margin:0;overflow-wrap:anywhere}
+.sy-safety-report button{border:0;background:#FDEDEE;color:#AD2C33;border-radius:8px;padding:8px}
+@media(max-width:767px){
+ .sy-trade-workflow-head h2{font-size:19px}
+ .sy-trade-workflow-head p{font-size:11px}
+ .sy-trade-form,.sy-trade-card{padding:12px;border-radius:11px}
+ .sy-trade-form-grid{gap:10px 8px}
+ .sy-trade-form-grid label{font-size:11px}
+ .sy-trade-form-grid :is(input,select,textarea){font-size:16px!important;min-height:42px;padding:9px}
+ .sy-trade-form-total strong{font-size:16px}
+ .sy-trade-card-top{flex-wrap:wrap}
+ .sy-trade-card-top .sy-trade-status{margin-left:49px}
+ .sy-trade-metrics{gap:6px}
+ .sy-trade-metrics>div{padding:8px}
+ .sy-trade-metrics strong{font-size:11px}
+ .sy-trade-actions button{font-size:10px}
+ .sy-seller-products-grid{gap:8px}
+ .sy-seller-product-photo{aspect-ratio:1/1}
+ .sy-seller-product-copy{padding:9px}.sy-seller-product-copy h3{font-size:12px}
+ .sy-seller-products-meta>div{padding:10px}.sy-seller-products-meta strong{font-size:20px}.sy-seller-products-meta span{font-size:10px}
+ .sy-seller-product-actions{padding:0 9px 10px;gap:5px}
+ .sy-seller-product-actions :is(a,button){font-size:10px;padding:8px}
+ .sy-safety-grid{grid-template-columns:minmax(0,1fr)}
+ .sy-safety-grid article{padding:12px}
+}
+@media(max-width:370px){
+ .sy-trade-form-grid{grid-template-columns:minmax(0,1fr)}
+ .sy-trade-form-grid label.wide{grid-column:auto}
+ .sy-trade-metrics{grid-template-columns:minmax(0,1fr)}
+ .sy-trade-card-top .sy-trade-status{margin-left:0}
+}
