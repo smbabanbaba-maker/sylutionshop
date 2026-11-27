@@ -1,5 +1,5 @@
 "use client";
-import {useState} from "react";
+import {useEffect,useId,useRef,useState} from "react";
 import worldCountries from "world-countries";
 
 // Shared ISO 3166-1 country and territory data for all SYLUTION forms.
@@ -28,12 +28,30 @@ export function CountryFlag({country,compact=false}:{country:string;compact?:boo
  </span>;
 }
 export function CountryField({value,onChange,includeAny=false,disabled=false,required=false,label="Country"}:{value:string;onChange:(name:string)=>void;includeAny?:boolean;disabled?:boolean;required?:boolean;label?:string}){
- return <span className="sy-country-field">
-  {value&&value!=="Any country"?<CountryFlag country={value} compact/>:<span aria-hidden="true">🌍</span>}
-  <select aria-label={label} value={value} disabled={disabled} required={required} onChange={e=>onChange(e.target.value)}>
-    {includeAny&&<option value="">Any country</option>}
-    {!COUNTRY_NAMES.includes(value)&&value&&<option value={value}>{value} (saved)</option>}
-    {COUNTRIES.map(c=><option key={c.code} value={c.name}>{c.emoji} {c.name}</option>)}
-  </select>
- </span>;
+ const [open,setOpen]=useState(false);
+ const [query,setQuery]=useState("");
+ const container=useRef<HTMLDivElement>(null);
+ const searchRef=useRef<HTMLInputElement>(null);
+ const listId=useId();
+ const filtered=COUNTRIES.filter(c=>(c.name+" "+c.code).toLowerCase().includes(query.trim().toLowerCase()));
+ useEffect(()=>{if(!open)return;const close=(event:MouseEvent)=>{if(!container.current?.contains(event.target as Node))setOpen(false)};document.addEventListener("mousedown",close);return()=>document.removeEventListener("mousedown",close)},[open]);
+ useEffect(()=>{if(open)searchRef.current?.focus()},[open]);
+ const select=(country:string)=>{onChange(country);setOpen(false);setQuery("")};
+ return <div className={"sy-country-picker"+(disabled?" disabled":"")} ref={container}>
+  <button type="button" className="sy-country-picker-trigger" aria-expanded={open} aria-controls={listId} aria-label={label+": "+(value||"Any country")} disabled={disabled} onClick={()=>setOpen(o=>!o)}>
+   {value?<CountryFlag country={value} compact/>:<span aria-hidden="true">🌍</span>}
+   <span className="sy-country-picker-value">{value||"Any country"}</span>
+   <span aria-hidden="true">⌄</span>
+  </button>
+  {required&&<input aria-hidden="true" tabIndex={-1} className="sy-country-required" value={value} onChange={()=>{}} required/>}
+  {open&&<div id={listId} className="sy-country-picker-menu">
+   <input ref={searchRef} type="search" aria-label={"Search "+label} className="sy-country-picker-search" placeholder="Search all countries and territories..." value={query} onChange={e=>setQuery(e.target.value)} onKeyDown={e=>{if(e.key==="Escape")setOpen(false);if(e.key==="Enter"&&filtered.length===1){e.preventDefault();select(filtered[0].name)}}}/>
+   <div className="sy-country-picker-options" role="group" aria-label={label+" options"}>
+    {includeAny&&<button type="button" onClick={()=>select("")}><span aria-hidden="true">🌍</span><span>Any country</span></button>}
+    {!COUNTRY_NAMES.includes(value)&&value&&<button type="button" onClick={()=>select(value)}>{value} (saved)</button>}
+    {filtered.map(c=><button key={c.code} type="button" className={c.name===value?"selected":""} onClick={()=>select(c.name)}><CountryFlag country={c.name} compact/><span>{c.name}</span><small>{c.code.toUpperCase()}</small></button>)}
+    {!filtered.length&&<p>No matching country or territory.</p>}
+   </div>
+  </div>}
+ </div>;
 }
