@@ -259,3 +259,33 @@
   flex:0 0 39px!important;min-width:39px!important;width:39px!important;height:40px!important;
  }
 }
+
+.sy-chat-interactive .sy-chat-rate-wrap{
+ display:flex!important;align-items:center;gap:9px!important;
+ width:100%;padding:0 3px!important;background:transparent!important;
+}
+.sy-chat-interactive button.sy-chat-rate-trigger{
+ display:inline-flex!important;align-items:center!important;gap:5px!important;
+ width:auto!important;min-width:0!important;height:29px!important;
+ padding:5px 10px!important;border-radius:18px!important;
+ background:#F1F4F6!important;color:#4D5E69!important;border:0!important;
+ box-shadow:none!important;font-size:11px!important;font-weight:700!important;
+}
+.sy-chat-interactive .sy-chat-rate-panel{
+ display:flex!important;align-items:center!important;gap:5px!important;flex-wrap:wrap;
+ border:1px solid #eadbb3;border-radius:11px;padding:5px 8px!important;
+ background:#fffaec!important;min-width:0;
+}
+.sy-chat-interactive .sy-chat-rate-panel>span{font-size:10px;color:#896222;font-weight:650}
+.sy-chat-interactive .sy-chat-rate-panel>div{display:flex;align-items:center;gap:1px}
+.sy-chat-interactive .sy-chat-rate-panel button{
+ display:grid!important;place-items:center!important;
+ width:29px!important;min-width:29px!important;height:28px!important;
+ border:0!important;border-radius:7px!important;
+ background:transparent!important;color:#8B6319!important;
+ box-shadow:none!important;padding:0!important;
+}
+@media(max-width:767px){
+ .sy-chat-interactive .sy-chat-rate-panel{flex-wrap:wrap}
+ .sy-chat-interactive .sy-chat-rate-wrap{gap:5px!important}
+}
