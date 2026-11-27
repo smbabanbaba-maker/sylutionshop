@@ -391,3 +391,29 @@
  .sy-trade-metrics{grid-template-columns:minmax(0,1fr)}
  .sy-trade-card-top .sy-trade-status{margin-left:0}
 }
+
+/* Supplier profile cover banner */
+.sy-seller-cover-preview{grid-column:1/-1;position:relative;min-height:115px;border-radius:11px;overflow:hidden;background:linear-gradient(110deg,#0B1930,#075A53);display:grid;place-items:center;color:white;margin-bottom:11px}
+.sy-seller-cover-preview>img{width:100%;height:145px;object-fit:cover;display:block}
+.sy-seller-cover-preview>div{display:grid;place-items:center;gap:8px;padding:18px;color:#D5F0E5;font-size:12px;text-align:center}
+/* Read-only operations preview */
+.sy-admin-preview{background:#F4F7FA;color:#183548;min-height:100vh;display:grid;align-content:start;gap:19px;padding:24px max(16px,calc((100vw - 1180px)/2))}
+.sy-admin-preview>header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.sy-admin-preview>header>a:not(.sy-admin-brand){color:#007B60;text-decoration:none;font-size:12px;font-weight:750}
+.sy-admin-brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#112D43;font-size:15px;font-weight:850}
+.sy-admin-brand b{width:38px;height:38px;display:grid;place-items:center;border-radius:10px;color:#fff;background:#007B60;font-size:19px}
+.sy-admin-brand span{display:grid;gap:1px}.sy-admin-brand small{color:#697E8B;font-size:10px;font-weight:500}
+.sy-admin-guard{display:flex;align-items:flex-start;gap:13px;background:#FFFAE8;border:1px solid #ECD9A2;padding:18px;border-radius:13px;color:#835C16}
+.sy-admin-guard svg{flex:none}.sy-admin-guard strong{font-size:14px}.sy-admin-guard p{font-size:11px;line-height:1.55;margin:5px 0 0;max-width:850px}
+.sy-admin-stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.sy-admin-stat-grid>div{background:white;border:1px solid #DEE8ED;border-radius:12px;padding:16px;display:grid;gap:8px}
+.sy-admin-stat-grid strong{font-size:25px;color:#1B394E}.sy-admin-stat-grid span{font-size:11px;color:#758998}
+.sy-admin-preview>footer{display:flex;gap:7px;align-items:center;font-size:11px;color:#768A95}
+@media(max-width:767px){
+ .sy-admin-preview{padding:14px 10px;gap:12px}
+ .sy-admin-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .sy-admin-stat-grid>div{padding:12px}
+ .sy-admin-guard{padding:12px}
+ .sy-seller-cover-preview{min-height:93px}
+ .sy-seller-cover-preview>img{height:110px}
+}
