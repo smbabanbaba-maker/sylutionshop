@@ -1,3 +1,4 @@
+import {DirectTradeNotice} from "@/components/DirectTradeNotice";
 "use client";
 import Link from "next/link";
 import {createPortal} from "react-dom";
@@ -150,6 +151,7 @@ export function DemoAccountPage(){
     {profile.role==="supplier"&&section==="incoming"&&<SupplierInboxPreview company={profile.company}/>}
     {section==="supplier"&&<div className="sy-supplier-workspace">
      <div className="sy-supplier-intro"><div><span className="sy-mini-overline">SYLUTION / SUPPLIER WORKSPACE</span><h3>Grow your wholesale business</h3><p>Store tools and buyer-lead preview. Supplier statistics are not connected to real customers.</p></div><span className="sy-free-plan">Free plan · Demo</span></div>
+     <DirectTradeNotice compact/>
      <div className="trade-supplier-actions"><button className="sy-green-action" onClick={()=>switchTo("add-product")}>Add Product</button><button className="sy-green-action" onClick={()=>switchTo("incoming")}>Incoming Requests</button></div>
      <div className="sy-supplier-columns"><div className="sy-supplier-primary">
        <div className="sy-panel"><div className="sy-supplier-title-row"><h3>Your store performance</h3><span>Since you joined · Demo</span></div><div className="sy-store-stats">
