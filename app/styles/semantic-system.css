@@ -145,3 +145,35 @@
  .sy-semantic-notice{font-size:11px;padding:10px 11px}
  .sy-semantic-badge{font-size:9px}
 }
+
+/* Dashboard status badges are based on real underlying state, never fabricated growth. */
+.sy-account-page .sy-analytics-stat[data-tone="error"]:not(.sy-analytics-featured){
+ border-color:var(--sy-status-error-border)!important;
+ background:linear-gradient(135deg,#FFF,#FFF5F6)!important;
+}
+.sy-account-page .sy-analytics-stat[data-tone="error"] .sy-analytics-icon{
+ color:var(--sy-status-error)!important;background:var(--sy-status-error-bg)!important;
+}
+.sy-account-page .sy-analytics-stat[data-tone="error"]>strong{color:var(--sy-status-error)!important;font-size:clamp(17px,1.7vw,23px)!important}
+.sy-account-page .sy-analytics-stat[data-tone="warning"]:not(.sy-analytics-featured){border-color:var(--sy-status-warning-border)!important}
+.sy-account-page .sy-analytics-stat[data-tone="warning"] .sy-analytics-icon{
+ color:var(--sy-status-warning)!important;background:var(--sy-status-warning-bg)!important;
+}
+/* Demo transactions: self-reported milestones are information, not confirmed payment/shipping. */
+.sy-account-page .sy-trade-order-note{
+ display:flex;align-items:flex-start;gap:8px;border-radius:8px;
+ border:1px solid var(--sy-status-info-border)!important;
+ background:var(--sy-status-info-bg)!important;padding:9px 11px!important;
+}
+.sy-account-page .sy-safety-report>span,
+.sy-account-page .sy-safety-grid article:first-child>svg{color:var(--sy-status-warning)!important}
+.sy-account-page .sy-safety-grid article:nth-child(2)>svg{color:var(--sy-status-error)!important}
+.sy-account-page .sy-safety-grid article:nth-child(3)>svg{color:var(--sy-status-info)!important}
+.sy-account-page .sy-trade-form h3>span{
+ color:var(--sy-status-warning)!important;background:var(--sy-status-warning-bg)!important;
+ border:1px solid var(--sy-status-warning-border)!important;
+}
+.sy-account-page .sy-trade-card .sy-trade-actions .danger-text:hover,
+.sy-account-page .sy-product-draft-delete:hover{
+ background:#FFE0E5!important;border-color:var(--sy-status-error)!important;
+}
