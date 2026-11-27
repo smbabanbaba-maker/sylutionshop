@@ -33,7 +33,7 @@ export function ProductCard({product,onInquiry,preview}:{product:Product;onInqui
  useEffect(()=>{const sync=()=>{try{const saved=JSON.parse(localStorage.getItem("sylution_saved_products")||"[]") as string[];setLiked(saved.includes(product.slug));}catch{}};sync();window.addEventListener("sylution-shortlist-change",sync);window.addEventListener("storage",sync);return()=>{window.removeEventListener("sylution-shortlist-change",sync);window.removeEventListener("storage",sync)};},[product.slug]);
  function toggleFavorite(){const next=!liked;setLiked(next);try{const stored=JSON.parse(localStorage.getItem("sylution_saved_products")||"[]") as string[];localStorage.setItem("sylution_saved_products",JSON.stringify(next?[...new Set([...stored,product.slug])]:stored.filter(s=>s!==product.slug)));window.dispatchEvent(new Event("sylution-shortlist-change"));}catch{}}
  return <article className="product-card"><Link href={"/products/"+product.slug} className="product-image"><span className="image-fallback" aria-hidden="true">{product.category==="Agriculture"?"🌾":product.category==="Electronics"?"🔌":product.category==="Energy"?"☀️":product.category==="Industrial"?"⚙️":"📦"}</span><img src={product.image} alt={product.name} loading="lazy" decoding="async" onError={e=>{e.currentTarget.style.display="none";}}/><span className="new-chip">{preview?.recent?"New · Demo":"Sample"}</span></Link><button className={"favorite"+(liked?" active":"")} aria-label={liked?"Remove from favorites":"Save to favorites"} aria-pressed={liked} onClick={toggleFavorite}><Heart size={18} fill={liked?"currentColor":"none"}/></button>
- <div className="card-body"><Link href={"/products/"+product.slug} className="product-name">{product.name}</Link><div className="product-price">{cash(product.price)} <span>/ {product.unit}</span></div><p className="product-moq">Min. order: {product.moq}</p><div className="supplier-name">{product.supplier}</div><div className="country"><CountryFlag country={product.country} compact/> {product.country} <span className="sample-pill">Demo</span></div>{preview&&<div className="catalog-card-meta">{preview.rating>0&&<span>★ {preview.rating.toFixed(1)} sample</span>}<span>{preview.terms.join(" · ")}</span>{preview.deal&&<span>Sample deal</span>}</div>}<div className="card-bottom"><button onClick={()=>onInquiry(product)} className="inquiry-btn"><MessageSquare size={15}/> Message Seller</button><Link className="chat-link" href={"/products/"+product.slug} aria-label="See product details"><Package size={17}/></Link></div></div>
+ <div className="card-body"><Link href={"/products/"+product.slug} className="product-name">{product.name}</Link><div className="product-price">{cash(product.price)} <span>/ {product.unit}</span></div><p className="product-moq">Min. order: {product.moq}</p><div className="supplier-name">{product.supplier}</div><div className="country"><CountryFlag country={product.country} compact/> {product.country} <span className="sample-pill">Demo</span></div>{preview&&<div className="catalog-card-meta"><span>{preview.terms.join(" · ")}</span>{preview.deal&&<span>Sample deal</span>}</div>}<div className="card-bottom"><button onClick={()=>onInquiry(product)} className="inquiry-btn"><MessageSquare size={15}/> Message Seller</button><Link className="chat-link" href={"/products/"+product.slug} aria-label="See product details"><Package size={17}/></Link></div></div>
  </article>;
 }
 const listings = products.map((product,index)=>({product,...previewListing(product,index)}));
@@ -193,19 +193,6 @@ export function ProductDetail({product}:{product:Product}){
  const alternatives=(related.length>=3?related:[...related,...products.filter(p=>p.id!==product.id&&!related.some(r=>r.id===p.id))]).slice(0,4);
  const supplierProducts=products.filter(p=>p.supplier===product.supplier).slice(0,5);
  const compared=products.find(p=>p.slug===compareSlug);
- const demoMarkets=[
-  {code:"us",flag:"🇺🇸",name:"United States"},
-  {code:"gb",flag:"🇬🇧",name:"United Kingdom"},
-  {code:"au",flag:"🇦🇺",name:"Australia"},
-  {code:"ca",flag:"🇨🇦",name:"Canada"},
-  {code:"de",flag:"🇩🇪",name:"Germany"}
- ];
- const demoRegions=[
-  {name:"Western Europe",pct:50},
-  {name:"North America",pct:33},
-  {name:"Oceania",pct:17}
- ];
-
  function share(){
    const url=window.location.href;
    if(navigator.share){navigator.share({title:product.name,url}).catch(()=>{});}
@@ -287,7 +274,7 @@ export function ProductDetail({product}:{product:Product}){
       <h2>{product.supplier}</h2>
       <div className="supplier-subline">
         <span className="demo-trust-badge sy-status-unverified"><X size={14}/> Unverified <sup>DEMO</sup></span>
-        <span className="demo-star-rating">4.3 <span>★</span> <small>DEMO</small></span>
+        
         <span className="supplier-separator">•</span>
         <span className="supplier-country"><CountryFlag country={product.country} compact/>{product.country}</span>
         <span className="supplier-separator">•</span>
@@ -299,25 +286,16 @@ export function ProductDetail({product}:{product:Product}){
   <div className="supplier-profile-body">
     <div className="profile-section-heading"><h3>Activity signals</h3><span className="demo-data-note">Demo metrics · not real activity</span></div>
     <div className="supplier-stats">
-      <div><span>Total inquiries received</span><strong>2</strong></div>
-      <div><span>Last supplier active</span><strong>Just now</strong></div>
-      <div><span>Year Established</span><strong>2013</strong></div>
-      <div><span>Number of Employees</span><strong>11–50 employees</strong></div>
+      <div><span>Total inquiries received</span><strong>Not tracked</strong></div>
+      <div><span>Last supplier active</span><strong>Not available</strong></div>
+      <div><span>Year Established</span><strong>Not verified</strong></div>
+      <div><span>Number of Employees</span><strong>Not provided</strong></div>
     </div>
     <div className="supplier-insights-grid">
       <div className="export-markets">
         <h3>Export Markets</h3>
-        <p>Example distribution — illustrative data only.</p>
-        <div className="demo-market-flags">
-          {demoMarkets.map(m=><span key={m.code} className="demo-market-chip"><CountryFlag country={m.name} compact/> {m.name}</span>)}
-        </div>
-        <div className="demo-market-bars">
-          {demoRegions.map(r=><div className="demo-market-bar" key={r.name}>
-            <span>{r.name}</span>
-            <div className="demo-bar-track"><div className="demo-bar-fill" style={{width:r.pct+"%"}}/></div>
-            <strong>{r.pct}%</strong>
-          </div>)}
-        </div>
+        <p>Export markets and trade history will display only when a real supplier provides them and their verification status is clearly shown.</p>
+        <span className="demo-data-note">No verified export market data available</span>
       </div>
       <div className="verification-information">
         <h3>Verification information</h3>
@@ -331,8 +309,8 @@ export function ProductDetail({product}:{product:Product}){
           </div>
           <div>
             <h4>External Validation</h4>
-            <div className="validation-line"><span>Company</span><strong>Demo confirmed</strong></div>
-            <div className="validation-line"><span>Address</span><strong>Demo confirmed</strong></div>
+            <div className="validation-line"><span>Company</span><strong>Not independently checked</strong></div>
+            <div className="validation-line"><span>Address</span><strong>Not independently checked</strong></div>
             <p className="demo-validation-notice">Sample presentation only. No real company checks or certifications have been performed.</p>
           </div>
         </div>
@@ -345,7 +323,7 @@ export function ProductDetail({product}:{product:Product}){
          <section className="detail-section"><div className="detail-section-title"><h2>Products of this Supplier</h2></div><div className="related-grid">{supplierProducts.map(p=><ProductCard key={p.id} product={p} onInquiry={setSelected}/>)}</div></section>
        </div>
        <aside className="product-detail-aside">
-         <div className="detail-supplier-card"><div className="aside-heading"><h3>Contact this Supplier</h3><span className="sy-supplier-demo-badge">Demo supplier · Unverified</span></div><div className="aside-supplier-heading"><div className="supplier-avatar"><Building2 size={24}/></div><div><strong>{product.supplier}</strong><p><span className="supplier-country"><CountryFlag country={product.country} compact/> {product.country}</span></p></div></div><div className="aside-demo-rating"><span>4.3 <b>★</b> <small>Demo rating</small></span><span>Example supplier profile</span></div><div className="aside-attributes"><div><span>Company type</span><strong>Distributor / Wholesaler (demo)</strong></div><div><span>Location</span><strong>{product.country}</strong></div><div><span>Established</span><strong>Not independently confirmed</strong></div></div><button className="detail-action-green" onClick={()=>setContactOpen(true)}><MessageSquare size={17}/> Message Seller</button></div>
+         <div className="detail-supplier-card"><div className="aside-heading"><h3>Contact this Supplier</h3><span className="sy-supplier-demo-badge">Demo supplier · Unverified</span></div><div className="aside-supplier-heading"><div className="supplier-avatar"><Building2 size={24}/></div><div><strong>{product.supplier}</strong><p><span className="supplier-country"><CountryFlag country={product.country} compact/> {product.country}</span></p></div></div><div className="aside-demo-rating"><span>Unrated · Unverified</span><span>Example supplier profile</span></div><div className="aside-attributes"><div><span>Company type</span><strong>Distributor / Wholesaler (demo)</strong></div><div><span>Location</span><strong>{product.country}</strong></div><div><span>Established</span><strong>Not independently confirmed</strong></div></div><button className="detail-action-green" onClick={()=>setContactOpen(true)}><MessageSquare size={17}/> Message Seller</button></div>
          <div className="aside-products"><h3><span className="ad-label">Explore</span> Top Products</h3>{products.filter(p=>p.id!==product.id).slice(0,6).map(p=><Link className="aside-product-row" key={p.id} href={"/products/"+p.slug}><img src={p.image} alt="" loading="lazy" onError={e=>e.currentTarget.style.display="none"}/><div><strong>{p.name}</strong><b>{p.price}</b><small>Min. order: {p.moq}</small><span>{p.country}</span></div></Link>)}</div>
        </aside>
      </div>
