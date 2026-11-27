@@ -1,5 +1,6 @@
 "use client";
 import {DirectTradeNotice} from "@/components/DirectTradeNotice";
+import {responsiveImage,imageSrcSet} from "@/lib/image-quality";
 import {CountryFlag} from "@/components/CountryFlag";
 import {useEffect,useMemo,useState} from "react";
 import Link from "next/link";
@@ -34,7 +35,7 @@ export function SupplierStorefront({company,country,items}:{company:string;count
     {tab==="home"&&<div className="sy-store-welcome"><h2>Welcome to {company}</h2><p>{shopVisual?.description||"Explore the sample catalogue. Product availability, supplier identity and prices have not been independently confirmed."}</p><p className="sy-store-owner-demo">Store visuals are shown from this browser profile only; other users cannot see them yet.</p><button type="button" onClick={()=>setTab("items")}>View all products</button></div>}
     {tab==="categories"?<div className="sy-store-category-grid">{categories.filter(x=>x!=="All").map(x=><button key={x} type="button" onClick={()=>{setCategory(x);setTab("items")}}><Grid2X2 size={17}/>{x}<span>{items.filter(p=>p.category===x).length}</span></button>)}</div>:null}
     {tab!=="categories"&&<><div className="sy-store-results"><strong>{category==="All"?"All products":category}</strong><span>{matches.length} items</span></div><div className="sy-store-filters">{categories.map(c=><button type="button" className={category===c?"active":""} key={c} onClick={()=>setCategory(c)}>{c}</button>)}</div>
-     <div className="sy-store-product-grid">{matches.map(p=><article key={p.id} className="sy-store-product"><Link href={"/products/"+p.slug} className="sy-store-product-photo"><img loading="lazy" src={p.image} alt={p.name}/></Link><Link className="sy-store-product-title" href={"/products/"+p.slug}>{p.name}</Link><strong>{p.price}</strong><small>MOQ: {p.moq}</small><button type="button" onClick={()=>setContact(p)}><MessageCircle size={14}/> Message seller</button></article>)}</div>
+     <div className="sy-store-product-grid">{matches.map(p=><article key={p.id} className="sy-store-product"><Link href={"/products/"+p.slug} className="sy-store-product-photo"><img loading="lazy" decoding="async" src={responsiveImage(p.image,800)} srcSet={imageSrcSet(p.image,[400,800,1200,1600])} sizes="(max-width:767px) 47vw,(max-width:1600px) 24vw,20vw" alt={p.name}/></Link><Link className="sy-store-product-title" href={"/products/"+p.slug}>{p.name}</Link><strong>{p.price}</strong><small>MOQ: {p.moq}</small><button type="button" onClick={()=>setContact(p)}><MessageCircle size={14}/> Message seller</button></article>)}</div>
      {!matches.length&&<div className="sy-store-no-results"><Package size={30}/><p>{items.length?"No products match this search.":"No products published by this seller yet."}</p>{items.length>0&&<button onClick={()=>{setQuery("");setCategory("All")}}>Clear filters</button>}</div>}
     </>}
    </section>}
