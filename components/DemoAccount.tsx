@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { UserRound, ChevronDown, LayoutDashboard, Search, MessageSquare, Send, ClipboardList, UsersRound, PenSquare, Heart, LockKeyhole, LogOut, Store, Settings, ShieldCheck, X, Mail, Building2, Package, Globe2, Menu, Bell, CheckCircle, ArrowRight, Trash2 } from "lucide-react";
 import {products} from "@/lib/catalog";
-import { CountryFlag, CountryField } from "@/components/CountryFlag";
+import { CountryFlag, CountryField, getCountry } from "@/components/CountryFlag";
 import {MessagesPreview,PostBuyingRequest,RequestManager} from "@/components/BuyerWorkflows";
 import {BuyerProfileEditor} from "@/components/BuyerProfileEditor";
 import {VerificationPanel} from "@/components/VerificationPanel";
@@ -56,13 +56,14 @@ export function DemoAccountMenu(){
  const [name,setName]=useState("");
  const [email,setEmail]=useState("");
  const [company,setCompany]=useState("");
- const [country,setCountry]=useState("Nigeria");
+ const [country,setCountry]=useState("");
  const [role,setRole]=useState<"buyer"|"supplier">("buyer");
  const [error,setError]=useState("");
  useEffect(()=>{setProfile(readProfile());const sync=()=>setProfile(readProfile());window.addEventListener("sylution-profile-change",sync);return()=>window.removeEventListener("sylution-profile-change",sync)},[]);
  function saveProfile(e:React.FormEvent){
   e.preventDefault();setError("");
   if(!name.trim()||!email.includes("@")){setError("Enter your name and a valid email address.");return}
+  if(!getCountry(country)){setError("Select your real country or region before continuing.");return}
   const newProfile={name:name.trim(),email:email.trim().toLowerCase(),company:company.trim(),country,role,joined:new Date().toISOString()};
   try{localStorage.setItem(PROFILE_KEY,JSON.stringify(newProfile));setProfile(newProfile);window.dispatchEvent(new Event("sylution-profile-change"));setModal(null);setMenu(false)}catch{setError("Browser storage is unavailable.")}
  }
@@ -104,7 +105,7 @@ export function DemoAccountPage(){
  const [notice,setNotice]=useState("");
  const [range,setRange]=useState<7|30|90>(7);
  useEffect(()=>{
-  const p=readProfile();setProfile(p);setName(p?.name||"");setCompany(p?.company||"");setCountry(p?.country||"Nigeria");
+  const p=readProfile();setProfile(p);setName(p?.name||"");setCompany(p?.company||"");setCountry(p?.country||"");
   setRfqs(getRfqs());setSaved(getSaves());
   const sync=()=>{const next=readProfile();setProfile(next);setRfqs(getRfqs());setSaved(getSaves())};
   window.addEventListener("sylution-profile-change",sync);window.addEventListener("sylution-shortlist-change",sync);window.addEventListener("sylution-rfq-change",sync);window.addEventListener("storage",sync);return()=>{window.removeEventListener("sylution-profile-change",sync);window.removeEventListener("sylution-shortlist-change",sync);window.removeEventListener("sylution-rfq-change",sync);window.removeEventListener("storage",sync)}
