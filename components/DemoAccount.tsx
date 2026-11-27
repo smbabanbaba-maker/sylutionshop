@@ -3,6 +3,7 @@ import {DirectTradeNotice} from "@/components/DirectTradeNotice";
 import {TradeWorkflow} from "@/components/TradeWorkflow";
 import {SellerProducts} from "@/components/SellerProducts";
 import {SafetyCenter} from "@/components/SafetyCenter";
+import {ActivityCenter} from "@/components/ActivityCenter";
 import Link from "next/link";
 import {createPortal} from "react-dom";
 import {SupplierProductDrafts} from "@/components/SupplierProductDrafts";
@@ -36,6 +37,7 @@ const sections=[
  {id:"my-products",name:"My Products",Icon:Package},
  {id:"quotations",name:"Quotations",Icon:ClipboardList},
  {id:"orders",name:"Orders",Icon:CheckCircle},
+ {id:"notifications",name:"Activity Center",Icon:Bell},
  {id:"safety",name:"Report & Safety",Icon:ShieldCheck},
  {id:"add-product",name:"Add Product",Icon:Package},
  {id:"incoming",name:"Incoming Requests",Icon:ClipboardList},
@@ -158,6 +160,7 @@ export function DemoAccountPage(){
     {section==="quotations"&&<TradeWorkflow view="quotations" role={profile.role} company={profile.company}/>}
     {section==="orders"&&<TradeWorkflow view="orders" role={profile.role} company={profile.company}/>}
     {section==="safety"&&<SafetyCenter/>}
+    {section==="notifications"&&<ActivityCenter email={profile.email}/>}
     {profile.role==="supplier"&&section==="add-product"&&<SupplierProductDrafts key={profile.email} country={profile.country} email={profile.email}/>}
     {profile.role==="supplier"&&section==="incoming"&&<SupplierInboxPreview company={profile.company}/>}
     {section==="supplier"&&<div className="sy-supplier-workspace">
