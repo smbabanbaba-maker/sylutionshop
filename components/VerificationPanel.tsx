@@ -2,6 +2,8 @@
 import {useEffect,useState} from "react";
 import {Check, CheckCircle2, CircleAlert, FileText, HelpCircle, Mail, Phone, ShieldCheck, UploadCloud, XCircle, LockKeyhole, Info, ArrowRight, Building2} from "lucide-react";
 import {CountryField,getDialingCode,getCountry} from "@/components/CountryFlag";
+import {verificationGuide} from "@/lib/verification-guidance";
+import {useAccountDefaults} from "@/lib/account-defaults";
 type Status="verified"|"pending"|"unverified"|"rejected";
 type FileKind="license"|"import"|"tax";
 function VerificationStatus({status,text}:{status:Status;text?:string}){
@@ -10,15 +12,21 @@ function VerificationStatus({status,text}:{status:Status;text?:string}){
  {status==="verified"?<CheckCircle2 size={16}/>:status==="rejected"?<XCircle size={16}/>:status==="pending"?<CircleAlert size={16}/>:<CircleAlert size={16}/>}
  {label}</span>;
 }
-const docs=[
- {id:"license" as const,title:"Business licence",description:"Official registration documentation confirming the legal identity of the business.",guide:"Examples include an issued corporate registration certificate or a valid local business licence."},
- {id:"import" as const,title:"Proof of prior import",description:"Evidence of previous international trade, if your business has imported goods.",guide:"Examples include commercial invoices, bills of lading or import declarations. Do not provide these in the demo."},
- {id:"tax" as const,title:"Tax certificate",description:"Tax registration or compliance document issued by an appropriate authority.",guide:"Only an authorized verification process should collect tax documents."}
-];
-export function VerificationPanel({country="",onProfile}:{country?:string;onProfile:()=>void}){
- const [phoneCountry,setPhoneCountry]=useState(country);
- useEffect(()=>{setPhoneCountry(country)},[country]);
+
+export function VerificationPanel({country="",role="buyer",onProfile}:{country?:string;role?:"buyer"|"supplier";onProfile:()=>void}){
+ const account=useAccountDefaults();
+ const companyCountry=country||account.country;
+ const guide=verificationGuide(getCountry(companyCountry)?.code||"");
+ const docs=[
+ {id:"license" as const,title:guide.registrationLabel,description:"Business identity evidence · document preview only",guide:guide.registrationHelp},
+ {id:"tax" as const,title:guide.taxLabel,description:"Where applicable · requirements depend on jurisdiction",guide:guide.taxHelp},
+ {id:"import" as const,title:"Previous trading evidence (optional)",description:"Only if the business has trade history. Not required for new companies.",guide:"Optional examples may include redacted commercial invoices or shipping documents. Never upload sensitive evidence in this demo."}
+ ];
+ const primaryDocs=role==="supplier"?2:1;
+ const [phoneCountry,setPhoneCountry]=useState(companyCountry);
+ useEffect(()=>{setPhoneCountry(companyCountry)},[companyCountry]);
  const [workEmail,setWorkEmail]=useState("");
+ useEffect(()=>{if(account.email)setWorkEmail(current=>current||account.email)},[account.email]);
  const [selected,setSelected]=useState<Partial<Record<FileKind,{name:string;size:number}>>>({});
  const [guides,setGuides]=useState<FileKind[]>([]);
  const [notice,setNotice]=useState("");
@@ -33,10 +41,12 @@ export function VerificationPanel({country="",onProfile}:{country?:string;onProf
   setSelected(old=>({...old,[id]:{name:file.name,size:file.size}}));
   setNotice("File selected locally. No document has been uploaded or stored by SYLUTION.");
  }
- const prepared=Object.keys(selected).length;
+ const prepared=role==="supplier"?Number(Boolean(selected.license))+Number(Boolean(selected.tax)):Number(Boolean(selected.license));
+ const progress=Math.round(prepared/primaryDocs*100);
  return <div className="sv-page">
-  <div className="sv-topline"><div><span className="sv-eyebrow">SYLUTION TRUST CENTER</span><h2>Business Verification</h2><p>Build a trustworthy company profile with clear, verifiable credentials.</p></div><span className="sv-demo-label"><LockKeyhole size={14}/> Preview only</span></div>
-  <div className="sv-progress"><div><ShieldCheck size={18}/><strong>Verification progress</strong><span>{prepared}/3 document types selected locally</span></div><div className="sv-progress-track"><div style={{width:(prepared/3*100)+"%"}}/></div><p>Files and contact details on this page are not sent to a server. Verification remains inactive until a secure backend is connected.</p></div>
+  <div className="sv-topline"><div><span className="sv-eyebrow">SYLUTION TRUST CENTER</span><h2>Business Verification</h2><p>{role==="supplier"?"Prepare company credentials for business verification.":"Review account contact details and optional business identity evidence."}</p></div><span className="sv-demo-label"><LockKeyhole size={14}/> Preview only</span></div>
+  <div className="sv-progress"><div><ShieldCheck size={18}/><strong>Verification progress</strong><span>{prepared}/{primaryDocs} core document types selected locally</span></div><div className="sv-progress-track"><div style={{width:progress+"%"}}/></div><p>Files and contact details on this page are not sent to a server. Verification remains inactive until a secure backend is connected.</p></div>
+  <div className="sv-jurisdiction-note"><strong>Registered business country: {companyCountry||"Not selected"}</strong><p>{guide.authorityNote}</p><p>These are illustrative preparation guidelines, not validated legal requirements. Your registration country is taken from your account; change it in Profile.</p></div>
   <section className="sv-card">
    <header className="sv-section-header"><div className="sv-title-with-icon"><span className="sv-icon sv-phone"><Phone size={20}/></span><div><h3>Verify phone number</h3><p>Allow suppliers to reach a verified business phone after confirmation.</p></div></div><VerificationStatus status="unverified"/></header>
    <div className="sv-global-phone-row">
@@ -58,7 +68,7 @@ export function VerificationPanel({country="",onProfile}:{country?:string;onProf
     <label className="sv-upload-zone"><UploadCloud size={21}/><strong>{selected[doc.id]?.name??"Choose file (demo preview)"}</strong><small>PDF, JPG, PNG, WEBP · Max 10 MB</small><input type="file" accept=".pdf,.jpg,.jpeg,.png,.webp" onChange={e=>{chooseDoc(doc.id,e.target.files?.[0]);e.target.value=""}}/></label>
     {selected[doc.id]&&<div className="sv-selected"><Check size={15}/> Selected locally · Not uploaded</div>}
    </article>)}</div>
-   <p className="sv-private-note"><LockKeyhole size={16}/> For safety, SYLUTION does not upload or save sensitive identity documents in this demonstration.</p>
+   <p className="sv-private-note"><LockKeyhole size={16}/> For safety, SYLUTION does not upload or save sensitive identity documents in this demonstration. Previous import evidence is optional, and selecting files is not a verification approval.</p>
   </section>
   <section className="sv-card">
    <header className="sv-section-header"><div className="sv-title-with-icon"><span className="sv-icon sv-mail"><Mail size={20}/></span><div><h3>Verify work email</h3><p>Use an email associated with your company to build buyer confidence.</p></div></div><VerificationStatus status="unverified"/></header>
