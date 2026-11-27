@@ -4,6 +4,7 @@ import {Check, CheckCircle2, CircleAlert, FileText, HelpCircle, Mail, Phone, Shi
 import {CountryField,getDialingCode,getCountry} from "@/components/CountryFlag";
 import {verificationGuide} from "@/lib/verification-guidance";
 import {useAccountDefaults} from "@/lib/account-defaults";
+import {StatusNotice} from "@/components/StatusUI";
 type Status="verified"|"pending"|"unverified"|"rejected";
 type FileKind="license"|"import"|"tax";
 function VerificationStatus({status,text}:{status:Status;text?:string}){
@@ -77,6 +78,6 @@ export function VerificationPanel({country="",role="buyer",onProfile}:{country?:
   </section>
   <section className="sv-card sv-identity-card"><div className="sv-title-with-icon"><span className="sv-icon sv-identity"><Building2 size={20}/></span><div><h3>Company identity review</h3><p>Registration data, company address and ownership checks.</p></div></div><VerificationStatus status="unverified" text="Not started"/><button type="button" onClick={onProfile}>Complete company profile <ArrowRight size={16}/></button></section>
   <div className="sv-legend"><strong>Status color guide</strong><div><VerificationStatus status="verified"/><span>Confirmed by a real verification process</span></div><div><VerificationStatus status="pending"/><span>Submitted and awaiting review</span></div><div><VerificationStatus status="unverified"/><span>No valid confirmation yet</span></div><div><VerificationStatus status="rejected"/><span>Rejected after review</span></div></div>
-  {notice&&<div className={"sv-feedback "+(/exceeds|use pdf|choose a smaller|invalid|failed|error/i.test(notice)?"sy-status-error":/selected locally/i.test(notice)?"sy-status-info":"sy-status-warning")} role="status"><Info size={16}/>{notice}</div>}
+  {notice&&<StatusNotice tone={/exceeds|use pdf|choose a smaller|invalid|select a valid|enter a business|failed|error/i.test(notice)?"error":/selected locally/i.test(notice)?"info":"warning"}>{notice}</StatusNotice>}
  </div>
 }
