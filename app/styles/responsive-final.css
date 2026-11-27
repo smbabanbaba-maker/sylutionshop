@@ -287,3 +287,54 @@ body{overflow-x:clip;-webkit-text-size-adjust:100%;text-size-adjust:100%}
  .sy-account-page .sy-account-region{max-width:100%}
  .sy-account-page .sy-account-region>span{overflow-wrap:anywhere}
 }
+
+/* Clearer typography and predictable action sizing, without giant mobile headings. */
+.catalog-home :is(.catalog-results-head,.catalog-category-row,.catalog-toolbar),
+.product-page :is(.product-offer,.detail-section,.detail-supplier-card),
+.sy-account-page :is(.sy-panel,.sv-card,.sy-trade-card,.sy-trade-form),
+.sy-store-page :is(.sy-store-product,.sy-store-info){color:var(--sy-ui-ink)}
+.catalog-home :is(.catalog-demo-note,.product-moq,.supplier-name),
+.product-page :is(.offer-information-grid,.trade-facts,.detail-supplier-card),
+.sy-account-page :is(.sv-field-hint,.sy-profile-help,.sy-trade-demo-footnote),
+.sy-store-page :is(.sy-store-description,.sy-store-product small){line-height:1.5}
+.sy-account-page :is(.sy-trade-form-grid label,.sy-profile-field,.sy-product-field) :is(input,textarea,select),
+.sy-account-page :is(.sy-rfq-fields,.sv-inline-field) :is(input,textarea,select){
+ border-radius:9px;background:#fff;color:#19364A;
+}
+.sy-account-page .sy-trade-workflow-head h2,
+.sy-account-page .sy-profile-title h2,
+.sy-account-page .sv-topline h2{line-height:1.2;letter-spacing:-.35px}
+.sy-account-page .sy-trade-workflow-head p,
+.sy-account-page .sv-topline p{line-height:1.55}
+.sy-account-page :is(.sy-trade-actions button,.sy-green-action,.sv-global-phone-action),
+.catalog-home :is(.catalog-primary,.catalog-search-form button),
+.product-page .detail-action-green{
+ min-height:40px;display:inline-flex;align-items:center;justify-content:center;
+}
+.sy-account-page .sv-doc-card,
+.sy-account-page .sy-trade-card,.sy-account-page .sy-profile-detail-card{
+ border-color:var(--sy-ui-line);
+}
+@media(max-width:600px){
+ .catalog-home .product-name{font-size:12px}
+ .catalog-home .product-price{font-size:13px}
+ .catalog-home :is(.product-moq,.supplier-name,.country){font-size:10.5px}
+ .catalog-home .product-card .inquiry-btn{min-height:39px;font-size:11px}
+ .catalog-home .product-card .chat-link{height:39px;width:39px}
+ .sy-account-page .sy-account-sidebar>button{min-height:42px!important}
+ .sy-account-page :is(.sy-trade-workflow-head h2,.sv-topline h2,.sy-profile-title h2){
+  font-size:clamp(19px,4.5vw,24px);
+ }
+ .sy-account-page :is(.sy-trade-form-grid label,.sy-profile-field,.sy-product-field){
+  line-height:1.45;
+ }
+ .sy-account-page .sy-profile-field-grid,
+ .sy-account-page .sy-product-fullform{min-width:0}
+ .sy-account-page .sy-analytics-stat-head>span:nth-child(2){font-size:11px}
+ .sy-account-page .sy-analytics-stat>small{line-height:1.4}
+ .sy-store-page .sy-store-product h3{font-size:12px}
+ .sy-store-page .sy-store-product small{font-size:10px}
+ .sy-account-page :is(.sy-trade-actions button,.sy-green-action,.sv-global-phone-action){
+  min-height:42px;
+ }
+}
