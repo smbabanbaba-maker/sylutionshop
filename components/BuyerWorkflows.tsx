@@ -3,39 +3,59 @@ import {CountryField} from "@/components/CountryFlag";
 import {useEffect,useState} from "react";
 import Link from "next/link";
 import {MESSAGE_DRAFT_KEY,type SupplierMessageDraft} from "@/components/SupplierContactModal";
-import {MessageSquare, Search, Settings, Send, Package, ArrowRight, Plus, Trash2, ShieldCheck, ClipboardList, CheckCircle2} from "lucide-react";
+import {MessageSquare, Search, Building2, UserRound, ArrowLeft, Send, Package, ArrowRight, Plus, Trash2, ShieldCheck, ClipboardList, CheckCircle2} from "lucide-react";
 type StoredRfq={product?:string;productId?:string;quantity?:number;unit?:string;targetPrice?:string;destinationCountry?:string;port?:string;incoterm?:string;paymentTerm?:string;shippingMethod?:string;preferredCountry?:string;leadTime?:string;documents?:string;company?:string;email?:string;message?:string;createdAt?:string;status?:string;attachmentNames?:string[];attributes?:{name:string;value:string}[]};
 const KEY="sylution_demo_rfqs";
 function readStored():StoredRfq[]{try{const value=JSON.parse(localStorage.getItem(KEY)||"[]");return Array.isArray(value)?value:[]}catch{return []}}
 export function MessagesPreview({onFind,onRequest}:{onFind:()=>void;onRequest:()=>void}){
  const [search,setSearch]=useState("");
  const [drafts,setDrafts]=useState<SupplierMessageDraft[]>([]);
- const [selectedDraft,setSelectedDraft]=useState<string|null>(null);
+ const [selected,setSelected]=useState<string|null>(null);
  const [composer,setComposer]=useState("");
- const [composerNotice,setComposerNotice]=useState("");
+ const [notice,setNotice]=useState("");
+ const [mobileOpen,setMobileOpen]=useState(false);
  useEffect(()=>{
-  const load=()=>{try{const data=JSON.parse(localStorage.getItem(MESSAGE_DRAFT_KEY)||"[]");setDrafts(Array.isArray(data)?data:[]);}catch{setDrafts([]);}};
-  load();window.addEventListener("sylution-message-drafts-change",load);window.addEventListener("storage",load);
-  return()=>{window.removeEventListener("sylution-message-drafts-change",load);window.removeEventListener("storage",load);};
+  const refresh=()=>{try{const v=JSON.parse(localStorage.getItem(MESSAGE_DRAFT_KEY)||"[]");setDrafts(Array.isArray(v)?v:[])}catch{setDrafts([])}};
+  refresh();window.addEventListener("sylution-message-drafts-change",refresh);window.addEventListener("storage",refresh);
+  return()=>{window.removeEventListener("sylution-message-drafts-change",refresh);window.removeEventListener("storage",refresh)}
  },[]);
- const visible=drafts.filter(d=>([d.supplier,d.product,d.subject,d.message].join(" ").toLowerCase().includes(search.toLowerCase())));
- const active=visible.find(d=>d.id===selectedDraft)||visible[0];
- function saveFollowUp(){
-  if(!active||!composer.trim()){setComposerNotice("Write a message first.");return;}
-  try{
-   const followUp:SupplierMessageDraft={...active,id:globalThis.crypto?.randomUUID?.()||String(Date.now()),message:composer.trim(),createdAt:new Date().toISOString(),status:"Draft · browser only",reply:undefined,repliedAt:undefined};
-   const next=[followUp,...drafts];localStorage.setItem(MESSAGE_DRAFT_KEY,JSON.stringify(next));setDrafts(next);setSelectedDraft(followUp.id);setComposer("");setComposerNotice("Message saved on this device — not sent.");
-   window.dispatchEvent(new Event("sylution-message-drafts-change"));
-  }catch{setComposerNotice("This browser could not save the message.");}
+ const groups=Array.from(drafts.reduce((map,d)=>{
+  const key=d.supplier.trim().toLowerCase();
+  const list=map.get(key)||[];list.push(d);map.set(key,list);return map;
+ },new Map<string,SupplierMessageDraft[]>()).entries()).map(([key,records])=>({
+  key,records:[...records].sort((a,b)=>b.createdAt.localeCompare(a.createdAt)),
+  last:[...records].sort((a,b)=>b.createdAt.localeCompare(a.createdAt))[0]
+ })).sort((a,b)=>b.last.createdAt.localeCompare(a.last.createdAt));
+ const visible=groups.filter(g=>[g.last.supplier,g.last.product,...g.records.map(x=>x.message)].join(" ").toLowerCase().includes(search.toLowerCase()));
+ const active=visible.find(g=>g.key===selected)||visible[0];
+ function addMessage(e:React.FormEvent){e.preventDefault();if(!active||!composer.trim())return;
+  const last=active.last;
+  const newDraft:SupplierMessageDraft={...last,id:globalThis.crypto?.randomUUID?.()||String(Date.now()),message:composer.trim(),createdAt:new Date().toISOString(),reply:undefined,repliedAt:undefined,status:"Draft · browser only"};
+  try{const next=[newDraft,...drafts];localStorage.setItem(MESSAGE_DRAFT_KEY,JSON.stringify(next));setDrafts(next);setComposer("");setNotice("Saved on this device · Not sent");window.dispatchEvent(new Event("sylution-message-drafts-change"))}catch{setNotice("Unable to save draft on this device")}
  }
- function deleteDraft(id:string){if(!window.confirm("Delete this locally saved message draft?"))return;const next=drafts.filter(d=>d.id!==id);try{localStorage.setItem(MESSAGE_DRAFT_KEY,JSON.stringify(next));setDrafts(next);if(selectedDraft===id)setSelectedDraft(null);}catch{}}
- return <div className="sy-inbox-shell">
-   <section className="sy-inbox-list" aria-label="Message conversations">
-    <div className="sy-inbox-actions"><div className="sy-inbox-tabs"><span className="sy-draft-tab"><MessageSquare size={15}/> Message drafts <b>{drafts.length}</b></span></div></div>
-    <label className="sy-inbox-search"><Search size={17}/><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search saved drafts" aria-label="Search saved message drafts"/></label>
-    {visible.length>0?<div className="sy-draft-list">{visible.map(d=><button key={d.id} type="button" className={"sy-draft-row"+(active?.id===d.id?" active":"")} onClick={()=>setSelectedDraft(d.id)}><span className="sy-draft-row-top"><strong>{d.supplier}</strong><small>Draft</small></span><b>{d.subject}</b><span>{d.message}</span></button>)}</div>:<div className="sy-inbox-none"><MessageSquare size={33}/><strong>{drafts.length&&search?"No matching drafts":"No supplier conversations yet"}</strong><p>{search?"No messages match your search.":"Messages and quotations will appear here after real messaging is connected."}</p><button className="sy-green-action" onClick={onFind}>Find products</button><button className="sy-soft-action" onClick={onRequest}>Post a buying request</button></div>}
+ const clock=(iso:string)=>{const d=new Date(iso);return Number.isNaN(d.getTime())?"":d.toLocaleDateString(undefined,{month:"short",day:"numeric"})};
+ return <div className={"sy-inbox-shell sy-conversation-shell"+(mobileOpen?" sy-show-chat":"")}>
+   <section className="sy-inbox-list" aria-label="Conversations">
+    <div className="sy-conversation-list-head"><h2>Messages <span>{groups.length}</span></h2><small>Local preview</small></div>
+    <label className="sy-inbox-search"><Search size={17}/><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search people or messages" aria-label="Search people or messages"/></label>
+    <div className="sy-conversation-filter">All conversations <span>{visible.length}</span></div>
+    {visible.length?<div className="sy-conversation-list">{visible.map(g=><button key={g.key} type="button" className={"sy-conversation-row"+(active?.key===g.key?" active":"")} onClick={()=>{setSelected(g.key);setNotice("");setMobileOpen(true)}}>
+      <span className="sy-conversation-avatar"><Building2 size={19}/></span>
+      <span className="sy-conversation-summary"><strong>{g.last.supplier}</strong><small>{g.last.message}</small></span>
+      <span className="sy-conversation-date">{clock(g.last.createdAt)}</span>
+    </button>)}</div>:<div className="sy-inbox-none"><MessageSquare size={32}/><strong>No conversations yet</strong><p>Messages to suppliers will be organized here by company.</p><button className="sy-green-action" onClick={onFind}>Browse products</button></div>}
    </section>
-   <section className="sy-inbox-content">{active?<div className="sy-draft-detail"><div className="sy-draft-detail-top"><span>Saved message · Not sent</span><button type="button" onClick={()=>deleteDraft(active.id)}><Trash2 size={16}/> Delete draft</button></div><h2>{active.subject}</h2><p><strong>To:</strong> {active.supplier} ({active.country})</p><p><strong>Product:</strong> {active.product}</p><div className="sy-chat-thread"><div className="sy-chat-bubble buyer"><span>My message · Draft</span><p>{active.message}</p></div>{active.reply&&<div className="sy-chat-bubble seller"><span>Supplier reply · Local preview</span><p>{active.reply}</p></div>}</div><form className="sy-chat-composer" onSubmit={e=>{e.preventDefault();saveFollowUp()}}><label htmlFor="sy-chat-follow-up">Write a follow-up</label><div><textarea id="sy-chat-follow-up" rows={2} maxLength={3000} placeholder="Type a message..." value={composer} onChange={e=>setComposer(e.target.value)}/><button type="submit" className="sy-green-action" aria-label="Save follow-up draft"><Send size={17}/></button></div>{composerNotice&&<small role="status">{composerNotice}</small>}<small>Browser-only demo · No messages are delivered to sellers.</small></form></div>:<><div className="sy-inbox-illustration"><MessageSquare size={50}/><span className="sy-inbox-orb one"/><span className="sy-inbox-orb two"/></div><h2>Welcome to SYLUTION Messages</h2><p>Keep quotations, supplier conversations, and follow-ups organized in one workspace.</p><div className="sy-inbox-benefits"><span><ShieldCheck size={16}/> Private conversations</span><span><ClipboardList size={16}/> RFQ-linked messages</span><span><CheckCircle2 size={16}/> Easy follow-up</span></div><small>Preview only — no messages are sent or received yet.</small></>}</section>
+   <section className="sy-inbox-content">{active?<div className="sy-conversation-detail">
+     <header className="sy-conversation-chat-head">
+       <button className="sy-conversation-back" onClick={()=>setMobileOpen(false)} aria-label="Back to messages"><ArrowLeft size={19}/></button>
+       <span className="sy-conversation-avatar"><Building2 size={18}/></span>
+       <div><strong>{active.last.supplier}</strong><small>{active.last.country} · Demo supplier</small></div>
+       <Link className="sy-conversation-profile" href={"/suppliers/"+encodeURIComponent(active.last.supplier)}><UserRound size={15}/> Public profile</Link>
+     </header>
+     <div className="sy-conversation-product"><Package size={15}/><span>{active.last.product}</span></div>
+     <div className="sy-conversation-messages">{[...active.records].reverse().map(d=><div key={d.id} className="sy-conversation-exchange"><div className="sy-chat-bubble buyer"><span>My message · Draft</span><p>{d.message}</p></div>{d.reply&&<div className="sy-chat-bubble seller"><span>Seller reply · Local preview</span><p>{d.reply}</p></div>}</div>)}</div>
+     <form className="sy-chat-composer" onSubmit={addMessage}><label htmlFor="sy-chat-message">Message</label><div><textarea id="sy-chat-message" value={composer} onChange={e=>setComposer(e.target.value)} placeholder="Type your message..." maxLength={3000} rows={2}/><button className="sy-green-action" type="submit" aria-label="Save message draft" disabled={!composer.trim()}><Send size={17}/></button></div>{notice&&<small role="status">{notice}</small>}<small>Browser-only preview · Messages are not delivered.</small></form>
+    </div>:<div className="sy-conversation-empty"><MessageSquare size={43}/><h2>Your conversations</h2><p>Select a supplier to view messages. Live messaging is not connected yet.</p><button className="sy-soft-action" onClick={onFind}>Find suppliers</button></div>}</section>
  </div>
 }
 export function PostBuyingRequest({onSaved}:{onSaved:()=>void}){
