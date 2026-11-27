@@ -1,8 +1,8 @@
+"use client";
 import {DirectTradeNotice} from "@/components/DirectTradeNotice";
 import {TradeWorkflow} from "@/components/TradeWorkflow";
 import {SellerProducts} from "@/components/SellerProducts";
 import {SafetyCenter} from "@/components/SafetyCenter";
-"use client";
 import Link from "next/link";
 import {createPortal} from "react-dom";
 import {SupplierProductDrafts} from "@/components/SupplierProductDrafts";
