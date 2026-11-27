@@ -3,6 +3,8 @@ import {useEffect,useState} from "react";
 import {ClipboardCheck,FileText,PackageCheck,Plus,Send,Truck,ShieldAlert,Trash2,CheckCircle2,Clock,Search} from "lucide-react";
 import {DirectTradeNotice} from "@/components/DirectTradeNotice";
 import {TRADE_CURRENCIES,currencyLabel} from "@/lib/global-currencies";
+import {useAccountDefaults} from "@/lib/account-defaults";
+import {CountryFlag} from "@/components/CountryFlag";
 
 type QuoteStatus="Draft"|"Sent (demo)"|"Accepted (demo)"|"Rejected (demo)";
 type Quote={id:string;product:string;buyer:string;seller:string;quantity:number;unit:string;unitPrice:number;currency:string;shipping:string;terms:string;validUntil:string;notes:string;status:QuoteStatus;createdAt:string};
@@ -15,6 +17,9 @@ function id(){return globalThis.crypto?.randomUUID?.()||String(Date.now())}
 function money(value:number,currency:string){return new Intl.NumberFormat("en",{style:"currency",currency:currency||"USD",maximumFractionDigits:2}).format(value)}
 function date(v:string){if(!v)return"Not specified";const d=new Date(v);return Number.isNaN(d.getTime())?v:d.toLocaleDateString()}
 export function TradeWorkflow({view,role,company}:{view:"quotations"|"orders";role:"buyer"|"supplier";company:string}){
+ const account=useAccountDefaults();
+ const [currencyChanged,setCurrencyChanged]=useState(false);
+ useEffect(()=>{if(account.country&&!currencyChanged)setDraft(v=>({...v,currency:account.currency}))},[account.country,account.currency,currencyChanged]);
  const [quotes,setQuotes]=useState<Quote[]>([]);const [orders,setOrders]=useState<Order[]>([]);
  const [form,setForm]=useState(false);const [notice,setNotice]=useState("");const [search,setSearch]=useState("");
  const [selected,setSelected]=useState<string|null>(null);
@@ -25,7 +30,7 @@ export function TradeWorkflow({view,role,company}:{view:"quotations"|"orders";ro
  function saveQuote(e:React.FormEvent){e.preventDefault();const q=Number(draft.quantity),p=Number(draft.unitPrice);
   if(!draft.product.trim()||!draft.buyer.trim()||!(q>0)||!(p>=0)||!Number.isFinite(p)){setNotice("Enter product, buyer, quantity and a valid price.");return}
   const quote:Quote={id:id(),product:draft.product.trim(),buyer:draft.buyer.trim(),seller:company||"Demo seller",quantity:q,unit:draft.unit,unitPrice:p,currency:draft.currency,shipping:draft.shipping.trim(),terms:draft.terms.trim(),validUntil:draft.validUntil,notes:draft.notes.trim(),status:"Draft",createdAt:new Date().toISOString()};
-  if(updateQuotes([quote,...quotes])){setForm(false);setNotice("Quotation saved locally. It has not been sent to a real buyer.");setDraft({product:"",buyer:"",quantity:"",unit:"Pieces",unitPrice:"",currency:"USD",shipping:"",terms:"Bank transfer arranged directly",validUntil:"",notes:""})}
+  if(updateQuotes([quote,...quotes])){setForm(false);setNotice("Quotation saved locally. It has not been sent to a real buyer.");setDraft({product:"",buyer:"",quantity:"",unit:"Pieces",unitPrice:"",currency:account.country?account.currency:"USD",shipping:"",terms:"Bank transfer arranged directly",validUntil:"",notes:""})}
  }
  function changeQuote(quote:Quote,status:QuoteStatus){const next=quotes.map(q=>q.id===quote.id?{...q,status}:q);if(!updateQuotes(next))return;setNotice(status==="Sent (demo)"?"Marked as sent for demonstration only; no buyer was notified.":"Quotation status changed in local demo.");}
  function accept(quote:Quote){if(orders.some(o=>o.quoteId===quote.id)){setNotice("This quotation already has an order.");return}
@@ -37,6 +42,7 @@ export function TradeWorkflow({view,role,company}:{view:"quotations"|"orders";ro
  const visibleOrders=orders.filter(o=>[o.product,o.buyer,o.seller,o.id].join(" ").toLowerCase().includes(search.toLowerCase()));
  return <section className="sy-trade-workflow">
   <div className="sy-trade-workflow-head"><div><span className="sy-mini-overline">SYLUTION / DIRECT TRADE</span><h2>{view==="quotations"?"Quotations":"Order Management"}</h2><p>{view==="quotations"?"Prepare and track quotations with buyers.":"Track trade agreements and delivery milestones without collecting payments."}</p></div>{view==="quotations"&&role==="supplier"&&<button className="sy-green-action" onClick={()=>setForm(!form)} type="button"><Plus size={16}/>{form?"Close form":"Create Quotation"}</button>}</div>
+  {account.country&&<p className="sy-account-origin-hint"><CountryFlag country={account.country} compact/> <span>Account region: <strong>{account.country}</strong>. Currency defaults to {account.currency}; you may change it per quotation.</span></p>}
   <DirectTradeNotice/>
   {notice&&<p className="sy-trade-feedback" role="status">{notice}</p>}
   {view==="quotations"&&form&&role==="supplier"&&<form className="sy-trade-form" onSubmit={saveQuote}>
@@ -44,7 +50,7 @@ export function TradeWorkflow({view,role,company}:{view:"quotations"|"orders";ro
    <div className="sy-trade-form-grid">
     <label className="wide">Product / service *<input required maxLength={120} value={draft.product} onChange={e=>setDraft(v=>({...v,product:e.target.value}))} placeholder="e.g. 5kW Hybrid Inverter"/></label>
     <label>Buyer / company *<input required maxLength={120} value={draft.buyer} onChange={e=>setDraft(v=>({...v,buyer:e.target.value}))} placeholder="Buyer company"/></label>
-    <label>Currency<select value={draft.currency} onChange={e=>setDraft(v=>({...v,currency:e.target.value}))}>{TRADE_CURRENCIES.map(c=><option key={c} value={c}>{currencyLabel(c)}</option>)}</select></label>
+    <label>Currency<select value={draft.currency} onChange={e=>{setCurrencyChanged(true);setDraft(v=>({...v,currency:e.target.value}))}}>{TRADE_CURRENCIES.map(c=><option key={c} value={c}>{currencyLabel(c)}</option>)}</select></label>
     <label>Quantity *<input required type="number" min=".01" step="any" value={draft.quantity} onChange={e=>setDraft(v=>({...v,quantity:e.target.value}))}/></label>
     <label>Unit<select value={draft.unit} onChange={e=>setDraft(v=>({...v,unit:e.target.value}))}>{["Pieces","Sets","Cartons","Kilograms","Metric tons","Bags"].map(c=><option key={c}>{c}</option>)}</select></label>
     <label>Price per unit *<input required type="number" min="0" step="any" value={draft.unitPrice} onChange={e=>setDraft(v=>({...v,unitPrice:e.target.value}))}/></label>
