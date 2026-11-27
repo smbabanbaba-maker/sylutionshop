@@ -6,16 +6,16 @@ import {CountryFlag,CountryField} from "@/components/CountryFlag";
 type Profile={name:string;email:string;company:string;country:string;role:"buyer"|"supplier";joined:string};
 type Details={
  businessType:string;registration:string;website:string;phone:string;established:string;employees:string;
- revenue:string;address:string;categories:string;importHistory:string;description:string;logoUrl:string;
+ revenue:string;address:string;categories:string;importHistory:string;description:string;logoUrl:string;coverUrl:string;
  platforms:string;sourcingProducts:string;sourcingMarkets:string;sourcingFrequency:string;sourcingBudget:string;
  contactSharing:boolean;
 };
 const KEY="sylution_demo_company_details";
 const MAIN="sylution_demo_profile";
-const empty:Details={businessType:"Buying Office",registration:"",website:"",phone:"",established:"",employees:"",revenue:"",address:"",categories:"",importHistory:"",description:"",logoUrl:"",platforms:"",sourcingProducts:"",sourcingMarkets:"",sourcingFrequency:"",sourcingBudget:"",contactSharing:false};
-const companyKeys:(keyof Details)[]=["businessType","registration","website","phone","established","employees","revenue","address","categories","importHistory","description","logoUrl","platforms"];
+const empty:Details={businessType:"Buying Office",registration:"",website:"",phone:"",established:"",employees:"",revenue:"",address:"",categories:"",importHistory:"",description:"",logoUrl:"",coverUrl:"",platforms:"",sourcingProducts:"",sourcingMarkets:"",sourcingFrequency:"",sourcingBudget:"",contactSharing:false};
+const companyKeys:(keyof Details)[]=["businessType","registration","website","phone","established","employees","revenue","address","categories","importHistory","description","logoUrl","coverUrl","platforms"];
 const sourcingKeys:(keyof Details)[]=["sourcingProducts","sourcingMarkets","sourcingFrequency","sourcingBudget"];
-const labelMap:Record<string,string>={businessType:"Business type",registration:"Business registration ID",website:"Company website",phone:"Company phone number",established:"Year established",employees:"Number of employees",revenue:"Annual sales revenue",address:"Company address",categories:"Categories",importHistory:"Import history",description:"Company description",logoUrl:"Company logo URL",platforms:"Platforms I sell on",sourcingProducts:"Products you source",sourcingMarkets:"Preferred sourcing markets",sourcingFrequency:"Buying frequency",sourcingBudget:"Typical order budget"};
+const labelMap:Record<string,string>={businessType:"Business type",registration:"Business registration ID",website:"Company website",phone:"Company phone number",established:"Year established",employees:"Number of employees",revenue:"Annual sales revenue",address:"Company address",categories:"Categories",importHistory:"Import history",description:"Company description",logoUrl:"Company logo URL",coverUrl:"Store cover image URL",platforms:"Platforms I sell on",sourcingProducts:"Products you source",sourcingMarkets:"Preferred sourcing markets",sourcingFrequency:"Buying frequency",sourcingBudget:"Typical order budget"};
 
 function safeRead(){try{const x=JSON.parse(localStorage.getItem(KEY)||"{}");return x&&typeof x==="object"?x as Partial<Details>:{};}catch{return {}}}
 function isFilled(value:unknown){return typeof value==="string"?value.trim().length>0:!!value}
@@ -50,10 +50,11 @@ export function BuyerProfileEditor({profile,onUpdate}:{profile:Profile;onUpdate:
    </label>;
  }
  return <form className="sy-profile-modern" onSubmit={save}>
-  <div className="sy-profile-title"><div><span className="sy-mini-overline">SYLUTION / BUYER WORKSPACE</span><h2>My business profile</h2><p>Present your sourcing business clearly and manage how suppliers may reach you.</p></div><span className="sy-profile-preview-badge"><ShieldCheck size={14}/> Demo · Not verified</span></div>
+  <div className="sy-profile-title"><div><span className="sy-mini-overline">SYLUTION / {profile.role==="supplier"?"SELLER":"BUYER"} WORKSPACE</span><h2>{profile.role==="supplier"?"Seller Store Profile":"My business profile"}</h2><p>{profile.role==="supplier"?"Present your wholesale company, store visuals and contact information.":"Present your sourcing business clearly and manage how suppliers may reach you."}</p></div><span className="sy-profile-preview-badge"><ShieldCheck size={14}/> Demo · Not verified</span></div>
   <div className="sy-profile-grid">
    <div className="sy-profile-main">
     <section className="sy-profile-summary-card">
+     {profile.role==="supplier"&&<div className="sy-seller-cover-preview">{details.coverUrl?<img src={details.coverUrl} alt="Company shop cover" onError={e=>{e.currentTarget.style.display="none"}}/>:<div><Building2 size={26}/><span>Add a store cover image URL to personalise your shop</span></div>}</div>}
      <div className="sy-profile-photo">{details.logoUrl?<img src={details.logoUrl} alt="" onError={e=>{e.currentTarget.style.display="none"}}/>:<UserRound size={25}/>}</div>
      <div className="sy-profile-person"><strong>{identity.name||"Your name"}</strong><span><CountryFlag country={identity.country} compact/>{identity.country}<small className="sy-profile-pending">Identity not verified</small></span></div>
      <button className="sy-profile-edit-btn" type="button" onClick={()=>setEditing(v=>!v)} aria-pressed={editing}><Pencil size={17}/>{editing?"Finish editing":"Edit profile"}</button>
@@ -78,10 +79,11 @@ export function BuyerProfileEditor({profile,onUpdate}:{profile:Profile;onUpdate:
       {field("importHistory","e.g. Nigeria, China, India")}
       {field("description","Describe your company")}
       {field("logoUrl","https://example.com/logo.png")}
+      {profile.role==="supplier"&&field("coverUrl","https://example.com/store-cover.jpg")}
       {field("platforms","Website, marketplace, wholesale showroom")}
      </div>
     </section>:<section className="sy-profile-detail-card"><div className="sy-profile-section-head"><h3>Sourcing preferences</h3><span>{sourcingCount} / {sourcingKeys.length} fields</span></div><p className="sy-profile-help">Tell potential suppliers what your company sources. These details are stored only in your browser until the backend launches.</p><div className="sy-profile-field-grid">{field("sourcingProducts","e.g. Solar panels, sensors")}{field("sourcingMarkets","e.g. China, Nigeria")}{field("sourcingFrequency","",["","One-time","Weekly","Monthly","Quarterly","As needed"])}{field("sourcingBudget","e.g. $2,000–$10,000 per order")}</div></section>}
-    <section className="sy-profile-detail-card sy-profile-settings"><div className="sy-profile-section-head"><h3>Buyer profile settings</h3><Settings2 size={18}/></div><label className="sy-profile-toggle"><input type="checkbox" checked={details.contactSharing} disabled={!editing} onChange={e=>update("contactSharing",e.target.checked)}/><span><strong>Allow suppliers to see my contact details</strong><small>Preview preference only; no details are published or shared from this demo.</small></span></label><div className="sy-profile-security"><LockKeyhole size={16}/> Account deletion and password controls will be available with secure authentication.</div></section>
+    <section className="sy-profile-detail-card sy-profile-settings"><div className="sy-profile-section-head"><h3>{profile.role==="supplier"?"Store profile settings":"Buyer profile settings"}</h3><Settings2 size={18}/></div><label className="sy-profile-toggle"><input type="checkbox" checked={details.contactSharing} disabled={!editing} onChange={e=>update("contactSharing",e.target.checked)}/><span><strong>Allow suppliers to see my contact details</strong><small>Preview preference only; no details are published or shared from this demo.</small></span></label><div className="sy-profile-security"><LockKeyhole size={16}/> Account deletion and password controls will be available with secure authentication.</div></section>
     <div className="sy-profile-save-bar"><span><ShieldCheck size={16}/> Profile information is saved locally, not publicly.</span><div>{!editing&&<button type="button" className="sy-profile-secondary" onClick={()=>setEditing(true)}><Pencil size={15}/> Edit details</button>}<button type="submit" className="sy-green-action" disabled={!editing}><Save size={15}/> Save changes</button></div></div>
     {notice&&<p className={"sy-profile-feedback "+(notice.startsWith("Could not")?"sy-status-error":"sy-status-info")} role="status">{notice}</p>}
    </div>
