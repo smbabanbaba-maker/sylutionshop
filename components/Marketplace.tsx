@@ -1,3 +1,4 @@
+import {DirectTradeNotice} from "@/components/DirectTradeNotice";
 "use client";
 import Link from "next/link";
 import {CatalogFilters,emptySelection} from "@/components/CatalogFilters";
@@ -277,7 +278,7 @@ export function ProductDetail({product}:{product:Product}){
            {toolkitOpen&&<div className="buyer-checklist">{checklist.map(item=><label key={item}><input type="checkbox" checked={checked.includes(item)} onChange={e=>setChecked(old=>e.target.checked?[...old,item]:old.filter(x=>x!==item))}/><span>{item}</span></label>)}<div className="checklist-progress">{checked.length} of {checklist.length} checks prepared</div><button onClick={()=>setSelected(product)}><Send size={16}/> Create demo RFQ</button></div>}
          </section>
          <section className="detail-section related-section"><div className="detail-section-title"><h2>Related products</h2><span>More sourcing options</span></div><div className="related-grid">{alternatives.map(p=><ProductCard key={p.id} product={p} onInquiry={setSelected}/>)}</div></section>
-         <section className="detail-section"><h2>Product Specifications</h2><div className="detail-specifications">{[["Minimum Order Quantity",product.moq],["Product",product.name],["Trade Term","To be confirmed"],["Supplier Country",product.country],["Payment Term","By agreement"],...product.specifications].map(([k,v],i)=><div key={i}><span>{k}</span><strong>{v}</strong></div>)}</div></section>
+         <DirectTradeNotice/><section className="detail-section"><h2>Product Specifications</h2><div className="detail-specifications">{[["Minimum Order Quantity",product.moq],["Product",product.name],["Trade Term","To be confirmed"],["Supplier Country",product.country],["Payment Term","By agreement"],...product.specifications].map(([k,v],i)=><div key={i}><span>{k}</span><strong>{v}</strong></div>)}</div></section>
          <section className="detail-section"><h2>Product Certificates</h2><div className="certificate-placeholder"><FileText size={28}/><strong>No certificates uploaded</strong><p>Certification claims will appear here only after documents have been reviewed.</p></div></section>
          <section className="supplier-profile-section">
   <div className="supplier-profile-header">
