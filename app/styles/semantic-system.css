@@ -1,0 +1,147 @@
+/* SYLUTION TRADE — unified semantic status system.
+   Use colour only for meaning, not decoration. Always retain a readable label/icon.
+   This final layer wins over historic CSS without altering brand imagery or country flags.
+   success=confirmed action; error=validation/failure/rejection; warning=pending, caution
+   info=local-only saves, unverified analytics, instructional guidance; neutral=unknown.
+*/
+:root {
+ --sy-status-success:#096B43;
+ --sy-status-success-bg:#E4F7EC;
+ --sy-status-success-border:#83D0A3;
+ --sy-status-error:#B42338;
+ --sy-status-error-bg:#FFF0F2;
+ --sy-status-error-border:#E9A1AB;
+ --sy-status-warning:#895600;
+ --sy-status-warning-bg:#FFF4DB;
+ --sy-status-warning-border:#E8C47F;
+ --sy-status-info:#175B96;
+ --sy-status-info-bg:#EAF4FF;
+ --sy-status-info-border:#A5CCE9;
+ --sy-status-neutral:#53687A;
+ --sy-status-neutral-bg:#F2F5F8;
+ --sy-status-neutral-border:#D3DEE6;
+ --sy-status-primary:#007B60;
+ --sy-status-ink:#142D41;
+}
+.sy-status-error,.sy-status-success,.sy-status-warning,.sy-status-info,
+.sy-semantic-notice{
+ display:flex;align-items:flex-start;gap:9px;min-width:0;
+ padding:11px 13px;border:1px solid;border-left:4px solid currentColor!important;
+ border-radius:10px;font-size:12px;line-height:1.55;font-weight:650;
+}
+.sy-status-error,.sy-semantic-notice[data-tone="error"]{
+ color:var(--sy-status-error)!important;background:var(--sy-status-error-bg)!important;
+ border-color:var(--sy-status-error-border)!important;border-left-color:var(--sy-status-error)!important;
+}
+.sy-status-success,.sy-semantic-notice[data-tone="success"]{
+ color:var(--sy-status-success)!important;background:var(--sy-status-success-bg)!important;
+ border-color:var(--sy-status-success-border)!important;border-left-color:var(--sy-status-success)!important;
+}
+.sy-status-warning,.sy-semantic-notice[data-tone="warning"]{
+ color:var(--sy-status-warning)!important;background:var(--sy-status-warning-bg)!important;
+ border-color:var(--sy-status-warning-border)!important;border-left-color:var(--sy-status-warning)!important;
+}
+.sy-status-info,.sy-semantic-notice[data-tone="info"]{
+ color:var(--sy-status-info)!important;background:var(--sy-status-info-bg)!important;
+ border-color:var(--sy-status-info-border)!important;border-left-color:var(--sy-status-info)!important;
+}
+.sy-semantic-notice[data-tone="neutral"]{
+ color:var(--sy-status-neutral)!important;background:var(--sy-status-neutral-bg)!important;
+ border-color:var(--sy-status-neutral-border)!important;border-left-color:var(--sy-status-neutral)!important;
+}
+.sy-semantic-notice>svg{flex:none;margin-top:1px}
+.sy-semantic-notice>span{min-width:0;overflow-wrap:anywhere}
+.sy-semantic-badge,.sy-account-page .sv-status,
+.sy-account-page .sy-request-draft,.sy-account-page .sy-rfq-demo-tag{
+ display:inline-flex;align-items:center;gap:6px;
+ width:max-content;max-width:100%;
+ font-size:10px;font-weight:800;line-height:1.3;
+ border-radius:20px;padding:6px 10px;
+ border:1px solid var(--sy-status-neutral-border);
+}
+.sy-semantic-badge[data-tone="success"],.sy-account-page .sv-status-verified{
+ color:var(--sy-status-success)!important;background:var(--sy-status-success-bg)!important;border-color:var(--sy-status-success-border)!important;
+}
+.sy-semantic-badge[data-tone="error"],.sy-account-page .sv-status-unverified,
+.sy-account-page .sv-status-rejected,.product-page .demo-unverified{
+ color:var(--sy-status-error)!important;background:var(--sy-status-error-bg)!important;border-color:var(--sy-status-error-border)!important;
+}
+.sy-semantic-badge[data-tone="warning"],.sy-account-page .sv-status-pending,
+.sy-account-page .sy-request-draft,.sy-account-page .sy-rfq-demo-tag,
+.sy-account-page .sy-product-form-status{
+ color:var(--sy-status-warning)!important;background:var(--sy-status-warning-bg)!important;border-color:var(--sy-status-warning-border)!important;
+}
+.sy-semantic-badge[data-tone="info"],.sy-account-page .sv-selected{
+ color:var(--sy-status-info)!important;background:var(--sy-status-info-bg)!important;border-color:var(--sy-status-info-border)!important;
+}
+.sy-semantic-badge[data-tone="neutral"]{
+ color:var(--sy-status-neutral)!important;background:var(--sy-status-neutral-bg)!important;border-color:var(--sy-status-neutral-border)!important;
+}
+/* Trade states: browser-only agreement/shipments are not confirmed commercial outcomes. */
+.sy-account-page .sy-trade-status.pending{
+ color:var(--sy-status-warning)!important;background:var(--sy-status-warning-bg)!important;border-color:var(--sy-status-warning-border)!important;
+}
+.sy-account-page .sy-trade-status.success{
+ color:var(--sy-status-success)!important;background:var(--sy-status-success-bg)!important;border-color:var(--sy-status-success-border)!important;
+}
+.sy-account-page .sy-trade-status.danger{
+ color:var(--sy-status-error)!important;background:var(--sy-status-error-bg)!important;border-color:var(--sy-status-error-border)!important;
+}
+.sy-account-page .sy-trade-status.info{
+ color:var(--sy-status-info)!important;background:var(--sy-status-info-bg)!important;border-color:var(--sy-status-info-border)!important;
+}
+.sy-account-page .sy-trade-status.neutral{
+ color:var(--sy-status-neutral)!important;background:var(--sy-status-neutral-bg)!important;border-color:var(--sy-status-neutral-border)!important;
+}
+/* KYC: document selection is informational, never verification approval. */
+.sy-account-page .sv-selected,
+.sy-account-page .sv-document-guide,.sy-account-page .sv-jurisdiction-note{
+ background:var(--sy-status-info-bg)!important;border-color:var(--sy-status-info-border)!important;
+ color:var(--sy-status-info)!important;
+}
+.sy-account-page .sv-progress,.sy-account-page .sy-demo-alert{
+ background:var(--sy-status-warning-bg)!important;border-color:var(--sy-status-warning-border)!important;
+ color:var(--sy-status-warning)!important;
+}
+.sy-account-page .sv-progress-track>div{background:var(--sy-status-info)!important}
+/* Disabled and unavailable features remain neutral instead of pretending to be verified. */
+.sy-account-page .sy-preview-tag,
+.sy-account-page .sy-supplier-demo-warning{
+ color:var(--sy-status-neutral)!important;background:var(--sy-status-neutral-bg)!important;
+ border-color:var(--sy-status-neutral-border)!important;
+}
+/* Forms highlight invalid fields and keyboard focus with a clear semantic difference. */
+:is(.sy-account-page,.product-page,.catalog-home,.sy-store-page) :is(input,select,textarea)[aria-invalid="true"],
+:is(.sy-account-page,.product-page,.catalog-home,.sy-store-page) :is(input,select,textarea):user-invalid{
+ border:2px solid var(--sy-status-error)!important;background:#FFFAFB!important;
+}
+:is(.sy-account-page,.product-page,.catalog-home,.sy-store-page) :is(input,select,textarea):focus-visible{
+ outline:2px solid var(--sy-status-info)!important;outline-offset:2px;
+}
+:is(.sy-account-page,.product-page,.catalog-home,.sy-store-page) :is(input,select,textarea)[aria-invalid="true"]:focus-visible{
+ outline:2px solid var(--sy-status-error)!important;
+}
+/* Destructive operations have red labels; CTA green means action, not success. */
+.sy-account-page :is(.sy-product-draft-delete,.sy-trade-actions .danger-text,.sy-seller-product-actions button,.sy-safety-report button),
+.sy-account-page button[aria-label^="Delete"],.sy-account-page .sy-logout-action{
+ color:var(--sy-status-error)!important;
+}
+.sy-account-page :is(.sy-product-draft-delete,.sy-trade-actions .danger-text,.sy-seller-product-actions button,.sy-safety-report button){
+ border-color:var(--sy-status-error-border)!important;background:var(--sy-status-error-bg)!important;
+}
+.sy-account-page .sy-analytics-demo-strip,.sy-account-page .sy-trade-demo-footnote,
+.sy-account-page .sy-trade-order-note{
+ color:var(--sy-status-info)!important;
+}
+.sy-account-page .sy-analytics-demo-strip{
+ background:var(--sy-status-info-bg)!important;border-color:var(--sy-status-info-border)!important;
+}
+.sy-account-page .sy-analytics-demo-strip svg{color:var(--sy-status-info)!important}
+/* Semantic status needs more than a colour for accessibility. */
+@media(forced-colors:active){
+ .sy-semantic-notice,.sy-semantic-badge,.sv-status,.sy-trade-status{border:2px solid CanvasText!important}
+}
+@media(max-width:700px){
+ .sy-semantic-notice{font-size:11px;padding:10px 11px}
+ .sy-semantic-badge{font-size:9px}
+}
