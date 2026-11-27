@@ -1,5 +1,6 @@
 "use client";
 import {DirectTradeNotice} from "@/components/DirectTradeNotice";
+import {StatusNotice} from "@/components/StatusUI";
 import {CountryField,CountryFlag} from "@/components/CountryFlag";
 import {useAccountDefaults} from "@/lib/account-defaults";
 import {TRADE_CURRENCIES,currencyLabel} from "@/lib/global-currencies";
@@ -71,7 +72,7 @@ export function MessagesPreview({onFind,onRequest}:{onFind:()=>void;onRequest:()
       <button className="sy-chat-tool" type="button" aria-label="Attach a file to draft" title="Attach file (local demo)" onClick={()=>attachmentInput.current?.click()}><Paperclip size={21}/></button>
       <input ref={attachmentInput} hidden type="file" accept="image/*,.pdf,.txt,.doc,.docx" onChange={e=>{const file=e.target.files?.[0];if(file){if(file.size>10*1024*1024){setNotice("File must be smaller than 10 MB.");}else{setComposer(current=>(current.trim()?current+"\n":"")+"[File to attach: "+file.name+"]");setNotice("Filename added to local draft. File is not uploaded.");}e.target.value=""}}}/>
       <button className="sy-green-action sy-chat-send" type="submit" aria-label="Save message draft" disabled={!composer.trim()}><Send size={18}/></button></div>
-      {notice&&<small className={/unable|failed|error|smaller/i.test(notice)?"sy-status-error":"sy-status-info"} role="status">{notice}</small>}<small className="sy-chat-demo-note">Demo · Messages and files are not sent.</small>
+      {notice&&<StatusNotice tone={/unable|failed|error|smaller|must be/i.test(notice)?"error":"info"}>{notice}</StatusNotice>}<small className="sy-chat-demo-note">Demo · Messages and files are not sent.</small>
      </form>
     </div>:<div className="sy-conversation-empty"><MessageSquare size={43}/><h2>No messages yet</h2><button className="sy-soft-action" onClick={onFind}>Find sellers</button></div>}</section>
  </div>
@@ -137,7 +138,7 @@ export function PostBuyingRequest({onSaved}:{onSaved:()=>void}){
      </div>
      <DirectTradeNotice compact/>
      <div className="sy-rfq-save-note"><ShieldCheck size={18}/><span>This is a local preview. Smart matching, publication and supplier responses are not yet active.</span></div>
-     <button className="sy-green-action sy-post-submit" type="submit">Save demo buying request <ArrowRight size={17}/></button>{notice&&<p className={"sy-rfq-notice "+(/could not|complete the/i.test(notice)?"sy-status-error":"sy-status-info")} role={/could not|complete the/i.test(notice)?"alert":"status"}>{notice}</p>}
+     <button className="sy-green-action sy-post-submit" type="submit">Save demo buying request <ArrowRight size={17}/></button>{notice&&<StatusNotice tone={/could not|complete the|choose up to/i.test(notice)?"error":"info"}>{notice}</StatusNotice>}
    </form>
    <div className="sy-rfq-how"><h3>How sourcing will work</h3><div>{[{n:"01",t:"Describe your need",d:"Add product requirements and commercial terms."},{n:"02",t:"Match suppliers",d:"Supplier matching launches with the backend."},{n:"03",t:"Compare quotations",d:"Assess price, MOQ, quality and lead time."}].map(step=><div key={step.n}><span>{step.n}</span><strong>{step.t}</strong><small>{step.d}</small></div>)}</div></div>
  </div>;
