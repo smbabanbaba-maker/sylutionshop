@@ -61,3 +61,15 @@
 @media(max-width:1100px){.sv-doc-grid{grid-template-columns:1fr}.sv-doc-card{min-height:0}}
 @media(max-width:700px){.sv-topline{flex-wrap:wrap}.sv-section-header{align-items:flex-start;flex-wrap:wrap}.sv-legend{grid-template-columns:1fr}.sv-progress>div:first-child span{margin-left:0}.sv-card{padding:12px}}
 @media(max-width:420px){.sv-inline-field input{min-width:100%;}.sv-inline-field button{width:100%}.sv-identity-card>button{width:100%;justify-content:center}}
+
+/* International phone verification: country, genuine flag, dialing code and phone always editable. */
+.sv-global-phone-row{display:grid;grid-template-columns:minmax(210px,1.2fr) minmax(90px,.55fr) minmax(200px,1.35fr) auto;gap:10px;align-items:end;min-width:0}
+.sv-global-phone-row>label{display:grid;gap:7px;min-width:0;font-size:11px;font-weight:750;color:#334c60}
+.sv-global-phone-row .sy-country-picker{min-width:0}
+.sv-global-dial output{display:flex;align-items:center;padding:10px 11px;background:#f4f8f9;border:1px solid #d5e1e7;border-radius:9px;min-height:43px;box-sizing:border-box;font-size:13px;color:#28475b}
+.sv-global-number input{height:43px;min-height:43px;width:100%;min-width:0;box-sizing:border-box;padding:9px 11px;border:1px solid #cbdce5;border-radius:9px;font-size:14px;color:#173a4b;background:#fff}
+.sv-global-number input:focus-visible{outline:2px solid #00867a;outline-offset:1px}
+.sv-global-phone-action{min-height:43px;padding:10px 13px!important;border:1px solid #00945e!important;color:#007B60!important;border-radius:9px!important;background:#fff!important;font-size:12px;font-weight:800;white-space:nowrap}
+.sv-global-phone-action:hover{background:#eaf8f2!important}
+@media(max-width:1000px){.sv-global-phone-row{grid-template-columns:minmax(0,1.4fr) minmax(85px,.5fr) minmax(0,1.4fr)}.sv-global-phone-action{grid-column:1/-1;justify-self:start}}
+@media(max-width:650px){.sv-global-phone-row{grid-template-columns:minmax(0,1fr) minmax(85px,.44fr)}.sv-global-country{grid-column:1/-1}.sv-global-number{grid-column:1/-1}.sv-global-phone-action{grid-column:1/-1;width:100%}}
