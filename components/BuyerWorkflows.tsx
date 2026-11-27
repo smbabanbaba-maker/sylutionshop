@@ -54,7 +54,7 @@ export function MessagesPreview({onFind,onRequest}:{onFind:()=>void;onRequest:()
      </header>
      <div className="sy-conversation-product"><Package size={15}/><span>{active.last.product}</span></div>
      <div className="sy-conversation-messages">{[...active.records].reverse().map(d=><div key={d.id} className="sy-conversation-exchange"><div className="sy-chat-bubble buyer"><span>My message · Draft</span><p>{d.message}</p></div>{d.reply&&<div className="sy-chat-bubble seller"><span>Seller reply · Local preview</span><p>{d.reply}</p></div>}</div>)}</div>
-     <form className="sy-chat-composer" onSubmit={addMessage}><label htmlFor="sy-chat-message">Message</label><div><textarea id="sy-chat-message" value={composer} onChange={e=>setComposer(e.target.value)} placeholder="Type your message..." maxLength={3000} rows={2}/><button className="sy-green-action" type="submit" aria-label="Save message draft" disabled={!composer.trim()}><Send size={17}/></button></div>{notice&&<small role="status">{notice}</small>}<small>Browser-only preview · Messages are not delivered.</small></form>
+     <form className="sy-chat-composer" onSubmit={addMessage}><label htmlFor="sy-chat-message">Message</label><div><textarea id="sy-chat-message" value={composer} onChange={e=>setComposer(e.target.value)} placeholder="Type your message..." maxLength={3000} rows={2}/><button className="sy-green-action" type="submit" aria-label="Save message draft" disabled={!composer.trim()}><Send size={17}/></button></div>{notice&&<small className={/unable|failed|error/i.test(notice)?"sy-status-error":"sy-status-info"} role="status">{notice}</small>}<small>Browser-only preview · Messages are not delivered.</small></form>
     </div>:<div className="sy-conversation-empty"><MessageSquare size={43}/><h2>Your conversations</h2><p>Select a supplier to view messages. Live messaging is not connected yet.</p><button className="sy-soft-action" onClick={onFind}>Find suppliers</button></div>}</section>
  </div>
 }
@@ -95,7 +95,7 @@ export function PostBuyingRequest({onSaved}:{onSaved:()=>void}){
        <label className="sy-rfq-full">Additional requirements<textarea rows={4} value={notes} onChange={e=>setNotes(e.target.value)} placeholder="Quality, packaging, specifications, delivery expectations..."/></label>
      </div>
      <div className="sy-rfq-save-note"><ShieldCheck size={18}/><span>This is a local preview. Smart matching, publication and supplier responses are not yet active.</span></div>
-     <button className="sy-green-action sy-post-submit" type="submit">Save demo buying request <ArrowRight size={17}/></button>{notice&&<p className="sy-rfq-notice" role="status">{notice}</p>}
+     <button className="sy-green-action sy-post-submit" type="submit">Save demo buying request <ArrowRight size={17}/></button>{notice&&<p className={"sy-rfq-notice "+(/could not|complete the/i.test(notice)?"sy-status-error":"sy-status-info")} role={/could not|complete the/i.test(notice)?"alert":"status"}>{notice}</p>}
    </form>
    <div className="sy-rfq-how"><h3>How sourcing will work</h3><div>{[{n:"01",t:"Describe your need",d:"Add product requirements and commercial terms."},{n:"02",t:"Match suppliers",d:"Supplier matching launches with the backend."},{n:"03",t:"Compare quotations",d:"Assess price, MOQ, quality and lead time."}].map(step=><div key={step.n}><span>{step.n}</span><strong>{step.t}</strong><small>{step.d}</small></div>)}</div></div>
  </div>;
