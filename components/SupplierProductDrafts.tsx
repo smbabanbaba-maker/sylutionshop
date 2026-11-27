@@ -1,7 +1,8 @@
 "use client";
 
 import {useEffect,useId,useState} from "react";
-import {CountryField} from "@/components/CountryFlag";
+import {CountryField,CountryFlag} from "@/components/CountryFlag";
+import {useAccountDefaults} from "@/lib/account-defaults";
 import {categories} from "@/lib/catalog";
 import {TRADE_CURRENCIES,currencyLabel} from "@/lib/global-currencies";
 import {PackagePlus,Save,Trash2,UploadCloud,X} from "lucide-react";
@@ -20,9 +21,12 @@ const makeId=()=>globalThis.crypto?.randomUUID?.()||String(Date.now());
 const text=(v:FormDataEntryValue|null)=>String(v??"").trim();
 
 export function SupplierProductDrafts({country,email}:{country:string;email:string}){
+ const account=useAccountDefaults();
+ const [currencyChanged,setCurrencyChanged]=useState(false);
  const storageKey="sylution_supplier_product_drafts:"+email.toLowerCase();
  const id=useId();
  const [origin,setOrigin]=useState(country);
+ useEffect(()=>{if(country)setOrigin(current=>current||country)},[country]);
  const [drafts,setDrafts]=useState<ProductDraft[]>([]);
  const [notice,setNotice]=useState("");
  const [noticeError,setNoticeError]=useState(false);
@@ -77,6 +81,7 @@ export function SupplierProductDrafts({country,email}:{country:string;email:stri
     <div className="sy-product-form-heading"><span className="sy-product-form-kicker"><PackagePlus size={15}/> SELLER WORKSPACE</span><h2>{editIndex===null?"Add New Product":"Edit Product Draft"}</h2><p>Complete your product listing on one page. Fields marked * are required.</p></div>
     <span className="sy-product-form-status">Draft only</span>
    </header>
+   {account.country&&<p className="sy-account-origin-hint"><CountryFlag country={account.country} compact/><span>Registered in <strong>{account.country}</strong>. Origin and currency are pre-filled from your profile; change them if this product comes from another country.</span></p>}
    <form key={formKey} className="sy-product-fullform" onSubmit={saveDraft}>
     <section className="sy-product-form-card">
      <div className="sy-product-form-section-title"><span>01</span><div><h3>Product photos</h3><p>Add clear photos. The first photo will be the main preview.</p></div></div>
@@ -100,7 +105,7 @@ export function SupplierProductDrafts({country,email}:{country:string;email:stri
     <section className="sy-product-form-card">
      <div className="sy-product-form-section-title"><span>03</span><div><h3>Pricing & minimum order</h3><p>Make your wholesale offer easy to compare.</p></div></div>
      <div className="sy-product-field-grid">
-      <label className="sy-product-field">Currency <b>*</b><select name="currency" defaultValue={initial?.currency||"USD"}>{currencies.map(c=><option key={c} value={c}>{currencyLabel(c)}</option>)}</select></label>
+      <label className="sy-product-field">Currency <b>*</b><select name="currency" defaultValue={initial?.currency||((account.country&&!currencyChanged)?account.currency:"USD")} onChange={()=>setCurrencyChanged(true)}>{currencies.map(c=><option key={c} value={c}>{currencyLabel(c)}</option>)}</select></label>
       <label className="sy-product-field">Unit price <b>*</b><input name="price" required type="number" min="0.01" step="any" inputMode="decimal" defaultValue={initial?.price||""} placeholder="250.00"/></label>
       <label className="sy-product-field">Minimum order (MOQ) <b>*</b><input name="minimum" required type="number" min="1" step="any" inputMode="decimal" defaultValue={initial?.minimum||""} placeholder="100"/></label>
       <label className="sy-product-field">Selling unit <b>*</b><select name="unit" defaultValue={initial?.unit||"Piece"}>{units.map(u=><option key={u} value={u}>{u}</option>)}</select></label>
