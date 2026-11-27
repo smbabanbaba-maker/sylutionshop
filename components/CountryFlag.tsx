@@ -18,13 +18,18 @@ export const COUNTRIES:CountryEntry[]=source.filter(c=>/^[A-Z]{2}$/.test(c.cca2)
 export const COUNTRY_NAMES=COUNTRIES.map(c=>c.name);
 export const COUNTRY_FLAGS:Record<string,{code:string;emoji:string;dial:string}>=Object.fromEntries(COUNTRIES.map(c=>[c.name,{code:c.code,emoji:c.emoji,dial:c.dial}]));
 const aliases:Record<string,string>={"United States":"USA","United States of America":"USA","US":"USA","United Arab Emirates":"UAE","AE":"UAE","Turkey":"Türkiye","Turkiye":"Türkiye","UK":"United Kingdom","Great Britain":"United Kingdom","GB":"United Kingdom","Ivory Coast":"Côte d'Ivoire","Czech Republic":"Czechia","South Korea":"South Korea","North Korea":"North Korea"};
-export function getCountry(country:string){return COUNTRY_FLAGS[country]||COUNTRY_FLAGS[aliases[country]]||COUNTRIES.find(c=>c.code===country.toLowerCase());}
+export function getCountry(country:string){
+ const input=country.trim();
+ if(!input)return undefined;
+ const aliased=aliases[input]||input;
+ return COUNTRY_FLAGS[aliased]||COUNTRIES.find(c=>c.code===aliased.toLowerCase()||c.name.toLowerCase()===aliased.toLowerCase());
+}
 export function getDialingCode(country:string){return getCountry(country)?.dial||"";}
 export function CountryFlag({country,compact=false}:{country:string;compact?:boolean}){
  const [failedCode,setFailedCode]=useState<string|null>(null);
  const entry=getCountry(country);
  return <span className={"sy-country-flag "+(compact?"sy-country-flag-small":"")} title={country+" flag"}>
-  {entry&&failedCode!==entry.code?<img key={entry.code} width="26" height="18" loading="lazy" src={`https://flagcdn.com/w40/${entry.code}.png`} alt={country+" flag"} onError={()=>setFailedCode(entry.code)}/>:<span role="img" aria-label={country+" flag"}>{entry?.emoji??"🌐"}</span>}
+  {entry&&failedCode!==entry.code?<img key={entry.code} width="26" height="18" loading="lazy" src={`https://flagcdn.com/w40/${entry.code}.png`} alt={country+" flag"} onError={()=>setFailedCode(entry.code)}/>:<span className="sy-flag-code" aria-label={entry?"Flag image not available for "+country:"Country not selected"}>{entry?.code.toUpperCase()||"—"}</span>}
  </span>;
 }
 export function CountryField({value,onChange,includeAny=false,disabled=false,required=false,label="Country"}:{value:string;onChange:(name:string)=>void;includeAny?:boolean;disabled?:boolean;required?:boolean;label?:string}){
@@ -39,15 +44,15 @@ export function CountryField({value,onChange,includeAny=false,disabled=false,req
  const select=(country:string)=>{onChange(country);setOpen(false);setQuery("")};
  return <div className={"sy-country-picker"+(disabled?" disabled":"")} ref={container}>
   <button type="button" className="sy-country-picker-trigger" aria-expanded={open} aria-controls={listId} aria-label={label+": "+(value||"Any country")} disabled={disabled} onClick={()=>setOpen(o=>!o)}>
-   {value?<CountryFlag country={value} compact/>:<span aria-hidden="true">🌍</span>}
+   {value?<CountryFlag country={value} compact/>:<span aria-hidden="true" className="sy-flag-placeholder">—</span>}
    <span className="sy-country-picker-value">{value||"Any country"}</span>
    <span aria-hidden="true">⌄</span>
   </button>
-  {required&&<input aria-hidden="true" tabIndex={-1} className="sy-country-required" value={value} onChange={()=>{}} required/>}
+ 
   {open&&<div id={listId} className="sy-country-picker-menu">
    <input ref={searchRef} type="search" aria-label={"Search "+label} className="sy-country-picker-search" placeholder="Search all countries and territories..." value={query} onChange={e=>setQuery(e.target.value)} onKeyDown={e=>{if(e.key==="Escape")setOpen(false);if(e.key==="Enter"&&filtered.length===1){e.preventDefault();select(filtered[0].name)}}}/>
    <div className="sy-country-picker-options" role="group" aria-label={label+" options"}>
-    {includeAny&&<button type="button" onClick={()=>select("")}><span aria-hidden="true">🌍</span><span>Any country</span></button>}
+    {includeAny&&<button type="button" onClick={()=>select("")}><span className="sy-flag-placeholder" aria-hidden="true">—</span><span>Any country</span></button>}
     {!COUNTRY_NAMES.includes(value)&&value&&<button type="button" onClick={()=>select(value)}>{value} (saved)</button>}
     {filtered.map(c=><button key={c.code} type="button" className={c.name===value?"selected":""} onClick={()=>select(c.name)}><CountryFlag country={c.name} compact/><span>{c.name}</span><small>{c.code.toUpperCase()}</small></button>)}
     {!filtered.length&&<p>No matching country or territory.</p>}
