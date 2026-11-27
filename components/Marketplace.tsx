@@ -285,7 +285,7 @@ export function ProductDetail({product}:{product:Product}){
     <div className="supplier-heading-details">
       <h2>{product.supplier}</h2>
       <div className="supplier-subline">
-        <span className="demo-trust-badge"><ShieldCheck size={14}/> Verified L3 <sup>DEMO</sup></span>
+        <span className="demo-trust-badge sy-status-unverified"><X size={14}/> Unverified <sup>DEMO</sup></span>
         <span className="demo-star-rating">4.3 <span>★</span> <small>DEMO</small></span>
         <span className="supplier-separator">•</span>
         <span className="supplier-country"><CountryFlag country={product.country} compact/>{product.country}</span>
@@ -323,9 +323,9 @@ export function ProductDetail({product}:{product:Product}){
         <div className="verification-info-grid">
           <div>
             <h4>Verification information <small>(DEMO)</small></h4>
-            <div className="verification-item"><span className="verify-icon demo-verified"><ShieldCheck size={15}/></span><span><strong>Verify business documents</strong><small>Demo verification system</small></span></div>
-            <div className="verification-item"><span className="verify-icon demo-verified"><ShieldCheck size={15}/></span><span><strong>Verify phone number</strong><small>Demo verification team</small></span></div>
-            <div className="verification-item"><span className="verify-icon demo-verified"><ShieldCheck size={15}/></span><span><strong>Verify account email</strong><small>SYLUTION demonstration</small></span></div>
+            <div className="verification-item"><span className="verify-icon demo-unverified"><X size={15}/></span><span><strong>Verify business documents</strong><small>Not independently verified</small></span></div>
+            <div className="verification-item"><span className="verify-icon demo-unverified"><X size={15}/></span><span><strong>Verify phone number</strong><small>Not independently verified</small></span></div>
+            <div className="verification-item"><span className="verify-icon demo-unverified"><X size={15}/></span><span><strong>Verify account email</strong><small>Not independently verified</small></span></div>
             <div className="verification-item"><span className="verify-icon demo-unverified"><X size={14}/></span><span><strong>Verify work email</strong><small>Not verified (demo)</small></span></div>
           </div>
           <div>
