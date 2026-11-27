@@ -1,7 +1,7 @@
 "use client";
 import {useEffect,useMemo,useState} from "react";
 import {Building2,Check,CheckCircle2,ChevronRight,FileText,Globe2,LockKeyhole,Pencil,Save,Settings2,ShieldCheck,UserRound} from "lucide-react";
-import {CountryFlag,CountryField,getDialingCode} from "@/components/CountryFlag";
+import {CountryFlag,CountryField,getDialingCode,getCountry} from "@/components/CountryFlag";
 
 type Profile={name:string;email:string;company:string;country:string;role:"buyer"|"supplier";joined:string};
 type Details={
@@ -36,7 +36,7 @@ export function BuyerProfileEditor({profile,onUpdate}:{profile:Profile;onUpdate:
  const score=Math.round(done/total*100);
  const missing={account:accountFields.filter(x=>!isFilled(x)).length,company:companyValues.length-companyCount,sourcing:sourcingKeys.length-sourcingCount};
  function update<K extends keyof Details>(key:K,value:Details[K]){setDetails(old=>({...old,[key]:value}));setNotice("")}
- function save(e:React.FormEvent){e.preventDefault();if(!identity.name.trim()||!identity.country.trim()){setNotice("Enter your name and select your business registration country.");return}try{
+ function save(e:React.FormEvent){e.preventDefault();if(!identity.name.trim()||!getCountry(identity.country)){setNotice("Enter your name and select a valid business registration country.");return}try{
   const next={...profile,name:identity.name.trim(),company:identity.company.trim(),country:identity.country};
   localStorage.setItem(MAIN,JSON.stringify(next));localStorage.setItem(KEY,JSON.stringify(details));
   onUpdate(next);window.dispatchEvent(new Event("sylution-profile-change"));setNotice("Your demo profile was saved in this browser.");setEditing(false)
