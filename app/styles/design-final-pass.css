@@ -1,0 +1,133 @@
+/* SYLUTION Trade — design completion pass, 2026-11-27.
+   A single finishing layer for hierarchy, touch targets and responsive fit.
+   Preserve two-column product/catalog cards on phones and semantic status colours. */
+:root {
+ --sy-ui-ink:#112B40;
+ --sy-ui-muted:#627789;
+ --sy-ui-border:#DCE7ED;
+ --sy-ui-soft:#F5F8FA;
+ --sy-ui-navy:#0B1930;
+ --sy-ui-green:#007B60;
+}
+.catalog-home,.product-page,.sy-account-page,.sy-store-page{
+ -webkit-font-smoothing:antialiased;
+}
+.catalog-home :is(button,a),.product-page :is(button,a),
+.sy-account-page :is(button,a),.sy-store-page :is(button,a){
+ -webkit-tap-highlight-color:transparent;
+}
+.catalog-home :is(button,a,input,textarea,select):focus-visible,
+.product-page :is(button,a,input,textarea,select):focus-visible,
+.sy-account-page :is(button,a,input,textarea,select):focus-visible,
+.sy-store-page :is(button,a,input,textarea,select):focus-visible{
+ outline:2px solid #53BCA1;
+ outline-offset:2px;
+}
+.catalog-home :is(.catalog-controls,.catalog-toolbar,.catalog-feature),
+.product-page :is(.product-primary-card,.detail-section,.detail-supplier-card),
+.sy-account-page :is(.sy-panel,.sy-profile-summary-card,.sy-profile-detail-card,.sy-rfq-builder),
+.sy-store-page .sy-store-product{
+ border-color:var(--sy-ui-border)!important;
+}
+.catalog-home :is(.product-name,.catalog-results-head h2),
+.product-page :is(.product-offer h1,.detail-section h2),
+.sy-account-page :is(.sy-content-topline h2,.sy-panel h3),
+.sy-store-page :is(.sy-store-product-title,.sy-store-results strong){
+ color:var(--sy-ui-ink);
+}
+.catalog-home .product-card,.product-page .related-grid .product-card,
+.sy-account-page .sy-recommended-card,.sy-account-page .sy-fav-card,
+.sy-store-page .sy-store-product{
+ transition:border-color .17s ease,box-shadow .17s ease;
+}
+@media(hover:hover){
+ .catalog-home .product-card:hover,.product-page .related-grid .product-card:hover,
+ .sy-store-page .sy-store-product:hover{
+  border-color:#A8D5C8!important;
+  box-shadow:0 8px 24px #0B193016!important;
+ }
+}
+/* Maintain consistency across supplier shop, category and product views. */
+.sy-store-page :is(.sy-store-product,.sy-store-welcome,.sy-store-category-grid button){
+ border-radius:12px!important;
+}
+.sy-store-page .sy-store-bottom button.active{
+ color:#007B60!important;
+}
+@media(max-width:767px){
+ html,body{max-width:100%;overflow-x:clip}
+ :where(.catalog-home,.product-page,.sy-account-page,.sy-store-page){max-width:100%;min-width:0}
+ .catalog-home .catalog-listing,.catalog-home .catalog-feature,
+ .catalog-home .catalog-controls,.catalog-home .catalog-toolbar{
+  min-width:0!important;
+ }
+ .catalog-home .product-grid,.product-page .related-grid,
+ .sy-account-page .sy-recommended-products,.sy-account-page .sy-fav-grid,
+ .sy-store-page .sy-store-product-grid{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  column-gap:9px!important;row-gap:11px!important;
+ }
+ .catalog-home .product-card,.product-page .related-grid .product-card,
+ .sy-account-page .sy-recommended-card,.sy-account-page .sy-fav-card,
+ .sy-store-page .sy-store-product{
+  min-width:0!important;
+  overflow:hidden;
+  border-radius:11px!important;
+ }
+ .catalog-home .product-card .product-image,
+ .product-page .related-grid .product-image,
+ .sy-store-page .sy-store-product-photo{
+  width:100%;aspect-ratio:1/1;overflow:hidden;
+ }
+ .catalog-home .product-card .product-image img,
+ .product-page .related-grid .product-image img,
+ .sy-store-page .sy-store-product-photo img{
+  width:100%;height:100%;object-fit:cover;
+ }
+ .catalog-home .product-card :is(.product-name,.supplier-name,.country),
+ .product-page .related-grid .product-name,
+ .sy-store-page .sy-store-product-title{
+  overflow-wrap:anywhere;line-height:1.4;
+ }
+ .sy-account-page:not(.sy-messages-page) .sy-content-topline{
+  min-width:0;gap:8px;align-items:flex-start;
+ }
+ .sy-account-page:not(.sy-messages-page) .sy-content-topline h2{
+  font-size:19px!important;line-height:1.22!important;letter-spacing:-.4px;
+ }
+ .sy-account-page:not(.sy-messages-page) :is(.sy-panel,.sy-rfq-builder,.sy-profile-detail-card){
+  min-width:0!important;
+  border-radius:12px!important;
+ }
+ .sy-account-page:not(.sy-messages-page) :is(.sy-profile-field-grid,.sy-rfq-fields,.sy-supplier-columns){
+  min-width:0!important;
+ }
+ .sy-account-page:not(.sy-messages-page) :is(input,select,textarea){
+  max-width:100%;box-sizing:border-box;
+ }
+ .sy-account-page:not(.sy-messages-page) :is(.sy-green-action,.sy-post-submit,.sy-sidebar-primary){
+  min-height:42px;
+  border-radius:10px;
+ }
+ .sy-account-page .sy-account-sidebar>button{
+  min-width:0!important;overflow-wrap:anywhere;
+ }
+ .sy-account-page .sy-demo-alert{font-size:11px;line-height:1.45;border-radius:9px}
+ .sy-store-page .sy-store-product-title{font-size:12px!important}
+ .sy-store-page .sy-store-product strong{font-size:14px!important}
+ .sy-store-page .sy-store-product button{min-height:34px!important}
+ .sy-store-page .sy-store-hero{border-radius:0}
+ .sy-store-page .sy-store-bottom{padding-bottom:calc(7px + env(safe-area-inset-bottom))}
+ /* Chat remains an immersive, fixed-height view: do not alter its layout. */
+}
+@media(max-width:360px){
+ .catalog-home .product-grid,.product-page .related-grid,
+ .sy-account-page .sy-recommended-products,.sy-account-page .sy-fav-grid,
+ .sy-store-page .sy-store-product-grid{column-gap:7px!important;row-gap:8px!important}
+ .sy-store-page .sy-store-follow{font-size:11px;padding:8px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ .catalog-home .product-card,.product-page .related-grid .product-card,
+ .sy-store-page .sy-store-product{transition:none!important}
+}
