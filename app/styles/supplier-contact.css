@@ -231,3 +231,208 @@
 .sy-public-profile-hero{padding:17px;gap:11px}
 .sy-public-avatar{width:49px;height:49px;flex-basis:49px}
 }
+
+
+/* Inbox layout hotfix, 2026-11-27.
+   The old empty-state .sy-inbox-content centered all children and collapsed the new
+   conversation UI; scope an explicit two-pane layout to the newer component. */
+.sy-account-page .sy-inbox-shell.sy-conversation-shell{
+ display:grid!important;
+ grid-template-columns:minmax(255px,320px) minmax(0,1fr)!important;
+ align-items:stretch!important;
+ justify-items:stretch!important;
+ width:100%;
+ min-height:540px;
+ overflow:hidden;
+ background:#fff!important;
+ border:1px solid #dce6ed;
+ border-radius:13px;
+ box-shadow:0 6px 22px #16304f0b;
+}
+.sy-account-page .sy-inbox-shell.sy-conversation-shell > .sy-inbox-list{
+ display:flex!important;
+ flex-direction:column!important;
+ width:100%;
+ min-width:0;
+ height:100%;
+ padding:14px!important;
+ border-right:1px solid #e4ebf0;
+ border-bottom:0;
+ background:#fff;
+ text-align:left!important;
+}
+.sy-account-page .sy-inbox-shell.sy-conversation-shell > .sy-inbox-content{
+ display:flex!important;
+ flex-direction:column!important;
+ align-items:stretch!important;
+ justify-content:flex-start!important;
+ text-align:left!important;
+ width:100%;
+ min-width:0;
+ min-height:500px;
+ height:100%;
+ padding:0!important;
+ background:#fff!important;
+}
+.sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-conversation-list-head{display:flex!important;width:100%;align-items:center;justify-content:space-between}
+.sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-conversation-list-head h2{font-size:18px!important;line-height:1.3;margin:0!important;color:#153348}
+.sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-inbox-search{display:flex;width:100%;margin:10px 0!important;padding:10px 11px!important;background:#f8fafb;border-radius:9px}
+.sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-inbox-search input{width:100%;min-width:0;background:transparent;border:0;outline:none;font-size:12px}
+.sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-conversation-list{display:flex!important;flex-direction:column!important;align-items:stretch;gap:4px;width:100%;margin-top:6px}
+.sy-account-page .sy-inbox-shell.sy-conversation-shell button.sy-conversation-row{
+ display:grid!important;
+ grid-template-columns:42px minmax(0,1fr) auto!important;
+ align-items:center!important;
+ gap:9px!important;
+ text-align:left!important;
+ width:100%!important;
+ min-width:0!important;
+ min-height:67px;
+ margin:0!important;
+ padding:10px 8px!important;
+ background:#fff!important;
+ border:1px solid transparent!important;
+ border-radius:10px!important;
+ box-shadow:none!important;
+ font-weight:normal;
+ cursor:pointer;
+}
+.sy-account-page .sy-inbox-shell.sy-conversation-shell button.sy-conversation-row:hover,
+.sy-account-page .sy-inbox-shell.sy-conversation-shell button.sy-conversation-row.active{
+ background:#eaf7f1!important;
+ border-color:#c8e7d9!important;
+}
+.sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-conversation-avatar{
+ display:grid!important;place-items:center;
+ flex:0 0 40px;width:40px;height:40px;
+ border-radius:50%;background:#e0f2ea;color:#0c7658;
+}
+.sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-conversation-summary{
+ min-width:0;width:100%;display:flex!important;flex-direction:column;gap:4px;
+ text-align:left!important;
+}
+.sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-conversation-summary strong{
+ display:block!important;min-width:0;max-width:100%;font-size:12px!important;
+ font-weight:750;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-conversation-summary small{
+ display:block!important;font-size:11px!important;line-height:1.4;
+ color:#718190;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-conversation-date{
+ font-size:10px;align-self:start;color:#82939d;white-space:nowrap;
+}
+.sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-conversation-detail{
+ display:flex!important;flex-direction:column!important;
+ align-items:stretch!important;
+ justify-content:flex-start!important;
+ width:100%!important;max-width:none!important;
+ min-width:0;min-height:520px;
+ height:100%;flex:1;
+ margin:0!important;text-align:left!important;
+}
+.sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-conversation-chat-head{
+ display:flex!important;flex-direction:row!important;
+ align-items:center!important;gap:10px;
+ width:100%;flex:0 0 auto;
+ min-height:69px;
+ padding:13px 16px!important;
+ border-bottom:1px solid #e3ebef;
+ text-align:left!important;
+}
+.sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-conversation-chat-head>div{
+ display:flex!important;flex-direction:column;
+ align-items:flex-start!important;justify-content:center;
+ min-width:0;flex:1;gap:3px;text-align:left!important;
+}
+.sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-conversation-chat-head strong{font-size:13px!important;line-height:1.35}
+.sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-conversation-chat-head small{font-size:11px!important;color:#738a95}
+.sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-conversation-profile{
+ display:inline-flex!important;align-items:center;gap:6px;
+ font-size:11px;color:#096e54;font-weight:700;
+ padding:8px 10px;border:1px solid #c8e6d7;border-radius:9px;
+ text-decoration:none;white-space:nowrap;
+}
+.sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-conversation-product{
+ display:flex!important;align-items:center;justify-content:flex-start;
+ width:100%;padding:10px 16px!important;font-size:12px;
+ color:#5b7384;background:#f9fbfc;
+}
+.sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-conversation-messages{
+ display:flex!important;flex-direction:column!important;
+ align-items:stretch!important;justify-content:flex-start!important;
+ width:100%;flex:1;min-height:220px;max-height:460px;
+ gap:15px;padding:19px 18px!important;
+ overflow-y:auto;background:#f3f6f9;text-align:left!important;
+}
+.sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-conversation-exchange{
+ display:flex!important;flex-direction:column!important;align-items:stretch!important;
+ gap:9px;width:100%;
+}
+.sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-chat-bubble{
+ display:block!important;flex:0 1 auto;max-width:min(78%,470px);
+ padding:11px 15px!important;border-radius:15px;
+ box-shadow:0 2px 5px #142a4011;text-align:left!important;
+}
+.sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-chat-bubble.buyer{
+ align-self:flex-end!important;background:#dcf3e7!important;
+ color:#1a4d3d;border-bottom-right-radius:4px;
+}
+.sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-chat-bubble.seller{
+ align-self:flex-start!important;background:#fff!important;
+ color:#24465b;border-bottom-left-radius:4px;
+}
+.sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-chat-bubble span{
+ font-size:10px!important;font-weight:750;display:block;margin-bottom:6px;
+}
+.sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-chat-bubble p{
+ font-size:13px!important;line-height:1.55!important;
+ max-width:none!important;margin:0!important;white-space:pre-wrap;
+}
+.sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-chat-composer{
+ display:flex!important;flex-direction:column!important;
+ align-items:stretch!important;gap:7px;
+ flex:0 0 auto;width:100%;background:#fff;
+ border-top:1px solid #e4ebf0;padding:12px 17px!important;
+ text-align:left!important;
+}
+.sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-chat-composer label{font-size:11px;color:#4d6475;font-weight:700}
+.sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-chat-composer>div{
+ display:flex!important;align-items:center!important;gap:10px;width:100%;
+}
+.sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-chat-composer textarea{
+ width:100%;flex:1;min-width:0;min-height:46px;max-height:140px;
+ padding:11px 14px!important;border:1px solid #d0e0e7;border-radius:13px;
+ color:#173a4d;background:#fff;font-size:13px;
+}
+.sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-chat-composer button{
+ display:grid!important;place-items:center!important;
+ width:46px!important;height:46px!important;min-width:46px;
+ flex:0 0 46px;border-radius:13px!important;border:0!important;
+ background:#007b60!important;color:#fff!important;
+}
+.sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-chat-composer button:disabled{
+ opacity:.55;cursor:not-allowed;
+}
+.sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-chat-composer small{font-size:10px!important;color:#82939d}
+@media(max-width:720px){
+ .sy-account-page .sy-inbox-shell.sy-conversation-shell{
+  display:block!important;min-height:420px;
+ }
+ .sy-account-page .sy-inbox-shell.sy-conversation-shell > .sy-inbox-list{
+  display:flex!important;min-height:430px;border-right:0;
+ }
+ .sy-account-page .sy-inbox-shell.sy-conversation-shell > .sy-inbox-content{display:none!important}
+ .sy-account-page .sy-inbox-shell.sy-conversation-shell.sy-show-chat > .sy-inbox-list{display:none!important}
+ .sy-account-page .sy-inbox-shell.sy-conversation-shell.sy-show-chat > .sy-inbox-content{display:flex!important}
+ .sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-conversation-back{
+  display:grid!important;place-items:center;width:32px;height:32px;
+  border:0;background:transparent;color:#20445b;
+ }
+ .sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-conversation-detail{min-height:70dvh}
+ .sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-conversation-profile{font-size:10px;padding:7px}
+ .sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-conversation-messages{padding:13px 10px!important}
+ .sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-chat-bubble{max-width:87%}
+ .sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-chat-composer{padding:10px!important}
+ .sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-chat-composer textarea{font-size:16px}
+}
