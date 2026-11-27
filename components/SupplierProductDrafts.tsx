@@ -3,7 +3,7 @@
 import {useEffect,useId,useState} from "react";
 import {CountryField} from "@/components/CountryFlag";
 import {categories} from "@/lib/catalog";
-import {CheckCircle2,ChevronDown,ImagePlus,PackagePlus,Save,Trash2,UploadCloud,X} from "lucide-react";
+import {PackagePlus,Save,Trash2,UploadCloud,X} from "lucide-react";
 
 type ProductDraft={
  id?:string;name:string;country:string;minimum:string;price:string;
