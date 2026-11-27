@@ -67,10 +67,10 @@ export function DemoAccountMenu(){
   const newProfile={name:name.trim(),email:email.trim().toLowerCase(),company:company.trim(),country,role,joined:new Date().toISOString()};
   try{localStorage.setItem(PROFILE_KEY,JSON.stringify(newProfile));setProfile(newProfile);window.dispatchEvent(new Event("sylution-profile-change"));setModal(null);setMenu(false)}catch{setError("Browser storage is unavailable.")}
  }
- function begin(mode:"login"|"register"){setModal(mode);setError("");setMenu(false)}
+ function begin(mode:"login"|"register"){setModal(mode);setError("");setMenu(false);setName("");setEmail("");setCompany("");setCountry("");setRole("buyer")}
  function logout(){localStorage.removeItem(PROFILE_KEY);setProfile(null);setMenu(false);window.dispatchEvent(new Event("sylution-profile-change"))}
  return <div className="sy-account-wrap">
-  {!profile?<div className="sy-auth-actions"><button onClick={()=>begin("login")}>Log in</button><button className="sy-signup-action" onClick={()=>begin("register")}>Sign up</button></div>:
+  {!profile?<div className="sy-auth-actions"><button onClick={()=>begin("login")}>Try demo</button><button className="sy-signup-action" onClick={()=>begin("register")}>Sign up</button></div>:
    <><button className="sy-account-trigger" onClick={()=>setMenu(v=>!v)} aria-expanded={menu} aria-label="Open account menu"><span className="sy-avatar"><UserRound size={18}/></span><span className="sy-user-name">{profile.name}</span><span className="sy-account-flag" title={"Account country: "+profile.country}><CountryFlag country={profile.country} compact/></span><ChevronDown size={15}/></button>
    {menu&&<><button className="sy-account-backdrop" aria-label="Close account menu" onClick={()=>setMenu(false)}/><div className="sy-account-dropdown">
     <div className="sy-account-card"><span className="sy-avatar sy-avatar-large"><UserRound size={23}/></span><div><strong>{profile.name}</strong><span>{profile.email} · <CountryFlag country={profile.country} compact/> {profile.country}</span><small><ShieldCheck size={12}/> Demo account · Not verified</small></div></div>
@@ -80,7 +80,7 @@ export function DemoAccountMenu(){
   {modal&&createPortal(<div className="sy-auth-overlay" onMouseDown={e=>{if(e.target===e.currentTarget)setModal(null)}}><form className="sy-auth-modal" onSubmit={saveProfile}>
     <button type="button" className="sy-close" onClick={()=>setModal(null)} aria-label="Close"><X size={18}/></button>
     <span className="sy-mini-overline">SYLUTION ACCOUNT PREVIEW</span>
-    <h2>{modal==="register"?"Create a demo account":"Explore your buyer account"}</h2>
+    <h2>{modal==="register"?"Create a demo account":"Explore a demo account"}</h2>
     <p>This is a browser-only preview. It does not create a real login or verify your identity.</p>
     <label>Full name<input required value={name} onChange={e=>setName(e.target.value)} placeholder="Your name"/></label>
     <label>Email address<input required type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@company.com"/></label>
@@ -154,7 +154,7 @@ export function DemoAccountPage(){
     {section==="contacts"&&<div className="sy-panel sy-promo-panel"><UsersRound size={29}/><h3>My supplier contacts</h3><p>There are no confirmed business contacts. Once suppliers can respond to RFQs, your supplier relationships will appear here.</p><Link href="/#products">Discover sample suppliers <ArrowRight size={16}/></Link></div>}
     {section==="profile"&&<BuyerProfileEditor profile={profile} onUpdate={setProfile}/>}
     {section==="favorites"&&<div className="sy-panel"><h3>Saved products <span className="sy-count">{favoriteProducts.length}</span></h3>{favoriteProducts.length?<div className="sy-fav-grid">{favoriteProducts.map(p=><div className="sy-fav-card" key={p.slug}><Link href={"/products/"+p.slug}><img src={p.image} alt="" loading="lazy"/><strong>{p.name}</strong><small><CountryFlag country={p.country} compact/> {p.country} · {p.price}</small></Link><button onClick={()=>unsave(p.slug)}>Remove from shortlist</button></div>)}</div>:<p className="sy-empty-msg">Your shortlist is empty. Save products from their detail pages to see them here.</p>}</div>}
-    {section==="verification"&&<VerificationPanel country={profile.country} onProfile={()=>switchTo("profile")}/>}
+    {section==="verification"&&<VerificationPanel country={profile.country} role={profile.role} onProfile={()=>switchTo("profile")}/>}
     {section==="report"&&<div className="sy-panel sy-promo-panel"><LayoutDashboard size={30}/><h3>Sourcing reports</h3><p>No live traffic, messages or supplier analytics have been collected yet. After connecting Supabase and product analytics, you will see your verified sourcing history here.</p><div className="sy-supplier-teaser"><div><ClipboardList size={20}/><strong>{rfqs.length} demo RFQs</strong><small>Saved in this browser</small></div><div><Heart size={20}/><strong>{saved.length} favorites</strong><small>Local shortlist</small></div><div><MessageSquare size={20}/><strong>0 conversations</strong><small>Not connected</small></div></div></div>}
     {section==="security"&&<div className="sy-panel sy-promo-panel"><LockKeyhole size={29}/><h3>Account security</h3><p>This demonstration does not store passwords or provide real sign-in protection. Do not enter real credentials here.</p><div className="sy-demo-alert">Production: Supabase Auth, email verification, password reset, secure sessions and role-based access.</div></div>}
     {profile.role==="supplier"&&section==="my-products"&&<SellerProducts email={profile.email}/>}
