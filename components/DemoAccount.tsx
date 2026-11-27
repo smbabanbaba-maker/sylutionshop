@@ -112,7 +112,7 @@ export function DemoAccountPage(){
  const favoriteProducts=products.filter(p=>saved.includes(p.slug));
  const completeness=[!!profile?.name,!!profile?.email,!!profile?.company,!!profile?.country,!!profile?.role].filter(Boolean).length*20;
  const recentRfqs=rfqs.filter(r=>r.createdAt&&Date.now()-new Date(r.createdAt).getTime()<=range*86400000).length;
- return <main className={"sy-account-page "+(section==="supplier"?"sy-supplier-theme":"sy-buyer-theme")}>
+ return <main className={"sy-account-page "+(section==="supplier"?"sy-supplier-theme":"sy-buyer-theme")+((section==="messages"||section==="incoming")?" sy-messages-page":"")}>
   <div className="sy-account-banner"><span className="sy-mini-overline">SYLUTION BUYER WORKSPACE</span><h1>{profile?"Welcome back, "+profile.name:"Your SYLUTION workspace"}</h1><p>Manage sourcing, saved products and business information from one place.</p><div className="sy-demo-alert"><ShieldCheck size={16}/> Interactive preview: records stay in this browser. No live authentication, messaging or supplier verification yet.</div></div>
   {!profile&&section==="messages"?<MessagesPreview onFind={()=>router.push("/#products")} onRequest={()=>router.push("/#products")}/>:!profile&&section==="requests"?<RequestManager onCreate={()=>window.location.assign("/#products")}/>:!profile?<div className="sy-account-empty"><UserRound size={36}/><h2>Explore the SYLUTION member dashboard</h2><p>Use the Log in or Sign up control above to create a local demo profile and unlock the preview.</p><Link href="/#products">Browse products <ArrowRight size={16}/></Link></div>:
   <div className="sy-account-layout">
