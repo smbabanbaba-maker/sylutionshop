@@ -45,3 +45,12 @@
  .sy-country-picker-menu{width:min(310px,calc(100vw - 28px))}
  .sy-country-picker-options{max-height:min(270px,42vh)}
 }
+
+/* A country flag is represented by an actual image; if the image is unavailable show neutral ISO lettering, not a fabricated flag. */
+.sy-country-flag{display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex:none}
+.sy-country-flag img{object-fit:cover;display:block;border-radius:2px;box-shadow:0 0 0 1px #0b193012}
+.sy-flag-code,.sy-flag-placeholder{display:inline-flex;align-items:center;justify-content:center;width:26px;height:18px;flex:none;box-sizing:border-box;border:1px solid #d2dce2;background:#f1f5f7;color:#586f80;font-size:9px;font-weight:750;letter-spacing:.035em;border-radius:3px}
+.sy-country-flag-small .sy-flag-code{width:22px;height:16px}
+.sy-country-picker{z-index:auto}
+.sy-country-picker:has(.sy-country-picker-menu){z-index:125}
+.sy-country-picker-menu{max-width:none}
