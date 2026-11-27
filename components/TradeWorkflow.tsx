@@ -2,6 +2,7 @@
 import {useEffect,useState} from "react";
 import {ClipboardCheck,FileText,PackageCheck,Plus,Send,Truck,ShieldAlert,Trash2,CheckCircle2,Clock,Search} from "lucide-react";
 import {DirectTradeNotice} from "@/components/DirectTradeNotice";
+import {TRADE_CURRENCIES,currencyLabel} from "@/lib/global-currencies";
 
 type QuoteStatus="Draft"|"Sent (demo)"|"Accepted (demo)"|"Rejected (demo)";
 type Quote={id:string;product:string;buyer:string;seller:string;quantity:number;unit:string;unitPrice:number;currency:string;shipping:string;terms:string;validUntil:string;notes:string;status:QuoteStatus;createdAt:string};
@@ -43,7 +44,7 @@ export function TradeWorkflow({view,role,company}:{view:"quotations"|"orders";ro
    <div className="sy-trade-form-grid">
     <label className="wide">Product / service *<input required maxLength={120} value={draft.product} onChange={e=>setDraft(v=>({...v,product:e.target.value}))} placeholder="e.g. 5kW Hybrid Inverter"/></label>
     <label>Buyer / company *<input required maxLength={120} value={draft.buyer} onChange={e=>setDraft(v=>({...v,buyer:e.target.value}))} placeholder="Buyer company"/></label>
-    <label>Currency<select value={draft.currency} onChange={e=>setDraft(v=>({...v,currency:e.target.value}))}>{["USD","NGN","EUR","GBP","CNY","AED"].map(c=><option key={c}>{c}</option>)}</select></label>
+    <label>Currency<select value={draft.currency} onChange={e=>setDraft(v=>({...v,currency:e.target.value}))}>{TRADE_CURRENCIES.map(c=><option key={c} value={c}>{currencyLabel(c)}</option>)}</select></label>
     <label>Quantity *<input required type="number" min=".01" step="any" value={draft.quantity} onChange={e=>setDraft(v=>({...v,quantity:e.target.value}))}/></label>
     <label>Unit<select value={draft.unit} onChange={e=>setDraft(v=>({...v,unit:e.target.value}))}>{["Pieces","Sets","Cartons","Kilograms","Metric tons","Bags"].map(c=><option key={c}>{c}</option>)}</select></label>
     <label>Price per unit *<input required type="number" min="0" step="any" value={draft.unitPrice} onChange={e=>setDraft(v=>({...v,unitPrice:e.target.value}))}/></label>
