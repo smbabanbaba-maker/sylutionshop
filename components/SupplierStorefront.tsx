@@ -1,3 +1,4 @@
+import {DirectTradeNotice} from "@/components/DirectTradeNotice";
 "use client";
 import {useEffect,useMemo,useState} from "react";
 import Link from "next/link";
@@ -30,6 +31,7 @@ export function SupplierStorefront({company,country,items}:{company:string;count
     </>}
    </section>}
    {tab==="contact"&&<section className="sy-store-contact"><Building2 size={28}/><h2>Contact {company}</h2><p>{items.length?"Ask about a product directly. Messages are saved as local drafts in this demonstration.":"This seller has not published any products in the demo catalogue yet."}</p>{items.length>0?<button type="button" onClick={()=>setContact(items[0])}><MessageCircle size={18}/> Message seller</button>:<Link href="/account?tab=messages"><MessageCircle size={18}/> Back to Messages</Link>}<p><ShieldAlert size={15}/> This supplier profile is not verified.</p></section>}
+   <div className="sy-store-trade-notice"><DirectTradeNotice compact/></div>
    <nav className="sy-store-bottom" aria-label="Store quick navigation"><button className={tab==="home"?"active":""} onClick={()=>setTab("home")}><Store size={19}/>Home</button><button className={tab==="items"?"active":""} onClick={()=>setTab("items")}><Package size={19}/>Items</button><button className={tab==="categories"?"active":""} onClick={()=>setTab("categories")}><Grid2X2 size={19}/>Categories</button><button className={tab==="contact"?"active":""} onClick={()=>setTab("contact")}><MessageCircle size={19}/>Contact</button></nav>
    {contact&&<SupplierContactModal product={contact} onClose={()=>setContact(null)}/>}
  </main>;
