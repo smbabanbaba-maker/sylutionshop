@@ -1,9 +1,10 @@
 "use client";
 import {CountryField} from "@/components/CountryFlag";
-import {useEffect,useState} from "react";
+import {useEffect,useRef,useState} from "react";
 import Link from "next/link";
 import {MESSAGE_DRAFT_KEY,type SupplierMessageDraft} from "@/components/SupplierContactModal";
-import {MessageSquare, Search, Building2, UserRound, ArrowLeft, Send, Package, ArrowRight, Plus, Trash2, ShieldCheck, ClipboardList, CheckCircle2} from "lucide-react";
+import {products} from "@/lib/catalog";
+import {MessageSquare, Search, Building2, Store, Smile, Paperclip, X, UserRound, ArrowLeft, Send, Package, ArrowRight, Plus, Trash2, ShieldCheck, ClipboardList, CheckCircle2} from "lucide-react";
 type StoredRfq={product?:string;productId?:string;quantity?:number;unit?:string;targetPrice?:string;destinationCountry?:string;port?:string;incoterm?:string;paymentTerm?:string;shippingMethod?:string;preferredCountry?:string;leadTime?:string;documents?:string;company?:string;email?:string;message?:string;createdAt?:string;status?:string;attachmentNames?:string[];attributes?:{name:string;value:string}[]};
 const KEY="sylution_demo_rfqs";
 function readStored():StoredRfq[]{try{const value=JSON.parse(localStorage.getItem(KEY)||"[]");return Array.isArray(value)?value:[]}catch{return []}}
@@ -14,6 +15,8 @@ export function MessagesPreview({onFind,onRequest}:{onFind:()=>void;onRequest:()
  const [composer,setComposer]=useState("");
  const [notice,setNotice]=useState("");
  const [mobileOpen,setMobileOpen]=useState(false);
+ const [emojiOpen,setEmojiOpen]=useState(false);
+ const attachmentInput=useRef<HTMLInputElement>(null);
  useEffect(()=>{
   const refresh=()=>{try{const v=JSON.parse(localStorage.getItem(MESSAGE_DRAFT_KEY)||"[]");setDrafts(Array.isArray(v)?v:[])}catch{setDrafts([])}};
   refresh();
@@ -52,11 +55,19 @@ export function MessagesPreview({onFind,onRequest}:{onFind:()=>void;onRequest:()
        <button className="sy-conversation-back" onClick={()=>setMobileOpen(false)} aria-label="Back to messages"><ArrowLeft size={19}/></button>
        <span className="sy-conversation-avatar"><Building2 size={18}/></span>
        <div><strong>{active.last.supplier}</strong><small>{active.last.country} · Demo supplier</small></div>
-       <Link className="sy-conversation-profile" href={"/suppliers/"+encodeURIComponent(active.last.supplier)}><UserRound size={15}/> Public profile</Link>
+       <Link className="sy-conversation-profile" href={"/suppliers/"+encodeURIComponent(active.last.supplier)} title="Open seller shop" aria-label="Open seller shop"><Store size={21}/><span>Shop</span></Link>
      </header>
-     <div className="sy-conversation-product"><Package size={15}/><span>{active.last.product}</span></div>
+     <div className="sy-conversation-product"><Package size={15}/><span>{active.last.product}</span>{products.find(p=>p.id===active.last.productId)&&<Link href={"/products/"+products.find(p=>p.id===active.last.productId)!.slug} aria-label="View linked product">View product <ArrowRight size={13}/></Link>}</div>
      <div className="sy-conversation-messages">{[...active.records].reverse().map(d=><div key={d.id} className="sy-conversation-exchange"><div className="sy-chat-bubble buyer"><span>My message · Draft</span><p>{d.message}</p></div>{d.reply&&<div className="sy-chat-bubble seller"><span>Seller reply · Local preview</span><p>{d.reply}</p></div>}</div>)}</div>
-     <form className="sy-chat-composer" onSubmit={addMessage}><label htmlFor="sy-chat-message">Message</label><div><textarea id="sy-chat-message" value={composer} onChange={e=>setComposer(e.target.value)} placeholder="Type your message..." maxLength={3000} rows={2}/><button className="sy-green-action" type="submit" aria-label="Save message draft" disabled={!composer.trim()}><Send size={17}/></button></div>{notice&&<small className={/unable|failed|error/i.test(notice)?"sy-status-error":"sy-status-info"} role="status">{notice}</small>}<small>Browser-only preview · Messages are not delivered.</small></form>
+     <form className="sy-chat-composer sy-chat-interactive" onSubmit={addMessage}><label htmlFor="sy-chat-message">Message</label>
+      {emojiOpen&&<div className="sy-emoji-panel" role="group" aria-label="Select an emoji">{["😀","😊","👍","❤️","🙏","🤝","🔥","✅","👋","🎉","📦","💬"].map(e=><button key={e} type="button" aria-label={"Insert "+e} onClick={()=>{setComposer(old=>old+e);setEmojiOpen(false)}}>{e}</button>)}</div>}
+      <div className="sy-chat-input-row"><textarea id="sy-chat-message" value={composer} onChange={e=>setComposer(e.target.value)} placeholder="Type your message here" maxLength={3000} rows={2}/>
+      <button className="sy-chat-tool" type="button" aria-label={emojiOpen?"Close emoji picker":"Add emoji"} title="Emoji" onClick={()=>setEmojiOpen(v=>!v)}>{emojiOpen?<X size={21}/>:<Smile size={22}/>}</button>
+      <button className="sy-chat-tool" type="button" aria-label="Attach a file to draft" title="Attach file (local demo)" onClick={()=>attachmentInput.current?.click()}><Paperclip size={21}/></button>
+      <input ref={attachmentInput} hidden type="file" accept="image/*,.pdf,.txt,.doc,.docx" onChange={e=>{const file=e.target.files?.[0];if(file){if(file.size>10*1024*1024){setNotice("File must be smaller than 10 MB.");}else{setComposer(current=>(current.trim()?current+"\n":"")+"[File to attach: "+file.name+"]");setNotice("Filename added to local draft. File is not uploaded.");}e.target.value=""}}}/>
+      <button className="sy-green-action sy-chat-send" type="submit" aria-label="Save message draft" disabled={!composer.trim()}><Send size={18}/></button></div>
+      {notice&&<small className={/unable|failed|error|smaller/i.test(notice)?"sy-status-error":"sy-status-info"} role="status">{notice}</small>}<small className="sy-chat-demo-note">Demo · Messages and files are not sent.</small>
+     </form>
     </div>:<div className="sy-conversation-empty"><MessageSquare size={43}/><h2>No messages yet</h2><button className="sy-soft-action" onClick={onFind}>Find sellers</button></div>}</section>
  </div>
 }
