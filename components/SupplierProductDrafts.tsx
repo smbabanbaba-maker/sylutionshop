@@ -53,7 +53,7 @@ export function SupplierProductDrafts({country, email}: {country: string; email:
         <label>Indicative price (optional)<input name="price" maxLength={60} placeholder="e.g. USD 1,600 / MT"/></label>
         <button type="submit" className="sy-green-action">Save product draft</button>
       </form>
-      <p role="status">{notice}</p>
+      {notice&&<p className={/unavailable|enter the product/i.test(notice)?"sy-status-error":"sy-status-info"} role={/unavailable|enter the product/i.test(notice)?"alert":"status"}>{notice}</p>}
       {drafts.length > 0 && <><h4>Saved product drafts</h4><ul>{drafts.map((draft, index) => (
         <li key={index}>{draft.name} · {draft.country} · {draft.minimum}{draft.price && " · " + draft.price}</li>
       ))}</ul></>}
