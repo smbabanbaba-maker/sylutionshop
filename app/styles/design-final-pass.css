@@ -517,3 +517,16 @@
  .product-page .brand-share-icons .brand-share-btn{transition:none}
  .product-page .brand-share-icons .brand-share-btn:hover{transform:none}
 }
+
+/* Genuine recognizable brand marks loaded as local vector assets, not generic glyphs. */
+.product-page .brand-share-icons .sy-original-brand-logo{
+ display:block!important;width:23px!important;height:23px!important;
+ min-width:23px;max-width:23px;max-height:23px;
+ object-fit:contain;flex:none;pointer-events:none;
+}
+.product-page .brand-share-icons .brand-share-btn.x-twitter .sy-original-brand-logo{width:20px!important;height:20px!important}
+.product-page .brand-share-icons .brand-share-btn.linkedin .sy-original-brand-logo{width:22px!important;height:22px!important}
+@media(max-width:640px){
+ .product-page .brand-share-icons .sy-original-brand-logo{width:21px!important;height:21px!important;min-width:21px;max-width:21px;max-height:21px}
+ .product-page .brand-share-icons .brand-share-btn.x-twitter .sy-original-brand-logo{width:19px!important;height:19px!important}
+}
