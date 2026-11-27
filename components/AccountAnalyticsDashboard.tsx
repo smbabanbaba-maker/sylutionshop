@@ -12,8 +12,8 @@ function readEntries(key:string):Entry[]{try{const value:unknown=JSON.parse(loca
 function inRange(date:string|undefined,days:number){if(!date)return false;const time=new Date(date).getTime();return Number.isFinite(time)&&time<=Date.now()&&Date.now()-time<=days*86400000}
 function relativeDay(date:string|undefined){if(!date)return"Local draft";const d=new Date(date);return Number.isNaN(d.getTime())?"Local draft":d.toLocaleDateString("en",{month:"short",day:"numeric"})}
 function sparkData(data:number[],max:number){const width=480,height=146;return data.map((value,i)=>`${(i*width/(data.length-1)).toFixed(1)},${(height-(value/max)*112-12).toFixed(1)}`).join(" ")}
-function Stat({label,value,Icon,featured,onClick,caption}:{label:string;value:string|number;Icon:LucideIcon;featured?:boolean;onClick:()=>void;caption:string}){
- return <button type="button" onClick={onClick} className={"sy-analytics-stat"+(featured?" sy-analytics-featured":"")}><span className="sy-analytics-stat-head"><span className="sy-analytics-icon"><Icon size={19}/></span><span>{label}</span><ArrowRight size={14} className="sy-analytics-arrow"/></span><strong>{value}</strong><small>{caption}</small></button>;
+function Stat({label,value,Icon,featured,tone,onClick,caption}:{label:string;value:string|number;Icon:LucideIcon;featured?:boolean;tone?:"error"|"warning"|"info"|"neutral";onClick:()=>void;caption:string}){
+ return <button type="button" onClick={onClick} className={"sy-analytics-stat"+(featured?" sy-analytics-featured":"")} data-tone={tone||"neutral"}><span className="sy-analytics-stat-head"><span className="sy-analytics-icon"><Icon size={19}/></span><span>{label}</span><ArrowRight size={14} className="sy-analytics-arrow"/></span><strong>{value}</strong><small>{caption}</small></button>;
 }
 export function AccountAnalyticsDashboard({profile,onNavigate,savedCount,rfqs}:{profile:Profile;onNavigate:(name:"overview"|"supplier"|"products"|"requests"|"post-rfq"|"messages"|"profile"|"favorites"|"verification"|"my-products"|"quotations"|"orders"|"add-product"|"notifications")=>void;savedCount:number;rfqs:Entry[]}){
  const seller=profile.role==="supplier";
@@ -49,14 +49,14 @@ export function AccountAnalyticsDashboard({profile,onNavigate,savedCount,rfqs}:{
   <nav className="sy-analytics-tabs" aria-label="Dashboard sections">{(["overview","trade","products"] as const).map(tab=><button key={tab} onClick={()=>setSection(tab)} className={section===tab?"active":""}>{tab==="overview"?"Overview":tab==="trade"?"RFQs & Quotations":"Products & Store"}</button>)}</nav>
   <div className="sy-analytics-demo-strip"><ShieldCheck size={17}/><span>Interactive preview · Counts reflect records saved in this browser. No real transactions, payment analytics or verified traffic data are connected.</span></div>
   <div className="sy-analytics-kpis">
-   <Stat label={seller?"Product drafts":"Buying requests"} value={seller?records.drafts.length:rfqPeriod.length} Icon={Package} caption={seller?"Local product drafts":"Created in selected period"} onClick={()=>onNavigate(seller?"my-products":"requests")}/>
+   <Stat label={seller?"Product drafts":"Buying requests"} tone="warning" value={seller?records.drafts.length:rfqPeriod.length} Icon={Package} caption={seller?"Local product drafts":"Created in selected period"} onClick={()=>onNavigate(seller?"my-products":"requests")}/>
    <Stat label="Quotations" value={quotesPeriod.length} Icon={FileText} caption="Local quotation records" onClick={()=>onNavigate("quotations")}/>
    <Stat label="Orders" value={ordersPeriod.length} Icon={ShoppingBag} caption="Demo order agreements" onClick={()=>onNavigate("orders")}/>
    <Stat label={seller?"Published listings":"Saved products"} value={seller?"0":savedCount} Icon={seller?Store:Heart} caption={seller?"No live publishing yet":"Your local shortlist"} onClick={()=>onNavigate(seller?"my-products":"favorites")}/>
    <Stat featured label={seller?"Selling activity":"Sourcing activity"} value={seller?activeDrafts.length:rfqPeriod.length} Icon={TrendingUp} caption={"Records in past "+period+" days"} onClick={()=>onNavigate(seller?"my-products":"requests")}/>
    <Stat label="Messages" value="—" Icon={MessageSquare} caption="Live chat not connected" onClick={()=>onNavigate("messages")}/>
    <Stat label="Store visits" value="—" Icon={Users} caption="Real analytics unavailable" onClick={()=>onNavigate("profile")}/>
-   <Stat label="Business verification" value="Pending" Icon={ShieldCheck} caption="No verified status issued" onClick={()=>onNavigate("verification")}/>
+   <Stat label="Business verification" value="Unverified" tone="error" Icon={ShieldCheck} caption="No verified status issued" onClick={()=>onNavigate("verification")}/>
   </div>
   {section==="products"&&<div className="sy-analytics-inline-actions"><button onClick={()=>onNavigate(seller?"add-product":"products")}><Package size={16}/>{seller?"Add product draft":"Browse products"}<ArrowRight size={15}/></button><button onClick={()=>onNavigate("profile")}><Store size={16}/>Company profile<ArrowRight size={15}/></button><button onClick={()=>onNavigate("verification")}><ShieldCheck size={16}/>Verification<ArrowRight size={15}/></button></div>}
   {section==="trade"&&<div className="sy-analytics-inline-actions"><button onClick={()=>onNavigate(seller?"quotations":"post-rfq")}><ClipboardList size={16}/>{seller?"Create quotation":"Post buying request"}<ArrowRight size={15}/></button><button onClick={()=>onNavigate("orders")}><ShoppingBag size={16}/>View orders<ArrowRight size={15}/></button></div>}
