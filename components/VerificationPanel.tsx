@@ -22,7 +22,7 @@ export function VerificationPanel({country="",role="buyer",onProfile}:{country?:
  {id:"tax" as const,title:guide.taxLabel,description:"Where applicable · requirements depend on jurisdiction",guide:guide.taxHelp},
  {id:"import" as const,title:"Previous trading evidence (optional)",description:"Only if the business has trade history. Not required for new companies.",guide:"Optional examples may include redacted commercial invoices or shipping documents. Never upload sensitive evidence in this demo."}
  ];
- const primaryDocs=role==="supplier"?2:1;
+ const primaryDocs=1;
  const [phoneCountry,setPhoneCountry]=useState(companyCountry);
  useEffect(()=>{setPhoneCountry(companyCountry)},[companyCountry]);
  const [workEmail,setWorkEmail]=useState("");
@@ -41,7 +41,7 @@ export function VerificationPanel({country="",role="buyer",onProfile}:{country?:
   setSelected(old=>({...old,[id]:{name:file.name,size:file.size}}));
   setNotice("File selected locally. No document has been uploaded or stored by SYLUTION.");
  }
- const prepared=role==="supplier"?Number(Boolean(selected.license))+Number(Boolean(selected.tax)):Number(Boolean(selected.license));
+ const prepared=Number(Boolean(selected.license));
  const progress=Math.round(prepared/primaryDocs*100);
  return <div className="sv-page">
   <div className="sv-topline"><div><span className="sv-eyebrow">SYLUTION TRUST CENTER</span><h2>Business Verification</h2><p>{role==="supplier"?"Prepare company credentials for business verification.":"Review account contact details and optional business identity evidence."}</p></div><span className="sv-demo-label"><LockKeyhole size={14}/> Preview only</span></div>
