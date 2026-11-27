@@ -3,6 +3,7 @@
 import {useEffect,useId,useState} from "react";
 import {CountryField} from "@/components/CountryFlag";
 import {categories} from "@/lib/catalog";
+import {TRADE_CURRENCIES,currencyLabel} from "@/lib/global-currencies";
 import {PackagePlus,Save,Trash2,UploadCloud,X} from "lucide-react";
 
 type ProductDraft={
@@ -14,7 +15,7 @@ type ProductDraft={
  savedAt?:string;
 };
 const units=["Piece","Set","Kilogram","Gram","Carton","Box","Pack","Bag","Litre","Metric ton","Container"];
-const currencies=["USD","NGN","EUR","GBP","CNY","INR","AED"];
+const currencies=TRADE_CURRENCIES;
 const makeId=()=>globalThis.crypto?.randomUUID?.()||String(Date.now());
 const text=(v:FormDataEntryValue|null)=>String(v??"").trim();
 
@@ -99,7 +100,7 @@ export function SupplierProductDrafts({country,email}:{country:string;email:stri
     <section className="sy-product-form-card">
      <div className="sy-product-form-section-title"><span>03</span><div><h3>Pricing & minimum order</h3><p>Make your wholesale offer easy to compare.</p></div></div>
      <div className="sy-product-field-grid">
-      <label className="sy-product-field">Currency <b>*</b><select name="currency" defaultValue={initial?.currency||"USD"}>{currencies.map(c=><option key={c} value={c}>{c}</option>)}</select></label>
+      <label className="sy-product-field">Currency <b>*</b><select name="currency" defaultValue={initial?.currency||"USD"}>{currencies.map(c=><option key={c} value={c}>{currencyLabel(c)}</option>)}</select></label>
       <label className="sy-product-field">Unit price <b>*</b><input name="price" required type="number" min="0.01" step="any" inputMode="decimal" defaultValue={initial?.price||""} placeholder="250.00"/></label>
       <label className="sy-product-field">Minimum order (MOQ) <b>*</b><input name="minimum" required type="number" min="1" step="any" inputMode="decimal" defaultValue={initial?.minimum||""} placeholder="100"/></label>
       <label className="sy-product-field">Selling unit <b>*</b><select name="unit" defaultValue={initial?.unit||"Piece"}>{units.map(u=><option key={u} value={u}>{u}</option>)}</select></label>
