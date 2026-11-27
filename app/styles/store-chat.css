@@ -305,3 +305,108 @@
 .sy-store-bottom{border-top-color:#D9E4EA}
 .sy-store-bottom button.active{background:#E8F8F1;color:#006C53;border-radius:10px}
 @media(max-width:767px){.sy-store-bottom button.active{border-radius:8px}}
+
+/* 2026-11-27: compact, fashion-clean messaging toolbar.
+   Mobile gets one slender horizontal bar, not a tall form. */
+.sy-chat-interactive .sy-chat-input-row{display:flex!important;align-items:center!important;min-width:0!important}
+.sy-chat-interactive .sy-chat-input-row textarea{
+ display:block!important;flex:1 1 0%!important;min-width:0!important;
+ box-sizing:border-box!important;resize:none!important;overflow-y:auto!important;
+}
+.sy-chat-interactive .sy-chat-rate-wrap{
+ align-self:flex-start!important;width:auto!important;max-width:100%!important;
+ padding:0!important;gap:5px!important;
+}
+.sy-chat-interactive .sy-chat-rate-panel{max-width:100%!important}
+@media(max-width:767px){
+ .sy-messages-page .sy-inbox-shell.sy-conversation-shell .sy-chat-composer.sy-chat-interactive,
+ .sy-messages-page .sy-supplier-inbox .sy-chat-composer.sy-chat-interactive{
+  gap:0!important;
+  padding:7px 9px calc(7px + env(safe-area-inset-bottom))!important;
+  margin:0!important;
+  border-top:1px solid #e5ebee!important;
+  background:#fff!important;
+  box-shadow:0 -2px 12px #0b193009!important;
+  flex:0 0 auto!important;
+ }
+ .sy-messages-page .sy-chat-composer.sy-chat-interactive .sy-chat-input-row{
+  display:flex!important;flex-direction:row!important;align-items:center!important;
+  gap:5px!important;
+  min-width:0!important;min-height:42px!important;
+  height:auto!important;max-height:66px!important;
+ }
+ .sy-messages-page .sy-inbox-shell.sy-conversation-shell .sy-chat-composer.sy-chat-interactive textarea,
+ .sy-messages-page .sy-supplier-inbox .sy-chat-composer.sy-chat-interactive textarea{
+  flex:1 1 0%!important;width:0!important;min-width:0!important;
+  height:42px!important;min-height:42px!important;max-height:42px!important;
+  padding:11px 12px!important;
+  margin:0!important;border-radius:22px!important;
+  border:1px solid #d9e5e7!important;
+  background:#f5f7f8!important;
+  color:#18364a!important;
+  font-size:16px!important;line-height:20px!important;
+  overflow-y:auto!important;resize:none!important;
+  box-shadow:none!important;
+ }
+ .sy-messages-page .sy-inbox-shell.sy-conversation-shell .sy-chat-composer.sy-chat-interactive button.sy-chat-tool,
+ .sy-messages-page .sy-supplier-inbox .sy-chat-composer.sy-chat-interactive button.sy-chat-tool{
+  flex:0 0 30px!important;min-width:30px!important;width:30px!important;
+  height:38px!important;min-height:38px!important;
+  padding:0!important;margin:0!important;
+  color:#486370!important;background:transparent!important;
+ }
+ .sy-messages-page .sy-inbox-shell.sy-conversation-shell .sy-chat-composer.sy-chat-interactive button.sy-chat-send,
+ .sy-messages-page .sy-supplier-inbox .sy-chat-composer.sy-chat-interactive button.sy-chat-send{
+  flex:0 0 40px!important;min-width:40px!important;width:40px!important;
+  height:40px!important;min-height:40px!important;
+  border-radius:50%!important;background:#007B60!important;color:#fff!important;
+  margin:0!important;padding:0!important;
+ }
+ .sy-messages-page .sy-chat-interactive .sy-chat-demo-note{display:none!important}
+ .sy-messages-page .sy-chat-interactive .sy-chat-product-preview{
+  padding:4px 6px!important;margin-bottom:6px!important;border-radius:10px!important;
+  box-shadow:none!important;
+ }
+ .sy-messages-page .sy-chat-interactive .sy-chat-product-preview img{
+  width:34px!important;height:34px!important;flex:0 0 34px!important;
+ }
+ .sy-messages-page .sy-chat-interactive .sy-chat-product-preview strong{
+  font-size:10px!important;
+ }
+ .sy-messages-page .sy-chat-interactive .sy-chat-product-preview b{
+  font-size:11px!important;
+ }
+ .sy-messages-page .sy-conversation-messages .sy-chat-rate-wrap{
+  display:flex!important;align-items:flex-start!important;justify-content:flex-start!important;
+  width:100%!important;flex-wrap:wrap!important;
+  margin:0 0 4px!important;
+ }
+ .sy-messages-page .sy-conversation-messages .sy-chat-rate-trigger{
+  height:25px!important;border-radius:16px!important;
+  font-size:10px!important;padding:3px 8px!important;
+  background:#fff!important;border:1px solid #e4e9ec!important;
+ }
+ .sy-messages-page .sy-conversation-messages .sy-chat-rate-panel{
+  flex-basis:100%!important;max-width:295px!important;
+  background:#fffaec!important;
+ }
+ .sy-messages-page .sy-chat-interactive .sy-emoji-panel{
+  margin-bottom:6px!important;
+  padding:5px!important;
+  max-width:260px!important;
+ }
+ .sy-messages-page .sy-chat-interactive .sy-chat-emoji-panel button{
+  height:34px!important;
+ }
+}
+@media(max-width:360px){
+ .sy-messages-page .sy-chat-composer.sy-chat-interactive .sy-chat-input-row{gap:3px!important}
+ .sy-messages-page .sy-inbox-shell.sy-conversation-shell .sy-chat-composer.sy-chat-interactive button.sy-chat-tool,
+ .sy-messages-page .sy-supplier-inbox .sy-chat-composer.sy-chat-interactive button.sy-chat-tool{
+  flex-basis:28px!important;min-width:28px!important;width:28px!important;
+ }
+ .sy-messages-page .sy-inbox-shell.sy-conversation-shell .sy-chat-composer.sy-chat-interactive button.sy-chat-send,
+ .sy-messages-page .sy-supplier-inbox .sy-chat-composer.sy-chat-interactive button.sy-chat-send{
+  flex-basis:37px!important;min-width:37px!important;width:37px!important;height:37px!important;
+ }
+}
