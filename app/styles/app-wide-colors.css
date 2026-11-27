@@ -1,0 +1,191 @@
+/*
+  SYLUTION TRADE — app-wide premium semantic finish.
+  Neutral surfaces, navy information hierarchy, emerald actions.
+  Explicit states only: success, pending, failure, informational.
+  The palette is consistent, but no approval/verification is invented.
+*/
+:root {
+ --sy-premium-ink:#12283D;
+ --sy-premium-navy:#0B1930;
+ --sy-premium-brand:#007B60;
+ --sy-premium-brand-hover:#00634F;
+ --sy-premium-surface:#FFFFFF;
+ --sy-premium-canvas:#F2F5F9;
+ --sy-premium-muted:#526679;
+ --sy-premium-border:#DBE5EB;
+ --sy-premium-focus:#59C4A5;
+}
+:where(.catalog-home,.product-page,.sy-account-page,.sy-public-profile){
+ color:var(--sy-premium-ink);
+}
+:where(.catalog-home,.product-page,.sy-account-page,.sy-public-profile) :is(button,a,input,textarea,select):focus-visible{
+ outline:2px solid var(--sy-premium-focus);
+ outline-offset:2px;
+}
+:where(.catalog-home,.product-page,.sy-account-page,.sy-public-profile) :is(input,textarea,select):not([type="checkbox"]):not([type="radio"]){
+ border-color:#CBDBE4;
+ color:#143348;
+}
+:where(.catalog-home,.product-page,.sy-account-page,.sy-public-profile) :is(input,textarea,select):disabled{
+ background:#F4F6F8!important;
+ color:#677987!important;
+ border-color:#DDE4EA!important;
+}
+:where(.catalog-home,.product-page,.sy-account-page,.sy-public-profile) :is(button,a):disabled{
+ opacity:.56;
+ cursor:not-allowed;
+}
+:where(.catalog-home,.product-page,.sy-account-page,.sy-public-profile) :is(h1,h2,h3,h4){
+ color:var(--sy-premium-ink);
+}
+.catalog-home .product-card,
+.product-page .detail-section,
+.sy-account-page .sy-panel,
+.sy-account-page .sy-profile-detail-card,
+.sy-account-page .sy-profile-summary-card,
+.sy-account-page .sv-card,
+.sy-public-profile .sy-public-product{
+ background:#fff;
+ border-color:var(--sy-premium-border)!important;
+ box-shadow:0 3px 14px #0B19300B;
+}
+.catalog-home .catalog-primary,
+.catalog-home .inquiry-btn,
+.product-page .detail-action-green,
+.sy-account-page .sy-green-action:not(:disabled),
+.sy-account-page .sy-sidebar-primary,
+.sy-account-page .sy-post-submit,
+.sy-contact-form .sy-contact-primary,
+.sy-public-profile .sy-green-action{
+ background:var(--sy-premium-brand)!important;
+ border-color:var(--sy-premium-brand)!important;
+ color:white!important;
+}
+.catalog-home .catalog-primary:hover,
+.catalog-home .inquiry-btn:hover,
+.product-page .detail-action-green:hover,
+.sy-account-page .sy-green-action:hover:not(:disabled),
+.sy-account-page .sy-post-submit:hover,
+.sy-contact-form .sy-contact-primary:hover{
+ background:var(--sy-premium-brand-hover)!important;
+ border-color:var(--sy-premium-brand-hover)!important;
+}
+.catalog-home .catalog-results-head h2,
+.sy-account-page .sy-content-topline h2,
+.sy-account-page .sy-profile-title h2{color:#15344B!important}
+/* Account modes: meaningful area identity, not a different rainbow per action. */
+.sy-buyer-theme .sy-content-topline .sy-mini-overline{color:#2354B8!important}
+.sy-supplier-theme .sy-content-topline .sy-mini-overline{color:#08734F!important}
+.sy-account-page .sy-post-rfq .sy-mini-overline{color:#693AB0!important}
+.sy-account-page .sv-eyebrow{color:#1D6684!important}
+/* Verification and authenticity on all product/profile/supplier surfaces */
+:where(.catalog-home,.product-page,.sy-account-page,.sy-public-profile) .sy-status-unverified,
+.product-page .demo-trust-badge.sy-status-unverified,
+.product-page .demo-unverified,
+.product-page .sy-supplier-demo-badge{
+ color:var(--sy-state-error)!important;
+ background:var(--sy-state-error-bg)!important;
+ border:1px solid var(--sy-state-error-border)!important;
+}
+.product-page .demo-trust-badge.sy-status-unverified,
+.product-page .sy-supplier-demo-badge{
+ display:inline-flex;align-items:center;gap:5px;
+ font-size:11px;font-weight:800;padding:6px 9px;border-radius:20px;
+ width:max-content;max-width:100%;
+}
+.product-page .demo-verified{
+ color:var(--sy-state-error)!important;
+ background:var(--sy-state-error-bg)!important;
+}
+.sy-account-page .sy-profile-preview-badge,
+.sy-account-page .sy-profile-pending{
+ color:var(--sy-state-error)!important;
+ background:var(--sy-state-error-bg)!important;
+ border:1px solid var(--sy-state-error-border)!important;
+ border-radius:18px;
+ padding:5px 8px;
+ font-weight:800!important;
+}
+.sy-account-page .sy-free-plan,
+.sy-account-page .sy-preview-tag{
+ color:#37566D!important;background:#E8EFF6!important;
+ border:1px solid #BFD0DC!important;
+}
+/* Draft is pending locally, NOT delivered or successful. */
+.sy-account-page :is(.sy-request-draft,.sy-rfq-demo-tag,.sy-rfq-save-note),
+.sy-inbox-shell .sy-chat-bubble.buyer>span,
+.sy-supplier-inbox .sy-conversation-date{
+ color:var(--sy-state-warning)!important;
+}
+.sy-account-page .sy-request-draft,
+.sy-account-page .sy-rfq-demo-tag{
+ background:var(--sy-state-warning-bg)!important;
+ border:1px solid var(--sy-state-warning-border)!important;
+ border-radius:7px;
+ padding:5px 8px;
+}
+/* Draw attention to genuine form validation problems. */
+:where(.sy-account-page,.product-page,.catalog-home) [aria-invalid="true"],
+:where(.sy-account-page,.product-page,.catalog-home) input:invalid:not(:placeholder-shown):not([type="checkbox"]):not([type="radio"]){
+ border-color:var(--sy-state-error)!important;
+ box-shadow:0 0 0 2px #AD17291A!important;
+}
+:where(.sy-account-page,.product-page,.catalog-home) input:invalid:focus{
+ outline-color:var(--sy-state-error)!important;
+}
+/* Browser-only confirmations are informational, while destructive actions remain red. */
+.sy-account-page .sy-profile-feedback.sy-status-info,
+.sy-account-page .sy-selected-local,
+.sy-account-page .sv-selected{
+ background:var(--sy-state-info-bg)!important;
+ color:var(--sy-state-info)!important;
+ border-color:var(--sy-state-info-border)!important;
+}
+.sy-account-page .sy-profile-feedback.sy-status-error,
+.sy-account-page .sy-error,.sy-auth-modal .sy-error,.sy-contact-form .sy-contact-error{
+ background:var(--sy-state-error-bg)!important;
+ color:var(--sy-state-error)!important;
+ border-color:var(--sy-state-error-border)!important;
+}
+.sy-account-page :is(.sy-logout-action,.sy-manager [aria-label^="Delete"],.sy-fav-card button){
+ color:var(--sy-state-error)!important;
+}
+.sy-account-page .sy-manager [aria-label^="Delete"]:hover,
+.sy-account-page .sy-logout-action:hover{
+ background:var(--sy-state-error-bg)!important;
+}
+/* Chat: small status accents, neutral read surfaces, strong sender contrast. */
+.sy-account-page .sy-conversation-row.active{
+ background:#E9F6F0!important;border-color:#B9DEC9!important;
+}
+.sy-account-page .sy-chat-bubble.buyer{background:#DCF3E7!important;color:#194735!important}
+.sy-account-page .sy-chat-bubble.seller{background:#fff!important;color:#213E52!important}
+.sy-account-page .sy-chat-composer button:not(:disabled){background:#007B60!important;color:#fff!important}
+.sy-contact-success{
+ border-top:4px solid var(--sy-state-info);
+}
+.sy-contact-privacy,.sy-supplier-demo-warning{
+ color:var(--sy-state-warning)!important;
+ background:var(--sy-state-warning-bg)!important;
+ border-color:var(--sy-state-warning-border)!important;
+}
+/* Public supplier cards must not indicate verification in the absence of checks. */
+.sy-public-profile-note,.product-page .demo-validation-notice{
+ background:var(--sy-state-warning-bg)!important;
+ border:1px solid var(--sy-state-warning-border)!important;
+ color:var(--sy-state-warning)!important;
+}
+/* Compact mobile: preserve the app's existing two-column product tiles. */
+@media(max-width:767px){
+ .catalog-home .product-grid,
+ .sy-account-page .sy-recommended-products,
+ .product-page .related-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ }
+ .sy-account-page .sy-profile-preview-badge,
+ .sy-account-page .sy-profile-pending,
+ .product-page .demo-trust-badge.sy-status-unverified{
+  font-size:10px!important;
+  padding:5px 7px;
+ }
+}
