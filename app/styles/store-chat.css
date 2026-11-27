@@ -195,3 +195,67 @@
  .sy-chat-interactive .sy-chat-product-preview{padding:5px!important}
  .sy-chat-interactive .sy-chat-product-preview img{width:40px;height:40px;flex-basis:40px}
 }
+
+/* Defeat legacy composer selectors so emoji and file controls are not
+   unintentionally recoloured as the green Send button. */
+.sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-chat-composer.sy-chat-interactive .sy-emoji-panel,
+.sy-account-page .sy-supplier-inbox .sy-chat-composer.sy-chat-interactive .sy-emoji-panel{
+ display:grid!important;
+ grid-template-columns:repeat(6,minmax(0,1fr))!important;
+ align-items:center!important;
+ justify-content:stretch!important;
+}
+.sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-chat-composer.sy-chat-interactive button.sy-chat-tool,
+.sy-account-page .sy-supplier-inbox .sy-chat-composer.sy-chat-interactive button.sy-chat-tool{
+ display:grid!important;
+ place-items:center!important;
+ background:transparent!important;
+ color:#385366!important;
+ border:0!important;
+ border-radius:50%!important;
+ padding:0!important;
+ width:34px!important;
+ height:42px!important;
+ min-width:34px!important;
+ flex:0 0 34px!important;
+ box-shadow:none!important;
+ opacity:1!important;
+}
+.sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-chat-composer.sy-chat-interactive .sy-emoji-panel button,
+.sy-account-page .sy-supplier-inbox .sy-chat-composer.sy-chat-interactive .sy-emoji-panel button{
+ width:100%!important;
+ min-width:0!important;
+ height:38px!important;
+ background:transparent!important;
+ color:#18384e!important;
+ border:0!important;
+ border-radius:8px!important;
+ padding:0!important;
+ box-shadow:none!important;
+}
+.sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-chat-composer.sy-chat-interactive .sy-chat-product-preview>button{
+ width:30px!important;min-width:30px!important;height:30px!important;
+ background:transparent!important;color:#557482!important;
+ border:0!important;box-shadow:none!important;padding:0!important;
+ border-radius:7px!important;
+}
+.sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-chat-composer.sy-chat-interactive button.sy-chat-send,
+.sy-account-page .sy-supplier-inbox .sy-chat-composer.sy-chat-interactive button.sy-chat-send{
+ display:grid!important;place-items:center!important;
+ flex:0 0 42px!important;width:42px!important;height:42px!important;
+ min-width:42px!important;
+ background:#007B60!important;color:#fff!important;border-radius:11px!important;
+}
+.sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-chat-composer.sy-chat-interactive button.sy-chat-send:disabled,
+.sy-account-page .sy-supplier-inbox .sy-chat-composer.sy-chat-interactive button.sy-chat-send:disabled{
+ opacity:.5!important;
+}
+@media(max-width:767px){
+ .sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-chat-composer.sy-chat-interactive button.sy-chat-tool{
+  flex-basis:30px!important;min-width:30px!important;width:30px!important;
+ }
+ .sy-account-page .sy-inbox-shell.sy-conversation-shell .sy-chat-composer.sy-chat-interactive button.sy-chat-send,
+ .sy-account-page .sy-supplier-inbox .sy-chat-composer.sy-chat-interactive button.sy-chat-send{
+  flex:0 0 39px!important;min-width:39px!important;width:39px!important;height:40px!important;
+ }
+}
