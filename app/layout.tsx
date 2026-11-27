@@ -23,6 +23,7 @@ import "./styles/ultra-hd.css";
 import "./styles/analytics-dashboard.css";
 import "./styles/semantic-system.css";
 import "./styles/responsive-final.css";
+import "./styles/retail-red-theme.css";
 export const viewport: Viewport = {width:"device-width",initialScale:1,viewportFit:"cover"};
 export const metadata: Metadata = {
   metadataBase: new URL("https://sylutionshop.vercel.app"),
