@@ -4,7 +4,7 @@ import {useEffect,useRef,useState} from "react";
 import Link from "next/link";
 import {MESSAGE_DRAFT_KEY,type SupplierMessageDraft} from "@/components/SupplierContactModal";
 import {products} from "@/lib/catalog";
-import {MessageSquare, Search, Building2, Store, Smile, Paperclip, X, UserRound, ArrowLeft, Send, Package, ArrowRight, Plus, Trash2, ShieldCheck, ClipboardList, CheckCircle2} from "lucide-react";
+import {MessageSquare, Search, Building2, Store, Smile, Paperclip, ImagePlus, X, UserRound, ArrowLeft, Send, Package, ArrowRight, Plus, Trash2, ShieldCheck, ClipboardList, CheckCircle2} from "lucide-react";
 type StoredRfq={product?:string;productId?:string;quantity?:number;unit?:string;targetPrice?:string;destinationCountry?:string;port?:string;incoterm?:string;paymentTerm?:string;shippingMethod?:string;preferredCountry?:string;leadTime?:string;documents?:string;company?:string;email?:string;message?:string;createdAt?:string;status?:string;attachmentNames?:string[];attributes?:{name:string;value:string}[]};
 const KEY="sylution_demo_rfqs";
 function readStored():StoredRfq[]{try{const value=JSON.parse(localStorage.getItem(KEY)||"[]");return Array.isArray(value)?value:[]}catch{return []}}
@@ -88,14 +88,30 @@ export function PostBuyingRequest({onSaved}:{onSaved:()=>void}){
  const [docs,setDocs]=useState("");
  const [notes,setNotes]=useState("");
  const [attributes,setAttributes]=useState<{name:string;value:string}[]>([]);
+ const [rfqImages,setRfqImages]=useState<File[]>([]);
+ const [rfqImageUrls,setRfqImageUrls]=useState<string[]>([]);
  const [notice,setNotice]=useState("");
+ useEffect(()=>{const urls=rfqImages.map(file=>URL.createObjectURL(file));setRfqImageUrls(urls);return()=>urls.forEach(url=>URL.revokeObjectURL(url));},[rfqImages]);
+ function chooseRfqImages(files:FileList|null){
+  if(!files)return;
+  const picked=Array.from(files);
+  if(picked.length>5||picked.some(file=>!["image/jpeg","image/png","image/webp"].includes(file.type)||file.size>5*1024*1024)){setNotice("Choose up to 5 JPG, PNG or WebP images, 5 MB maximum per image.");return}
+  setRfqImages(picked);setNotice("");
+ }
+
  function save(e:React.FormEvent){e.preventDefault();if(!product.trim()||!Number(quantity)||Number(quantity)<=0||!port.trim()){setNotice("Complete the product, quantity and destination fields.");return}
- const rfq:StoredRfq={product:product.trim(),quantity:Number(quantity),unit,targetPrice:price?currency+" "+price:"",destinationCountry:preferred.trim(),port:port.trim(),incoterm:trade,paymentTerm:payment,shippingMethod:shipping,preferredCountry:preferred,leadTime:lead,documents:docs,message:notes,attributes:attributes.filter(a=>a.name.trim()&&a.value.trim()),createdAt:new Date().toISOString(),status:"Draft · browser only"};
+ const rfq:StoredRfq={product:product.trim(),quantity:Number(quantity),unit,targetPrice:price?currency+" "+price:"",destinationCountry:preferred.trim(),port:port.trim(),incoterm:trade,paymentTerm:payment,shippingMethod:shipping,preferredCountry:preferred,leadTime:lead,documents:docs,message:notes,attachmentNames:rfqImages.map(file=>file.name),attributes:attributes.filter(a=>a.name.trim()&&a.value.trim()),createdAt:new Date().toISOString(),status:"Draft · browser only"};
  try{const records=readStored();localStorage.setItem(KEY,JSON.stringify([...records,rfq]));window.dispatchEvent(new Event("sylution-rfq-change"));setNotice("Demo buying request saved. No supplier has been contacted.");onSaved()}catch{setNotice("Could not save. Your browser may have blocked local storage.")}}
  return <div className="sy-post-rfq">
    <div className="sy-rfq-top"><span className="sy-mini-overline">SYLUTION SOURCING</span><h2>Post a buying request</h2><p>Describe exactly what you need. Use structured requirements to compare supplier quotations later.</p><span className="sy-rfq-demo-tag">Demo · Saves only to this browser</span></div>
    <form className="sy-rfq-builder" onSubmit={save}>
      <label className="sy-rfq-full">What product are you sourcing? <span>*</span><input value={product} onChange={e=>setProduct(e.target.value)} required placeholder="e.g. Export-grade Nigerian ginger"/></label>
+     <div className="sy-rfq-image-field">
+       <div className="sy-rfq-image-heading"><strong>Product reference images <span>(optional)</span></strong><small>Help suppliers understand what you need</small></div>
+       <label className="sy-rfq-image-upload"><ImagePlus size={24}/><strong>Add product photos</strong><small>JPG, PNG, WebP · Up to 5 images · 5 MB each</small><input aria-label="Choose product reference photos" type="file" accept="image/jpeg,image/png,image/webp" multiple onChange={e=>{chooseRfqImages(e.target.files);e.target.value="";}}/></label>
+       {rfqImageUrls.length>0&&<div className="sy-rfq-image-grid">{rfqImageUrls.map((url,i)=><div className="sy-rfq-image-tile" key={url}><img src={url} alt={"Reference product photo "+(i+1)}/><button type="button" aria-label={"Remove photo "+(i+1)} onClick={()=>setRfqImages(prev=>prev.filter((_,j)=>j!==i))}><X size={14}/></button></div>)}</div>}
+       <small className="sy-rfq-image-disclaimer">Demo: photos are previewed here but not uploaded. Only their filenames are saved with your local request draft.</small>
+     </div>
      <div className="sy-rfq-attrs"><div><strong>Custom attributes</strong><small>Grade, packaging, origin, specifications...</small></div>{attributes.map((a,i)=><div className="sy-rfq-attr-row" key={i}><input aria-label={"Attribute name "+(i+1)} placeholder="Attribute name" value={a.name} onChange={e=>setAttributes(items=>items.map((x,j)=>i===j?{...x,name:e.target.value}:x))}/><input aria-label={"Attribute value "+(i+1)} placeholder="Value" value={a.value} onChange={e=>setAttributes(items=>items.map((x,j)=>i===j?{...x,value:e.target.value}:x))}/><button type="button" onClick={()=>setAttributes(items=>items.filter((_,j)=>j!==i))} aria-label="Remove attribute"><Trash2 size={16}/></button></div>)}<button type="button" className="sy-attr-add" onClick={()=>setAttributes(items=>[...items,{name:"",value:""}])}><Plus size={16}/> Add custom attribute</button></div>
      <div className="sy-rfq-fields">
        <label>Quantity <span>*</span><div className="sy-quantity-control"><input required type="number" min=".01" step="any" value={quantity} onChange={e=>setQuantity(e.target.value)} placeholder="100"/><select value={unit} aria-label="Quantity unit" onChange={e=>setUnit(e.target.value)}>{["MT","KG","Tons","Pieces","Sets","Containers","Litres","Bags"].map(x=><option key={x}>{x}</option>)}</select></div></label>
