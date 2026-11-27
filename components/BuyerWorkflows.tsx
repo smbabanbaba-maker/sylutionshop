@@ -16,7 +16,9 @@ export function MessagesPreview({onFind,onRequest}:{onFind:()=>void;onRequest:()
  const [mobileOpen,setMobileOpen]=useState(false);
  useEffect(()=>{
   const refresh=()=>{try{const v=JSON.parse(localStorage.getItem(MESSAGE_DRAFT_KEY)||"[]");setDrafts(Array.isArray(v)?v:[])}catch{setDrafts([])}};
-  refresh();window.addEventListener("sylution-message-drafts-change",refresh);window.addEventListener("storage",refresh);
+  refresh();
+  // Open the newest existing conversation immediately when Messages is selected.
+  try{const saved=JSON.parse(localStorage.getItem(MESSAGE_DRAFT_KEY)||"[]");if(Array.isArray(saved)&&saved.length>0)setMobileOpen(true)}catch{}window.addEventListener("sylution-message-drafts-change",refresh);window.addEventListener("storage",refresh);
   return()=>{window.removeEventListener("sylution-message-drafts-change",refresh);window.removeEventListener("storage",refresh)}
  },[]);
  const groups=Array.from(drafts.reduce((map,d)=>{
@@ -38,12 +40,12 @@ export function MessagesPreview({onFind,onRequest}:{onFind:()=>void;onRequest:()
    <section className="sy-inbox-list" aria-label="Conversations">
     <div className="sy-conversation-list-head"><Link href="/account?tab=overview" className="sy-messages-mobile-back" aria-label="Back to account"><ArrowLeft size={22}/></Link><h2>Messages</h2><span className="sy-messages-mobile-count">{groups.length}</span><small>Local preview</small></div>
     <label className="sy-inbox-search"><Search size={17}/><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search people or messages" aria-label="Search people or messages"/></label>
-    <div className="sy-conversation-filter">Conversations <span>{visible.length}</span></div>
+    
     {visible.length?<div className="sy-conversation-list">{visible.map(g=><button key={g.key} type="button" className={"sy-conversation-row"+(active?.key===g.key?" active":"")} onClick={()=>{setSelected(g.key);setNotice("");setMobileOpen(true)}}>
       <span className="sy-conversation-avatar"><Building2 size={19}/></span>
       <span className="sy-conversation-summary"><strong>{g.last.supplier}</strong><small>{g.last.message}</small></span>
       <span className="sy-conversation-date">{clock(g.last.createdAt)}</span>
-    </button>)}</div>:<div className="sy-inbox-none"><MessageSquare size={32}/><strong>No conversations yet</strong><p>Messages to suppliers will be organized here by company.</p><button className="sy-green-action" onClick={onFind}>Browse products</button></div>}
+    </button>)}</div>:<div className="sy-inbox-none"><MessageSquare size={32}/><strong>No messages yet</strong><button className="sy-green-action" onClick={onFind}>Find sellers</button></div>}
    </section>
    <section className="sy-inbox-content">{active?<div className="sy-conversation-detail">
      <header className="sy-conversation-chat-head">
@@ -55,7 +57,7 @@ export function MessagesPreview({onFind,onRequest}:{onFind:()=>void;onRequest:()
      <div className="sy-conversation-product"><Package size={15}/><span>{active.last.product}</span></div>
      <div className="sy-conversation-messages">{[...active.records].reverse().map(d=><div key={d.id} className="sy-conversation-exchange"><div className="sy-chat-bubble buyer"><span>My message · Draft</span><p>{d.message}</p></div>{d.reply&&<div className="sy-chat-bubble seller"><span>Seller reply · Local preview</span><p>{d.reply}</p></div>}</div>)}</div>
      <form className="sy-chat-composer" onSubmit={addMessage}><label htmlFor="sy-chat-message">Message</label><div><textarea id="sy-chat-message" value={composer} onChange={e=>setComposer(e.target.value)} placeholder="Type your message..." maxLength={3000} rows={2}/><button className="sy-green-action" type="submit" aria-label="Save message draft" disabled={!composer.trim()}><Send size={17}/></button></div>{notice&&<small className={/unable|failed|error/i.test(notice)?"sy-status-error":"sy-status-info"} role="status">{notice}</small>}<small>Browser-only preview · Messages are not delivered.</small></form>
-    </div>:<div className="sy-conversation-empty"><MessageSquare size={43}/><h2>Your conversations</h2><p>Select a supplier to view messages. Live messaging is not connected yet.</p><button className="sy-soft-action" onClick={onFind}>Find suppliers</button></div>}</section>
+    </div>:<div className="sy-conversation-empty"><MessageSquare size={43}/><h2>No messages yet</h2><button className="sy-soft-action" onClick={onFind}>Find sellers</button></div>}</section>
  </div>
 }
 export function PostBuyingRequest({onSaved}:{onSaved:()=>void}){
