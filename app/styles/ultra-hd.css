@@ -102,3 +102,18 @@ img.sy-original-brand-logo,.sy-country-flag img{object-fit:contain}
 @media(prefers-reduced-motion:reduce){
  .catalog-home .product-card,.sy-store-page .sy-store-product{transition:none!important}
 }
+
+/* Wide-screen hero requests a larger source rather than stretching a 1800px crop. */
+@media(min-width:1920px){
+ .reference-hero{
+  background-image:linear-gradient(100deg,#071f38ea,#0b4869cc 65%,#06664c98),
+   url("https://images.unsplash.com/photo-1494412519320-aa613dfb7738?w=3200&q=85&fit=crop")!important;
+  background-position:center!important;background-size:cover!important;
+ }
+}
+@media(min-width:3200px){
+ .reference-hero{
+  background-image:linear-gradient(100deg,#071f38ea,#0b4869cc 65%,#06664c98),
+   url("https://images.unsplash.com/photo-1494412519320-aa613dfb7738?w=3840&q=85&fit=crop")!important;
+ }
+}
