@@ -62,7 +62,7 @@ export function MessagesPreview({onFind,onRequest}:{onFind:()=>void;onRequest:()
        <button className="sy-conversation-back" onClick={()=>setMobileOpen(false)} aria-label="Back to messages"><ArrowLeft size={19}/></button>
        <span className="sy-conversation-avatar"><Building2 size={18}/></span>
        <div><strong>{active.last.supplier}</strong><small>{active.last.country} · Demo supplier</small></div>
-       <Link className="sy-conversation-profile" href={"/suppliers/"+encodeURIComponent(active.last.supplier)} title="Open seller shop" aria-label="Open seller shop"><Store size={21}/><span>Shop</span></Link>
+       <Link className="sy-conversation-profile" href={"/suppliers/"+encodeURIComponent(active.last.supplier)+"?product="+encodeURIComponent(active.last.productId)} title="Open seller shop" aria-label="Open seller shop"><Store size={21}/><span>Shop</span></Link>
      </header>
      <div className="sy-conversation-product"><Package size={15}/><span>{active.last.product}</span>{linkedProduct&&<button type="button" onClick={()=>setShowProductCard(v=>!v)}>{showProductCard?"Hide product":"Show product"}</button>}</div>
      <div className="sy-conversation-messages">{[...active.records].reverse().map(d=><div key={d.id} className="sy-conversation-exchange"><div className="sy-chat-bubble buyer"><span>My message · Draft</span><p>{d.message}</p></div>{d.reply&&<div className="sy-chat-bubble seller"><span>Seller reply · Local preview</span><p>{d.reply}</p></div>}</div>)}</div>
