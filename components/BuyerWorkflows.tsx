@@ -36,9 +36,9 @@ export function MessagesPreview({onFind,onRequest}:{onFind:()=>void;onRequest:()
  const clock=(iso:string)=>{const d=new Date(iso);return Number.isNaN(d.getTime())?"":d.toLocaleDateString(undefined,{month:"short",day:"numeric"})};
  return <div className={"sy-inbox-shell sy-conversation-shell"+(mobileOpen?" sy-show-chat":"")}>
    <section className="sy-inbox-list" aria-label="Conversations">
-    <div className="sy-conversation-list-head"><h2>Messages <span>{groups.length}</span></h2><small>Local preview</small></div>
+    <div className="sy-conversation-list-head"><Link href="/account?tab=overview" className="sy-messages-mobile-back" aria-label="Back to account"><ArrowLeft size={22}/></Link><h2>Messages</h2><span className="sy-messages-mobile-count">{groups.length}</span><small>Local preview</small></div>
     <label className="sy-inbox-search"><Search size={17}/><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search people or messages" aria-label="Search people or messages"/></label>
-    <div className="sy-conversation-filter">All conversations <span>{visible.length}</span></div>
+    <div className="sy-conversation-filter">Conversations <span>{visible.length}</span></div>
     {visible.length?<div className="sy-conversation-list">{visible.map(g=><button key={g.key} type="button" className={"sy-conversation-row"+(active?.key===g.key?" active":"")} onClick={()=>{setSelected(g.key);setNotice("");setMobileOpen(true)}}>
       <span className="sy-conversation-avatar"><Building2 size={19}/></span>
       <span className="sy-conversation-summary"><strong>{g.last.supplier}</strong><small>{g.last.message}</small></span>
