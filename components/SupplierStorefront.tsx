@@ -1,7 +1,7 @@
 "use client";
-import {useMemo,useState} from "react";
+import {useEffect,useMemo,useState} from "react";
 import Link from "next/link";
-import {ArrowLeft,Building2,Check,Grid2X2,Heart,MapPin,MessageCircle,Package,Search,ShieldAlert,Store, X} from "lucide-react";
+import {ArrowLeft,Building2,Check,Grid2X2,Heart,MapPin,MessageCircle,Package,Search,ShieldAlert,Store} from "lucide-react";
 import type {Product} from "@/lib/catalog";
 import {SupplierContactModal} from "@/components/SupplierContactModal";
 
@@ -12,11 +12,10 @@ export function SupplierStorefront({company,country,items}:{company:string;count
  const [category,setCategory]=useState("All");
  const [contact,setContact]=useState<Product|null>(null);
  const [followed,setFollowed]=useState(false);
- const [followReady,setFollowReady]=useState(false);
+ useEffect(()=>{try{const saved=JSON.parse(localStorage.getItem("sylution_demo_followed_shops")||"[]");setFollowed(Array.isArray(saved)&&saved.includes(company))}catch{}},[company]);
  const categories=useMemo(()=>["All",...new Set(items.map(x=>x.category))], [items]);
  const matches=items.filter(x=>(category==="All"||x.category===category)&&[x.name,x.category,x.description].join(" ").toLowerCase().includes(query.trim().toLowerCase()));
  function follow(){try{const key="sylution_demo_followed_shops";const names=JSON.parse(localStorage.getItem(key)||"[]") as string[];const updated=followed?names.filter(x=>x!==company):[...new Set([...names,company])];localStorage.setItem(key,JSON.stringify(updated));setFollowed(!followed)}catch{}}
- if(!followReady&&typeof window!=="undefined"){ /* render remains deterministic until client effect */ }
  return <main className="sy-store-page">
    <div className="sy-store-topbar"><Link href="/account?tab=messages" aria-label="Back to Messages"><ArrowLeft size={21}/></Link><div className="sy-store-search"><Search size={17}/><input value={query} onChange={e=>{setQuery(e.target.value);setTab("items")}} placeholder="Search this store..." aria-label="Search this store"/></div><span className="sy-store-toplogo"><Store size={20}/></span></div>
    <header className="sy-store-hero"><span className="sy-store-avatar"><Building2 size={27}/></span><div className="sy-store-hero-details"><small>SYLUTION TRADE · DEMO STORE</small><h1>{company}</h1><span><MapPin size={13}/> {country}</span></div><button className="sy-store-follow" onClick={follow} type="button">{followed?<Check size={17}/>:<Heart size={17}/>} {followed?"Following":"Follow"}</button></header>
