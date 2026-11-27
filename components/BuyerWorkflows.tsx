@@ -1,4 +1,5 @@
 "use client";
+import {DirectTradeNotice} from "@/components/DirectTradeNotice";
 import {CountryField} from "@/components/CountryFlag";
 import {useEffect,useRef,useState} from "react";
 import Link from "next/link";
@@ -125,6 +126,7 @@ export function PostBuyingRequest({onSaved}:{onSaved:()=>void}){
        <label className="sy-rfq-full">Required documents<input value={docs} onChange={e=>setDocs(e.target.value)} placeholder="Certificate of origin, test report, etc."/></label>
        <label className="sy-rfq-full">Additional requirements<textarea rows={4} value={notes} onChange={e=>setNotes(e.target.value)} placeholder="Quality, packaging, specifications, delivery expectations..."/></label>
      </div>
+     <DirectTradeNotice compact/>
      <div className="sy-rfq-save-note"><ShieldCheck size={18}/><span>This is a local preview. Smart matching, publication and supplier responses are not yet active.</span></div>
      <button className="sy-green-action sy-post-submit" type="submit">Save demo buying request <ArrowRight size={17}/></button>{notice&&<p className={"sy-rfq-notice "+(/could not|complete the/i.test(notice)?"sy-status-error":"sy-status-info")} role={/could not|complete the/i.test(notice)?"alert":"status"}>{notice}</p>}
    </form>
