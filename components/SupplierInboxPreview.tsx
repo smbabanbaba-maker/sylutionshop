@@ -1,6 +1,7 @@
 "use client";
 import {useEffect,useState} from "react";
 import {MessageSquare,Search,Send,Package,ArrowLeft} from "lucide-react";
+import Link from "next/link";
 import {MESSAGE_DRAFT_KEY,type SupplierMessageDraft} from "@/components/SupplierContactModal";
 
 const load=():SupplierMessageDraft[]=>{try{const rows=JSON.parse(localStorage.getItem(MESSAGE_DRAFT_KEY)||"[]");return Array.isArray(rows)?rows:[]}catch{return []}};
@@ -34,6 +35,7 @@ export function SupplierInboxPreview({company}:{company:string}){
   }catch{setNotice("Browser storage blocked this demo reply.");}
  }
  return <section className="sy-supplier-inbox" aria-label="Supplier messages">
+  <div className="sy-supplier-inbox-mobile-head"><Link href="/account?tab=supplier" aria-label="Back to supplier dashboard"><ArrowLeft size={22}/></Link><strong>Messages</strong></div>
   <div className="sy-supplier-inbox-header"><div><span className="sy-mini-overline">SUPPLIER WORKSPACE</span><h2>Messages</h2><p>One clean conversation per product enquiry.</p></div><span className="sy-supplier-inbox-count">{conversations.length} conversations</span></div>
   <p className="sy-supplier-demo-warning">This is a local demonstration. A real buyer on another device cannot reach you until secure messaging is connected.</p>
   {!normalized?<div className="sy-supplier-inbox-empty"><MessageSquare size={32}/><strong>Set your supplier company name</strong><p>Only matching demo enquiries will appear here.</p></div>:
