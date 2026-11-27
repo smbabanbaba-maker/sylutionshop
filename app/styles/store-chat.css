@@ -149,3 +149,49 @@
  .sy-messages-page .sy-conversation-chat-head .sy-conversation-profile>span{display:none!important}
  .sy-store-bottom button{font-size:10px}
 }
+
+/* Product being discussed is visible like a compact commerce-chat reference;
+   it can be dismissed to reclaim input space. */
+.sy-chat-interactive .sy-chat-product-preview{
+ display:flex!important;align-items:center!important;
+ gap:9px!important;
+ border:1px solid #e2e9ee;
+ border-radius:12px;
+ background:#fff!important;padding:6px!important;
+ width:100%;max-width:100%;min-width:0;
+}
+.sy-chat-interactive .sy-chat-product-preview>a{
+ display:flex!important;align-items:center!important;
+ gap:9px!important;flex:1;min-width:0;
+ text-decoration:none;color:#1d3445;
+}
+.sy-chat-interactive .sy-chat-product-preview img{
+ width:45px;height:45px;object-fit:cover;border-radius:7px;flex:0 0 45px
+}
+.sy-chat-interactive .sy-chat-product-preview span{
+ display:flex;flex-direction:column;gap:4px;flex:1;min-width:0;
+}
+.sy-chat-interactive .sy-chat-product-preview strong{
+ display:block;font-weight:650;font-size:11px!important;white-space:nowrap;
+ overflow:hidden;text-overflow:ellipsis;color:#1e3646;
+}
+.sy-chat-interactive .sy-chat-product-preview b{
+ font-size:12px!important;font-weight:800;color:#007B60;
+}
+.sy-chat-interactive .sy-chat-product-preview>button{
+ display:grid!important;place-items:center!important;
+ width:30px!important;height:30px!important;min-width:30px!important;
+ padding:0!important;background:transparent!important;color:#68818c!important;
+ border:0!important;border-radius:8px!important;
+ box-shadow:none!important;
+}
+.sy-account-page .sy-conversation-product button{
+ display:inline-flex;margin-left:auto;white-space:nowrap;
+ background:transparent!important;color:#087354!important;
+ padding:3px 5px;border:0!important;font-size:11px!important;
+ box-shadow:none!important;font-weight:750;
+}
+@media(max-width:767px){
+ .sy-chat-interactive .sy-chat-product-preview{padding:5px!important}
+ .sy-chat-interactive .sy-chat-product-preview img{width:40px;height:40px;flex-basis:40px}
+}
