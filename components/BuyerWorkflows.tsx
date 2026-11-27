@@ -1,6 +1,7 @@
 "use client";
 import {CountryField} from "@/components/CountryFlag";
 import {useEffect,useRef,useState} from "react";
+import {createPortal} from "react-dom";
 import Link from "next/link";
 import {MESSAGE_DRAFT_KEY,type SupplierMessageDraft} from "@/components/SupplierContactModal";
 import {products} from "@/lib/catalog";
@@ -19,6 +20,9 @@ export function MessagesPreview({onFind,onRequest}:{onFind:()=>void;onRequest:()
  const [showProductCard,setShowProductCard]=useState(false);
  const [rateOpen,setRateOpen]=useState(false);
  const [myRating,setMyRating]=useState(0);
+ const [draftRating,setDraftRating]=useState(0);
+ const [ratingHover,setRatingHover]=useState(0);
+ const ratingCloseRef=useRef<HTMLButtonElement>(null);
  const attachmentInput=useRef<HTMLInputElement>(null);
  useEffect(()=>{
   const refresh=()=>{try{const v=JSON.parse(localStorage.getItem(MESSAGE_DRAFT_KEY)||"[]");setDrafts(Array.isArray(v)?v:[])}catch{setDrafts([])}};
@@ -38,7 +42,8 @@ export function MessagesPreview({onFind,onRequest}:{onFind:()=>void;onRequest:()
  const active=visible.find(g=>g.key===selected)||visible[0];
  const linkedProduct=active?products.find(p=>p.id===active.last.productId):undefined;
  useEffect(()=>{setRateOpen(false);try{const saved=JSON.parse(localStorage.getItem("sylution_demo_shop_ratings")||"{}");setMyRating(active?Number(saved[active.key]||0):0)}catch{setMyRating(0)}},[active?.key]);
- function rateSeller(score:number){if(!active)return;try{const key="sylution_demo_shop_ratings";const old=JSON.parse(localStorage.getItem(key)||"{}");localStorage.setItem(key,JSON.stringify({...old,[active.key]:score}));setMyRating(score);setRateOpen(false);setNotice("Your private demo rating is saved on this device only.")}catch{setNotice("Rating could not be saved on this device.")}}
+ useEffect(()=>{if(!rateOpen)return;const esc=(e:KeyboardEvent)=>{if(e.key==="Escape")setRateOpen(false)};document.addEventListener("keydown",esc);const previous=document.body.style.overflow;document.body.style.overflow="hidden";ratingCloseRef.current?.focus();return()=>{document.removeEventListener("keydown",esc);document.body.style.overflow=previous}},[rateOpen]);
+ function rateSeller(score:number){if(!active)return;try{const key="sylution_demo_shop_ratings";const old=JSON.parse(localStorage.getItem(key)||"{}");localStorage.setItem(key,JSON.stringify({...old,[active.key]:score}));setMyRating(score);setRateOpen(false);setNotice("")}catch{setNotice("Rating could not be saved on this device.")}}
 
  function addMessage(e:React.FormEvent){e.preventDefault();if(!active||!composer.trim())return;
   const last=active.last;
@@ -62,7 +67,7 @@ export function MessagesPreview({onFind,onRequest}:{onFind:()=>void;onRequest:()
        <button className="sy-conversation-back" onClick={()=>setMobileOpen(false)} aria-label="Back to messages"><ArrowLeft size={19}/></button>
        <span className="sy-conversation-avatar"><Building2 size={18}/></span>
        <div><strong>{active.last.supplier}</strong><small>{active.last.country} · Demo supplier</small></div>
-       <div className="sy-header-rating"><button className={"sy-header-rating-toggle"+(myRating?" has-rating":"")} type="button" aria-label={myRating?"Edit seller rating":"Rate seller"} title="Rate seller" aria-expanded={rateOpen} onClick={()=>setRateOpen(v=>!v)}><Star size={19} fill={myRating?"#E1AE40":"none"}/><span className="sy-header-rating-caption">{myRating?myRating+"/5":"Rate"}</span></button>{rateOpen&&<div className="sy-header-rating-popover" role="group" aria-label="Rate seller privately"><div className="sy-rating-popover-heading"><strong>Rate this seller</strong><button type="button" aria-label="Close rating" onClick={()=>setRateOpen(false)}><X size={16}/></button></div><p>Choose a star rating</p><div className="sy-rating-stars">{[1,2,3,4,5].map(n=><button type="button" aria-label={"Rate "+n+" out of 5 stars"} key={n} onClick={()=>rateSeller(n)}><Star size={25} fill={n<=myRating?"#E1AE40":"none"} strokeWidth={1.9}/></button>)}</div><small>Private demo · Saved on this device only</small></div>}</div><Link className="sy-conversation-profile" href={"/suppliers/"+encodeURIComponent(active.last.supplier)+"?product="+encodeURIComponent(active.last.productId)} title="Open seller shop" aria-label="Open seller shop"><Store size={21}/><span>Shop</span></Link>
+       <button className={"sy-rating-header-button"+(myRating?" is-rated":"")} type="button" aria-label={myRating?"Your private rating: "+myRating+" out of 5. Edit rating":"Rate this seller"} title="Rate seller" onClick={()=>{setDraftRating(myRating);setRatingHover(0);setRateOpen(true)}}><Star size={19} strokeWidth={1.9} fill={myRating?"currentColor":"none"}/>{myRating>0&&<span>{myRating}</span>}</button><Link className="sy-conversation-profile" href={"/suppliers/"+encodeURIComponent(active.last.supplier)+"?product="+encodeURIComponent(active.last.productId)} title="Open seller shop" aria-label="Open seller shop"><Store size={21}/><span>Shop</span></Link>
      </header>
      <div className="sy-conversation-product"><Package size={15}/><span>{active.last.product}</span>{linkedProduct&&<button type="button" onClick={()=>setShowProductCard(v=>!v)}>{showProductCard?"Hide product":"Show product"}</button>}</div>
      <div className="sy-conversation-messages">{[...active.records].reverse().map(d=><div key={d.id} className="sy-conversation-exchange"><div className="sy-chat-bubble buyer"><span>My message · Draft</span><p>{d.message}</p></div>{d.reply&&<div className="sy-chat-bubble seller"><span>Seller reply · Local preview</span><p>{d.reply}</p></div>}</div>)}</div>
@@ -75,6 +80,17 @@ export function MessagesPreview({onFind,onRequest}:{onFind:()=>void;onRequest:()
       <button className="sy-green-action sy-chat-send" type="submit" aria-label="Save message draft" disabled={!composer.trim()}><Send size={18}/></button></div>
       {notice&&<small className={/unable|failed|error|smaller/i.test(notice)?"sy-status-error":"sy-status-info"} role="status">{notice}</small>}<small className="sy-chat-demo-note">Demo · Messages and files are not sent.</small>
      </form>
+     {rateOpen&&typeof document!=="undefined"&&createPortal(<div className="sy-rating-overlay" role="presentation" onMouseDown={e=>{if(e.target===e.currentTarget)setRateOpen(false)}}>
+       <section className="sy-rating-dialog" role="dialog" aria-modal="true" aria-labelledby="sy-rating-title" aria-describedby="sy-rating-description">
+        <div className="sy-rating-dialog-top"><span className="sy-rating-dialog-icon"><Star size={22} fill="currentColor"/></span><button ref={ratingCloseRef} type="button" aria-label="Close rating" onClick={()=>setRateOpen(false)}><X size={19}/></button></div>
+        <h2 id="sy-rating-title">Rate your experience</h2>
+        <p id="sy-rating-description">How was your interaction with <strong>{active.last.supplier}</strong>?</p>
+        <div className="sy-rating-dialog-stars" role="group" aria-label="Choose a rating out of five stars">{[1,2,3,4,5].map(n=><button type="button" key={n} aria-label={n+" "+(n===1?"star":"stars")} aria-pressed={draftRating===n} onMouseEnter={()=>setRatingHover(n)} onMouseLeave={()=>setRatingHover(0)} onFocus={()=>setRatingHover(n)} onBlur={()=>setRatingHover(0)} onClick={()=>setDraftRating(n)}><Star size={32} fill={n<=(ratingHover||draftRating)?"currentColor":"none"} strokeWidth={1.7}/></button>)}</div>
+        <p className="sy-rating-dialog-choice" aria-live="polite">{draftRating===0?"Select 1–5 stars":(["","Very poor","Poor","Average","Good","Excellent"][draftRating])}</p>
+        <button type="button" className="sy-rating-dialog-submit" disabled={!draftRating} onClick={()=>rateSeller(draftRating)}>{myRating?"Update rating":"Submit rating"}</button>
+        <p className="sy-rating-dialog-foot"><ShieldCheck size={14}/> Private demo rating · Saved on this device only</p>
+       </section>
+      </div>,document.body)}
     </div>:<div className="sy-conversation-empty"><MessageSquare size={43}/><h2>No messages yet</h2><button className="sy-soft-action" onClick={onFind}>Find sellers</button></div>}</section>
  </div>
 }
