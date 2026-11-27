@@ -1,0 +1,238 @@
+/* SYLUTION TRADE: 2026 cross-device final clarity pass.
+ * One bounded, last-loaded responsive layer covering iPhone/Android, iPad,
+ * laptops, desktop and Ultra-HD monitors without stretching source images.
+ * Keep data, business status colours, genuine logos and country flags intact.
+ */
+:root{
+ --sy-ui-ink:#142C3F;
+ --sy-ui-muted:#536C7F;
+ --sy-ui-line:#DCE5EB;
+ --sy-ui-surface:#FFFFFF;
+ --sy-ui-background:#F5F8FA;
+ --sy-ui-brand:#007B60;
+ --sy-ui-radius:12px;
+ --sy-ui-gutter:clamp(12px,2.3vw,30px);
+}
+html{scroll-padding-top:90px}
+body{overflow-x:clip;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+:where(.catalog-home,.product-page,.sy-account-page,.sy-store-page,.sy-public-profile,.sy-admin-preview){
+ min-width:0;max-width:100%;overflow-wrap:break-word;
+ text-rendering:optimizeLegibility;
+}
+:where(.catalog-home,.product-page,.sy-account-page,.sy-store-page,.sy-public-profile,.sy-admin-preview)
+ :where(h1,h2,h3,h4,p,label,small,strong,span){overflow-wrap:break-word}
+:where(.catalog-home,.product-page,.sy-account-page,.sy-store-page,.sy-public-profile,.sy-admin-preview)
+ :where(img,video,canvas){max-width:100%}
+:where(.catalog-home,.product-page,.sy-account-page,.sy-store-page,.sy-public-profile,.sy-admin-preview)
+ :where(button,a,input,textarea,select){-webkit-tap-highlight-color:transparent}
+:where(.catalog-home,.product-page,.sy-account-page,.sy-store-page,.sy-public-profile,.sy-admin-preview)
+ :where(button,a,input,textarea,select):focus-visible{
+ outline:2px solid #177CC4;outline-offset:2px;
+}
+:where(.catalog-home,.product-page,.sy-account-page,.sy-store-page,.sy-public-profile,.sy-admin-preview)
+ :where(button,input,select,textarea){max-width:100%}
+:where(.catalog-home,.product-page,.sy-account-page,.sy-store-page,.sy-public-profile,.sy-admin-preview)
+ :where(input,textarea,select){min-width:0}
+:where(.catalog-home,.product-page,.sy-account-page,.sy-store-page,.sy-public-profile,.sy-admin-preview)
+ :where(.product-card,.product-primary-card,.sy-panel,.sv-card,.sy-trade-card,.sy-trade-form,.sy-profile-detail-card,.sy-store-product,.sy-analytics-panel){
+ min-width:0;
+}
+:where(.catalog-home,.product-page,.sy-store-page) :where(.product-image img,.gallery-image-wrap img,.sy-store-product-photo img){
+ display:block;max-width:100%;object-fit:cover;
+}
+/* Long product names, prices, company names and IDs must wrap, not crop neighbouring columns. */
+.catalog-home :is(.product-name,.product-price,.supplier-name,.catalog-card-meta),
+.product-page :is(.product-offer,.offer-information-grid,.detail-specifications,.supplier-profile-section,.product-detail-aside),
+.sy-account-page :is(.sy-profile-summary-card,.sy-manager,.sy-trade-form,.sy-rfq-builder,.sy-analytics-panel),
+.sy-store-page :is(.sy-store-product,.sy-store-hero-details){min-width:0;overflow-wrap:anywhere}
+.catalog-home .product-name,.sy-store-page .sy-store-product h3{line-height:1.4}
+.product-page .detail-specifications>div,
+.sy-account-page .sy-profile-field-grid>*{min-width:0}
+.sy-account-page :is(.sy-product-fullform,.sy-product-field-grid,.sy-rfq-fields,.sy-profile-field-grid,.sv-doc-grid,.sy-trade-form-grid)>*{min-width:0}
+.sy-account-page .sy-dashboard-content{min-width:0}
+.sy-account-page .sy-account-sidebar>button{min-width:0}
+.sy-account-page .sy-account-identity>div{min-width:0;overflow:hidden}
+.sy-account-page .sy-account-identity :is(strong,small){max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.sy-account-page .sy-account-identity small{display:block}
+/* The previous 4K stylesheet remains in charge of width above 1920px;
+   retain legible panels rather than scaling text like a bitmap. */
+@media(min-width:1280px){
+ .sy-account-page:not(.sy-messages-page) .sy-dashboard-content{min-width:0}
+ .sy-account-page:not(.sy-messages-page) .sy-rfq-builder,
+ .sy-account-page:not(.sy-messages-page) .sv-page,
+ .sy-account-page:not(.sy-messages-page) .sy-profile-modern{width:100%}
+ .sy-account-page .sy-trade-form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+/* iPad landscape, small laptops: keep enough room for navigation and content. */
+@media(min-width:769px) and (max-width:1199px){
+ .sy-account-page:not(.sy-messages-page){padding-inline:clamp(12px,2vw,24px)!important}
+ .sy-account-page:not(.sy-messages-page) .sy-account-layout{
+  display:grid;grid-template-columns:205px minmax(0,1fr);gap:13px;
+ }
+ .sy-account-page:not(.sy-messages-page) .sy-account-sidebar{width:auto;min-width:0}
+ .sy-account-page:not(.sy-messages-page) .sy-account-sidebar>button{font-size:12px;gap:8px;white-space:normal}
+ .sy-account-page:not(.sy-messages-page) .sy-dashboard-content{width:auto;min-width:0;padding-inline:0}
+ .sy-account-page:has(.sy-analytics)>.sy-account-layout{grid-template-columns:205px minmax(0,1fr);gap:0}
+ .sy-account-page:has(.sy-analytics) .sy-dashboard-content{padding:18px!important}
+ .sy-account-page .sv-doc-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .product-page .product-content-layout{grid-template-columns:minmax(0,1fr) minmax(260px,29%)}
+ .product-page .product-primary-card{grid-template-columns:minmax(0,44%) minmax(0,56%);gap:12px}
+ .product-page .product-gallery{min-width:0}
+ .sy-store-page .sy-store-product-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(min-width:769px) and (max-width:900px){
+ .product-page .product-content-layout{grid-template-columns:minmax(0,1fr)}
+ .product-page .product-detail-aside{width:100%;min-width:0}
+ .product-page .product-primary-card{grid-template-columns:minmax(0,45%) minmax(0,55%)}
+ .sy-account-page:not(.sy-messages-page) .sy-account-layout{grid-template-columns:180px minmax(0,1fr)}
+ .sy-account-page:has(.sy-analytics)>.sy-account-layout{grid-template-columns:180px minmax(0,1fr)}
+ .sy-account-page .sy-profile-grid{grid-template-columns:minmax(0,1fr)}
+ .sy-account-page .sy-trade-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+/* iPad portrait and phone: navigation becomes a compact horizontal strip. */
+@media(max-width:768px){
+ html{scroll-padding-top:66px}
+ .catalog-home .container,.product-page-container{padding-inline:clamp(10px,3vw,18px)}
+ .sy-account-page:not(.sy-messages-page){padding:0 clamp(10px,2.4vw,16px) calc(84px + env(safe-area-inset-bottom,0px))!important}
+ .sy-account-page:not(.sy-messages-page)>.sy-account-layout{display:block!important;width:100%;max-width:100%;min-width:0}
+ .sy-account-page:not(.sy-messages-page) .sy-account-sidebar{
+   width:100%;min-width:0;max-width:100%;
+   display:flex!important;flex-direction:row!important;align-items:center!important;
+   overflow-x:auto!important;overflow-y:hidden!important;
+   scroll-snap-type:x proximity;overscroll-behavior-x:contain;
+   -webkit-overflow-scrolling:touch;scrollbar-width:thin;
+   gap:7px;padding:8px!important;margin:0 0 12px!important;
+   min-height:0!important;height:auto!important;border-radius:11px!important;
+ }
+ .sy-account-page:not(.sy-messages-page) .sy-account-sidebar>button{
+   flex:0 0 auto!important;min-width:max-content!important;
+   width:auto!important;min-height:40px!important;
+   padding:9px 12px!important;scroll-snap-align:start;
+   white-space:nowrap!important;font-size:12px!important;
+ }
+ .sy-account-page:not(.sy-messages-page) .sy-account-sidebar>.sy-account-identity,
+ .sy-account-page:not(.sy-messages-page) .sy-account-sidebar>.sy-dashboard-side-brand{display:none!important}
+ .sy-account-page:not(.sy-messages-page) .sy-dashboard-content{width:100%!important;min-width:0;padding:0!important}
+ .sy-account-page:has(.sy-analytics)>.sy-account-layout{display:block!important;border:none;min-height:0}
+ .sy-account-page:has(.sy-analytics) .sy-account-sidebar{
+   background:#0B1930!important;border-radius:0!important;
+   margin-inline:calc(-1 * clamp(10px,2.4vw,16px))!important;
+   width:calc(100% + 2 * clamp(10px,2.4vw,16px))!important;max-width:none;
+ }
+ .sy-account-page:has(.sy-analytics) .sy-dashboard-content{padding:14px 0 50px!important;background:#F7F9FB}
+ .sy-account-page .sy-account-banner{padding:18px 3px 14px}
+ .sy-account-page .sy-account-banner h1{font-size:clamp(20px,4vw,27px);line-height:1.2}
+ .sy-account-page .sy-content-topline{flex-wrap:wrap;gap:8px;margin-bottom:10px}
+ .sy-account-page .sy-content-topline h2{font-size:clamp(18px,3.2vw,24px)}
+ .sy-account-page .sv-doc-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .sy-account-page .sy-profile-grid{grid-template-columns:minmax(0,1fr)}
+ .sy-account-page .sy-trade-form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .sy-account-page .sy-trade-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .sy-store-page .sy-store-product-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .sy-account-page .sy-manager{width:100%;min-width:0;overflow:hidden}
+ .sy-account-page .sy-manager .trade-requests{width:100%;min-width:650px}
+ .sy-account-page .sy-manager:has(.trade-requests){overflow-x:auto;overscroll-behavior-x:contain}
+ .catalog-filter-dialog,.si-quote,.sy-contact-dialog{
+  max-width:calc(100vw - 20px);max-height:calc(100dvh - 20px);
+ }
+}
+/* iPhone / Android (including narrow 320px devices). Keep two product cards per row. */
+@media(max-width:600px){
+ :where(.catalog-home,.product-page,.sy-store-page,.sy-account-page){font-size:13px}
+ .catalog-home .product-grid,
+ .catalog-home .catalog-feature .product-grid,
+ .catalog-home .catalog-listing .product-grid,
+ .product-page .related-grid,
+ .sy-store-page .sy-store-product-grid,
+ .sy-account-page .sy-recommended-products,
+ .sy-account-page .sy-fav-grid,
+ .sy-account-page .sy-seller-products-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important;
+ }
+ .catalog-home .product-card,.sy-store-page .sy-store-product{border-radius:11px}
+ .catalog-home .product-image{height:auto!important;aspect-ratio:1/1}
+ .catalog-home .product-image img{width:100%;height:100%;object-fit:cover}
+ .catalog-home .product-card .card-body{padding:9px!important}
+ .catalog-home .product-name{font-size:11px;line-height:1.36;min-height:2.7em;max-height:3.95em}
+ .catalog-home .product-price{font-size:clamp(12px,3.3vw,15px);line-height:1.4}
+ .catalog-home .product-moq,.catalog-home .supplier-name,.catalog-home .country{font-size:10px}
+ .catalog-home .product-card .card-bottom{gap:5px;flex-wrap:wrap}
+ .catalog-home .product-card .inquiry-btn{min-height:36px;font-size:10px;flex:1 1 auto;padding:7px 5px}
+ .catalog-home .product-card .chat-link{height:36px;width:36px;flex:none}
+ .catalog-home .catalog-toolbar{min-width:0;flex-wrap:wrap}
+ .catalog-home .catalog-search-form{min-width:0}
+ .catalog-home .catalog-search-box{min-width:0;max-width:100%}
+ .catalog-home .catalog-shortcuts{min-width:0}
+ .product-page .product-content-layout{grid-template-columns:minmax(0,1fr)}
+ .product-page .product-primary-card{grid-template-columns:minmax(0,1fr)!important;gap:12px;min-height:0}
+ .product-page .product-gallery{min-width:0;max-width:100%;grid-template-columns:1fr;grid-template-rows:auto auto}
+ .product-page .gallery-thumbnails{order:2;flex-direction:row;overflow-x:auto;max-width:100%;padding-block:2px;gap:7px}
+ .product-page .gallery-thumbnails button{flex:none}
+ .product-page .gallery-image-wrap{width:100%;max-width:100%;min-height:0!important;aspect-ratio:1/1}
+ .product-page .product-offer{width:100%;min-width:0}
+ .product-page .detail-mobile-quote{padding-bottom:calc(7px + env(safe-area-inset-bottom,0px))!important}
+ .sy-account-page .sv-doc-grid{grid-template-columns:minmax(0,1fr)}
+ .sy-account-page .sv-doc-card{padding:12px}
+ .sy-account-page .sv-inline-field,.sy-account-page .sv-global-phone-row{min-width:0;max-width:100%}
+ .sy-account-page .sv-global-phone-row{grid-template-columns:minmax(0,1fr) minmax(78px,90px)}
+ .sy-account-page .sv-global-country,.sy-account-page .sv-global-number{grid-column:1/-1}
+ .sy-account-page .sv-global-phone-action{grid-column:1/-1;width:100%;min-height:43px}
+ .sy-account-page .sy-profile-field-grid{grid-template-columns:minmax(0,1fr)}
+ .sy-account-page .sy-trade-form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .sy-account-page .sy-rfq-fields{grid-template-columns:minmax(0,1fr)}
+ .sy-account-page .sy-trade-form-grid label.wide{grid-column:1/-1}
+ .sy-account-page .sy-analytics-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .sy-account-page .sy-analytics-charts,.sy-account-page .sy-analytics-bottom{grid-template-columns:minmax(0,1fr)}
+ .sy-account-page .sy-analytics-panel{min-width:0}
+ .sy-account-page .sy-analytics-bars-grid{gap:5px}
+ .sy-account-page .sy-analytics-ring-wrap{flex-wrap:wrap}
+ .sy-account-page .sy-safety-grid{grid-template-columns:minmax(0,1fr)}
+ .sy-account-page .sy-rfq-image-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+ .sy-store-page .sy-store-content,.sy-store-page .sy-store-hero{max-width:100%}
+ .sy-store-page .sy-store-product-photo{aspect-ratio:1/1}
+ .sy-store-page .sy-store-topbar{gap:7px;padding-inline:10px}
+ .sy-store-page .sy-store-hero-details h1{font-size:clamp(17px,4.4vw,23px)}
+ .sy-store-page .sy-store-product{padding:6px;gap:5px}
+ .sy-store-page .sy-store-product h3{font-size:11px;line-height:1.35}
+ .sy-store-page .sy-store-tabs{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain}
+ .sy-contact-dialog,.catalog-filter-dialog,.si-quote{overflow-x:hidden}
+ .sy-contact-form,.si-quote-body{min-width:0}
+ .sy-contact-form :is(input,select,textarea),.si-quote :is(input,select,textarea){
+  width:100%;max-width:100%;min-width:0;
+ }
+ .trade-bottom-nav{
+  padding-bottom:env(safe-area-inset-bottom,0px)!important;
+  min-height:calc(55px + env(safe-area-inset-bottom,0px));
+ }
+}
+/* Tiny mobile: forms must be single column when fields can't breathe. */
+@media(max-width:380px){
+ .sy-account-page .sy-trade-form-grid{grid-template-columns:minmax(0,1fr)}
+ .sy-account-page .sy-trade-form-grid label.wide{grid-column:1}
+ .sy-account-page .sy-trade-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .sy-account-page .sy-analytics-kpis{gap:7px}
+ .sy-account-page .sy-analytics-stat{padding:10px!important}
+ .sy-account-page .sy-analytics-stat-head>span:nth-child(2){font-size:10px}
+ .sy-account-page .sy-analytics-stat>strong{font-size:18px}
+ .sy-account-page .sy-analytics-tabs{gap:12px}
+ .catalog-home .product-price{font-size:12px}
+ .catalog-home .product-card .card-body{padding:8px!important}
+ .sy-store-page .sy-store-product{padding:5px}
+}
+/* Desktop hover should never be required for feature discovery on touch iPads. */
+@media(hover:none),(pointer:coarse){
+ :where(.catalog-home,.product-page,.sy-account-page,.sy-store-page)
+  :where(button,a,input,select,textarea){touch-action:manipulation}
+ .catalog-home .product-card:hover,.sy-store-page .sy-store-product:hover{
+  transform:none!important;
+ }
+ .sy-account-page button,.catalog-home .catalog-primary{transition:none}
+}
+@media(prefers-reduced-motion:reduce){
+ html{scroll-behavior:auto}
+ :where(.catalog-home,.product-page,.sy-account-page,.sy-store-page) *,
+ :where(.catalog-home,.product-page,.sy-account-page,.sy-store-page) *::before,
+ :where(.catalog-home,.product-page,.sy-account-page,.sy-store-page) *::after{
+  transition-duration:0s!important;animation-duration:0s!important;
+ }
+}
