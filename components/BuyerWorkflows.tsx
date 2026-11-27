@@ -16,6 +16,7 @@ export function MessagesPreview({onFind,onRequest}:{onFind:()=>void;onRequest:()
  const [notice,setNotice]=useState("");
  const [mobileOpen,setMobileOpen]=useState(false);
  const [emojiOpen,setEmojiOpen]=useState(false);
+ const [showProductCard,setShowProductCard]=useState(true);
  const attachmentInput=useRef<HTMLInputElement>(null);
  useEffect(()=>{
   const refresh=()=>{try{const v=JSON.parse(localStorage.getItem(MESSAGE_DRAFT_KEY)||"[]");setDrafts(Array.isArray(v)?v:[])}catch{setDrafts([])}};
@@ -33,6 +34,7 @@ export function MessagesPreview({onFind,onRequest}:{onFind:()=>void;onRequest:()
  })).sort((a,b)=>b.last.createdAt.localeCompare(a.last.createdAt));
  const visible=groups.filter(g=>[g.last.supplier,g.last.product,...g.records.map(x=>x.message)].join(" ").toLowerCase().includes(search.toLowerCase()));
  const active=visible.find(g=>g.key===selected)||visible[0];
+ const linkedProduct=active?products.find(p=>p.id===active.last.productId):undefined;
  function addMessage(e:React.FormEvent){e.preventDefault();if(!active||!composer.trim())return;
   const last=active.last;
   const newDraft:SupplierMessageDraft={...last,id:globalThis.crypto?.randomUUID?.()||String(Date.now()),message:composer.trim(),createdAt:new Date().toISOString(),reply:undefined,repliedAt:undefined,status:"Draft · browser only"};
@@ -44,7 +46,7 @@ export function MessagesPreview({onFind,onRequest}:{onFind:()=>void;onRequest:()
     <div className="sy-conversation-list-head"><Link href="/account?tab=overview" className="sy-messages-mobile-back" aria-label="Back to account"><ArrowLeft size={22}/></Link><h2>Messages</h2><span className="sy-messages-mobile-count">{groups.length}</span><small>Local preview</small></div>
     <label className="sy-inbox-search"><Search size={17}/><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search people or messages" aria-label="Search people or messages"/></label>
     
-    {visible.length?<div className="sy-conversation-list">{visible.map(g=><button key={g.key} type="button" className={"sy-conversation-row"+(active?.key===g.key?" active":"")} onClick={()=>{setSelected(g.key);setNotice("");setMobileOpen(true)}}>
+    {visible.length?<div className="sy-conversation-list">{visible.map(g=><button key={g.key} type="button" className={"sy-conversation-row"+(active?.key===g.key?" active":"")} onClick={()=>{setSelected(g.key);setShowProductCard(true);setNotice("");setMobileOpen(true)}}>
       <span className="sy-conversation-avatar"><Building2 size={19}/></span>
       <span className="sy-conversation-summary"><strong>{g.last.supplier}</strong><small>{g.last.message}</small></span>
       <span className="sy-conversation-date">{clock(g.last.createdAt)}</span>
@@ -57,9 +59,9 @@ export function MessagesPreview({onFind,onRequest}:{onFind:()=>void;onRequest:()
        <div><strong>{active.last.supplier}</strong><small>{active.last.country} · Demo supplier</small></div>
        <Link className="sy-conversation-profile" href={"/suppliers/"+encodeURIComponent(active.last.supplier)} title="Open seller shop" aria-label="Open seller shop"><Store size={21}/><span>Shop</span></Link>
      </header>
-     <div className="sy-conversation-product"><Package size={15}/><span>{active.last.product}</span>{products.find(p=>p.id===active.last.productId)&&<Link href={"/products/"+products.find(p=>p.id===active.last.productId)!.slug} aria-label="View linked product">View product <ArrowRight size={13}/></Link>}</div>
+     <div className="sy-conversation-product"><Package size={15}/><span>{active.last.product}</span>{linkedProduct&&<button type="button" onClick={()=>setShowProductCard(v=>!v)}>{showProductCard?"Hide product":"Show product"}</button>}</div>
      <div className="sy-conversation-messages">{[...active.records].reverse().map(d=><div key={d.id} className="sy-conversation-exchange"><div className="sy-chat-bubble buyer"><span>My message · Draft</span><p>{d.message}</p></div>{d.reply&&<div className="sy-chat-bubble seller"><span>Seller reply · Local preview</span><p>{d.reply}</p></div>}</div>)}</div>
-     <form className="sy-chat-composer sy-chat-interactive" onSubmit={addMessage}><label htmlFor="sy-chat-message">Message</label>
+     <form className="sy-chat-composer sy-chat-interactive" onSubmit={addMessage}>{linkedProduct&&showProductCard&&<div className="sy-chat-product-preview"><Link href={"/products/"+linkedProduct.slug}><img src={linkedProduct.image} alt=""/><span><strong>{linkedProduct.name}</strong><b>{linkedProduct.price}</b></span></Link><button type="button" aria-label="Dismiss product preview" onClick={()=>setShowProductCard(false)}><X size={17}/></button></div>}<label htmlFor="sy-chat-message">Message</label>
       {emojiOpen&&<div className="sy-emoji-panel" role="group" aria-label="Select an emoji">{["😀","😊","👍","❤️","🙏","🤝","🔥","✅","👋","🎉","📦","💬"].map(e=><button key={e} type="button" aria-label={"Insert "+e} onClick={()=>{setComposer(old=>old+e);setEmojiOpen(false)}}>{e}</button>)}</div>}
       <div className="sy-chat-input-row"><textarea id="sy-chat-message" value={composer} onChange={e=>setComposer(e.target.value)} placeholder="Type your message here" maxLength={3000} rows={2}/>
       <button className="sy-chat-tool" type="button" aria-label={emojiOpen?"Close emoji picker":"Add emoji"} title="Emoji" onClick={()=>setEmojiOpen(v=>!v)}>{emojiOpen?<X size={21}/>:<Smile size={22}/>}</button>
