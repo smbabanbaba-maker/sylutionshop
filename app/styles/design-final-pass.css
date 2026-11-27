@@ -434,3 +434,22 @@
 .sy-activity-item small{font-size:10px;color:#6E8491;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}
 .sy-activity-item time{font-size:10px;color:#8596A0;white-space:nowrap}
 @media(max-width:767px){.sy-activity-item{padding:10px;gap:9px}.sy-activity-item>span{width:30px;height:30px}.sy-activity-item time{font-size:9px}.sy-store-page .sy-store-hero.sy-store-has-cover{background-position:center}}
+
+/* Account region is the single source for sensible global form defaults. */
+.sy-account-origin-hint,.sy-account-region{
+ display:flex;align-items:center;gap:9px;min-width:0;
+ background:#eef8f5;border:1px solid #d1e9df;border-radius:10px;
+ color:#416b61;font-size:11px;line-height:1.5;padding:10px 12px;
+}
+.sy-account-origin-hint>span,.sy-account-region>span{flex:1;min-width:0}
+.sy-account-origin-hint strong{color:#006f52}
+.sy-account-origin-hint .sy-country-flag,.sy-account-region .sy-country-flag{flex:none}
+.sy-account-region{display:inline-flex;width:max-content;max-width:100%;padding:5px 9px;border-radius:22px;font-size:10px;margin-left:10px}
+.sy-account-flag{display:inline-flex;vertical-align:middle;align-items:center;margin-left:2px}
+.sy-account-sidebar .sy-country-flag img,.sy-account-card .sy-country-flag img{width:22px;height:15px}
+.sy-account-sidebar small .sy-country-flag,.sy-account-card span .sy-country-flag{display:inline-flex;vertical-align:middle}
+@media(max-width:767px){
+ .sy-account-origin-hint{font-size:10px;padding:9px 10px;gap:7px}
+ .sy-account-region{margin-left:0;margin-top:5px}
+ .sy-account-flag{margin-left:0}
+}
