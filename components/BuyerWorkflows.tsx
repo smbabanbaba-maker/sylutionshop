@@ -4,7 +4,7 @@ import {useEffect,useRef,useState} from "react";
 import Link from "next/link";
 import {MESSAGE_DRAFT_KEY,type SupplierMessageDraft} from "@/components/SupplierContactModal";
 import {products} from "@/lib/catalog";
-import {MessageSquare, Search, Building2, Store, Smile, Paperclip, X, UserRound, ArrowLeft, Send, Package, ArrowRight, Plus, Trash2, ShieldCheck, ClipboardList, CheckCircle2} from "lucide-react";
+import {MessageSquare, Search, Building2, Store, Smile, Paperclip, Star, X, UserRound, ArrowLeft, Send, Package, ArrowRight, Plus, Trash2, ShieldCheck, ClipboardList, CheckCircle2} from "lucide-react";
 type StoredRfq={product?:string;productId?:string;quantity?:number;unit?:string;targetPrice?:string;destinationCountry?:string;port?:string;incoterm?:string;paymentTerm?:string;shippingMethod?:string;preferredCountry?:string;leadTime?:string;documents?:string;company?:string;email?:string;message?:string;createdAt?:string;status?:string;attachmentNames?:string[];attributes?:{name:string;value:string}[]};
 const KEY="sylution_demo_rfqs";
 function readStored():StoredRfq[]{try{const value=JSON.parse(localStorage.getItem(KEY)||"[]");return Array.isArray(value)?value:[]}catch{return []}}
@@ -17,6 +17,8 @@ export function MessagesPreview({onFind,onRequest}:{onFind:()=>void;onRequest:()
  const [mobileOpen,setMobileOpen]=useState(false);
  const [emojiOpen,setEmojiOpen]=useState(false);
  const [showProductCard,setShowProductCard]=useState(true);
+ const [rateOpen,setRateOpen]=useState(false);
+ const [myRating,setMyRating]=useState(0);
  const attachmentInput=useRef<HTMLInputElement>(null);
  useEffect(()=>{
   const refresh=()=>{try{const v=JSON.parse(localStorage.getItem(MESSAGE_DRAFT_KEY)||"[]");setDrafts(Array.isArray(v)?v:[])}catch{setDrafts([])}};
@@ -35,6 +37,9 @@ export function MessagesPreview({onFind,onRequest}:{onFind:()=>void;onRequest:()
  const visible=groups.filter(g=>[g.last.supplier,g.last.product,...g.records.map(x=>x.message)].join(" ").toLowerCase().includes(search.toLowerCase()));
  const active=visible.find(g=>g.key===selected)||visible[0];
  const linkedProduct=active?products.find(p=>p.id===active.last.productId):undefined;
+ useEffect(()=>{setRateOpen(false);try{const saved=JSON.parse(localStorage.getItem("sylution_demo_shop_ratings")||"{}");setMyRating(active?Number(saved[active.key]||0):0)}catch{setMyRating(0)}},[active?.key]);
+ function rateSeller(score:number){if(!active)return;try{const key="sylution_demo_shop_ratings";const old=JSON.parse(localStorage.getItem(key)||"{}");localStorage.setItem(key,JSON.stringify({...old,[active.key]:score}));setMyRating(score);setRateOpen(false);setNotice("Your private demo rating is saved on this device only.")}catch{setNotice("Rating could not be saved on this device.")}}
+
  function addMessage(e:React.FormEvent){e.preventDefault();if(!active||!composer.trim())return;
   const last=active.last;
   const newDraft:SupplierMessageDraft={...last,id:globalThis.crypto?.randomUUID?.()||String(Date.now()),message:composer.trim(),createdAt:new Date().toISOString(),reply:undefined,repliedAt:undefined,status:"Draft · browser only"};
@@ -61,7 +66,7 @@ export function MessagesPreview({onFind,onRequest}:{onFind:()=>void;onRequest:()
      </header>
      <div className="sy-conversation-product"><Package size={15}/><span>{active.last.product}</span>{linkedProduct&&<button type="button" onClick={()=>setShowProductCard(v=>!v)}>{showProductCard?"Hide product":"Show product"}</button>}</div>
      <div className="sy-conversation-messages">{[...active.records].reverse().map(d=><div key={d.id} className="sy-conversation-exchange"><div className="sy-chat-bubble buyer"><span>My message · Draft</span><p>{d.message}</p></div>{d.reply&&<div className="sy-chat-bubble seller"><span>Seller reply · Local preview</span><p>{d.reply}</p></div>}</div>)}</div>
-     <form className="sy-chat-composer sy-chat-interactive" onSubmit={addMessage}>{linkedProduct&&showProductCard&&<div className="sy-chat-product-preview"><Link href={"/products/"+linkedProduct.slug}><img src={linkedProduct.image} alt=""/><span><strong>{linkedProduct.name}</strong><b>{linkedProduct.price}</b></span></Link><button type="button" aria-label="Dismiss product preview" onClick={()=>setShowProductCard(false)}><X size={17}/></button></div>}<label htmlFor="sy-chat-message">Message</label>
+     <form className="sy-chat-composer sy-chat-interactive" onSubmit={addMessage}><div className="sy-chat-rate-wrap"><button type="button" className="sy-chat-rate-trigger" onClick={()=>setRateOpen(v=>!v)}><Star size={14}/> {myRating?"My rating: "+myRating+"/5":"Rate seller"}</button>{rateOpen&&<div className="sy-chat-rate-panel"><span>Rate this seller · Private demo</span><div>{[1,2,3,4,5].map(n=><button type="button" aria-label={"Rate "+n+" stars"} key={n} onClick={()=>rateSeller(n)}><Star size={23} fill={n<=myRating?"#E5B13D":"none"} color="#9F7520"/></button>)}</div></div>}</div>{linkedProduct&&showProductCard&&<div className="sy-chat-product-preview"><Link href={"/products/"+linkedProduct.slug}><img src={linkedProduct.image} alt=""/><span><strong>{linkedProduct.name}</strong><b>{linkedProduct.price}</b></span></Link><button type="button" aria-label="Dismiss product preview" onClick={()=>setShowProductCard(false)}><X size={17}/></button></div>}<label htmlFor="sy-chat-message">Message</label>
       {emojiOpen&&<div className="sy-emoji-panel" role="group" aria-label="Select an emoji">{["😀","😊","👍","❤️","🙏","🤝","🔥","✅","👋","🎉","📦","💬"].map(e=><button key={e} type="button" aria-label={"Insert "+e} onClick={()=>{setComposer(old=>old+e);setEmojiOpen(false)}}>{e}</button>)}</div>}
       <div className="sy-chat-input-row"><textarea id="sy-chat-message" value={composer} onChange={e=>setComposer(e.target.value)} placeholder="Type your message here" maxLength={3000} rows={2}/>
       <button className="sy-chat-tool" type="button" aria-label={emojiOpen?"Close emoji picker":"Add emoji"} title="Emoji" onClick={()=>setEmojiOpen(v=>!v)}>{emojiOpen?<X size={21}/>:<Smile size={22}/>}</button>
