@@ -73,3 +73,9 @@
 .sv-global-phone-action:hover{background:#eaf8f2!important}
 @media(max-width:1000px){.sv-global-phone-row{grid-template-columns:minmax(0,1.4fr) minmax(85px,.5fr) minmax(0,1.4fr)}.sv-global-phone-action{grid-column:1/-1;justify-self:start}}
 @media(max-width:650px){.sv-global-phone-row{grid-template-columns:minmax(0,1fr) minmax(85px,.44fr)}.sv-global-country{grid-column:1/-1}.sv-global-number{grid-column:1/-1}.sv-global-phone-action{grid-column:1/-1;width:100%}}
+
+/* Global, entity-specific verification preparation notice. */
+.sv-jurisdiction-note{display:grid;gap:5px;border:1px solid #cbdfe8;background:#f3f9fc;padding:14px 16px;border-radius:11px;min-width:0}
+.sv-jurisdiction-note strong{color:#143c56;font-size:12px}
+.sv-jurisdiction-note p{font-size:11px;line-height:1.55;margin:0;color:#617a88}
+@media(max-width:700px){.sv-jurisdiction-note{padding:11px 12px}.sv-jurisdiction-note strong{font-size:11px}.sv-jurisdiction-note p{font-size:10px}}
