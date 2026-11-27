@@ -827,3 +827,30 @@
   overscroll-behavior:contain;
  }
 }
+
+
+/* Context-aware mobile navigation: keep it on browsing and dashboard pages,
+   but remove it from immersive chat, product details and focused workflows. */
+@media(max-width:767px){
+ body:has(.sy-messages-page) > .trade-bottom-nav,
+ body:has(.sy-focus-page) > .trade-bottom-nav,
+ body:has(.product-page) > .trade-bottom-nav,
+ body:has(dialog[open]) > .trade-bottom-nav{
+  display:none!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+ }
+ /* Product detail has its own relevant action bar, now flush with bottom. */
+ body:has(.product-page) .detail-mobile-quote{
+  bottom:0!important;
+  z-index:40!important;
+ }
+ body:has(.product-page) .detail-footer{
+  padding-bottom:calc(70px + env(safe-area-inset-bottom))!important;
+ }
+ /* Focused forms and chat should not keep a blank tab-bar gap. */
+ body:has(.sy-messages-page) .sy-account-page,
+ body:has(.sy-focus-page) .sy-account-page{
+  padding-bottom:0!important;
+ }
+}
