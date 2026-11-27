@@ -12,7 +12,7 @@ type Details={
 };
 const KEY="sylution_demo_company_details";
 const MAIN="sylution_demo_profile";
-const empty:Details={businessType:"Buying Office",registration:"",website:"",phone:"",established:"",employees:"",revenue:"",address:"",categories:"",importHistory:"",description:"",logoUrl:"",coverUrl:"",platforms:"",sourcingProducts:"",sourcingMarkets:"",sourcingFrequency:"",sourcingBudget:"",contactSharing:false};
+const empty:Details={businessType:"",registration:"",website:"",phone:"",established:"",employees:"",revenue:"",address:"",categories:"",importHistory:"",description:"",logoUrl:"",coverUrl:"",platforms:"",sourcingProducts:"",sourcingMarkets:"",sourcingFrequency:"",sourcingBudget:"",contactSharing:false};
 const companyKeys:(keyof Details)[]=["businessType","registration","website","phone","established","employees","revenue","address","categories","importHistory","description","logoUrl","coverUrl","platforms"];
 const sourcingKeys:(keyof Details)[]=["sourcingProducts","sourcingMarkets","sourcingFrequency","sourcingBudget"];
 const labelMap:Record<string,string>={businessType:"Business type",registration:"Business registration ID",website:"Company website",phone:"Company phone number",established:"Year established",employees:"Number of employees",revenue:"Annual sales revenue",address:"Company address",categories:"Categories",importHistory:"Import history",description:"Company description",logoUrl:"Company logo URL",coverUrl:"Store cover image URL",platforms:"Platforms I sell on",sourcingProducts:"Products you source",sourcingMarkets:"Preferred sourcing markets",sourcingFrequency:"Buying frequency",sourcingBudget:"Typical order budget"};
@@ -36,7 +36,7 @@ export function BuyerProfileEditor({profile,onUpdate}:{profile:Profile;onUpdate:
  const score=Math.round(done/total*100);
  const missing={account:accountFields.filter(x=>!isFilled(x)).length,company:companyValues.length-companyCount,sourcing:sourcingKeys.length-sourcingCount};
  function update<K extends keyof Details>(key:K,value:Details[K]){setDetails(old=>({...old,[key]:value}));setNotice("")}
- function save(e:React.FormEvent){e.preventDefault();try{
+ function save(e:React.FormEvent){e.preventDefault();if(!identity.name.trim()||!identity.country.trim()){setNotice("Enter your name and select your business registration country.");return}try{
   const next={...profile,name:identity.name.trim(),company:identity.company.trim(),country:identity.country};
   localStorage.setItem(MAIN,JSON.stringify(next));localStorage.setItem(KEY,JSON.stringify(details));
   onUpdate(next);window.dispatchEvent(new Event("sylution-profile-change"));setNotice("Your demo profile was saved in this browser.");setEditing(false)
@@ -46,7 +46,7 @@ export function BuyerProfileEditor({profile,onUpdate}:{profile:Profile;onUpdate:
   return <label className="sy-profile-field" key={key}><span>{labelMap[key]||key}</span>
     {options?<select disabled={!editing} value={value} onChange={e=>update(key,e.target.value)}>{options.map(o=><option key={o} value={o}>{o}</option>)}</select>:
      key==="description"?<textarea rows={3} disabled={!editing} value={value} placeholder={placeholder||"Not added"} onChange={e=>update(key,e.target.value)}/>:
-     <input type={key==="website"||key==="logoUrl"?"url":"text"} disabled={!editing} value={value} placeholder={placeholder||"Not added"} onChange={e=>update(key,e.target.value)}/>}
+     <input type={key==="website"||key==="logoUrl"||key==="coverUrl"?"url":"text"} disabled={!editing} value={value} placeholder={placeholder||"Not added"} onChange={e=>update(key,e.target.value)}/>}
    </label>;
  }
  return <form className="sy-profile-modern" onSubmit={save}>
@@ -68,7 +68,7 @@ export function BuyerProfileEditor({profile,onUpdate}:{profile:Profile;onUpdate:
       <label className="sy-profile-field"><span>Full name</span><input required disabled={!editing} value={identity.name} onChange={e=>setIdentity(v=>({...v,name:e.target.value}))}/></label>
       <label className="sy-profile-field"><span>Company name *</span><input disabled={!editing} value={identity.company} placeholder="Not added" onChange={e=>setIdentity(v=>({...v,company:e.target.value}))}/></label>
       <label className="sy-profile-field"><span>Country of registration *</span><CountryField value={identity.country} disabled={!editing} onChange={value=>setIdentity(v=>({...v,country:value}))} label="Country of registration"/></label>
-      {field("businessType","",["Buying Office","Importer","Wholesaler","Distributor","Manufacturer","Retailer","Trading company","Other"])}
+      {field("businessType","",["","Buying Office","Importer","Exporter","Wholesaler","Distributor","Manufacturer","Retailer","Trading company","Service provider","Other"])}
       {field("registration","Enter your official company registration ID")}
       {field("website","https://example.com")}
       {field("phone",getDialingCode(identity.country)?getDialingCode(identity.country)+" business phone number":"Business phone number")}
