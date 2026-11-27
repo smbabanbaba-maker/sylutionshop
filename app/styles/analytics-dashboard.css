@@ -1,0 +1,169 @@
+/* SYLUTION Trade premium analytics workspace — grounded in actual local demo records.
+   Screenshot-inspired navy sidebar and teal data cards; not fictional revenue. */
+.sy-account-page:has(.sy-analytics){--sy-analytics-navy:#0B1930;--sy-analytics-teal:#007B60;--sy-analytics-ink:#152C40;background:#F4F7FA!important;color:var(--sy-analytics-ink);padding-bottom:65px}
+.sy-account-page:has(.sy-analytics) .sy-account-banner{display:none!important}
+.sy-account-page:has(.sy-analytics)>.sy-account-layout{max-width:1920px;margin-inline:auto;display:grid;grid-template-columns:245px minmax(0,1fr);gap:0;min-height:calc(100vh - 76px);border-inline:1px solid #E3E9EE}
+.sy-account-page:has(.sy-analytics) .sy-content-topline{display:none!important}
+.sy-account-page:has(.sy-analytics) .sy-account-sidebar{
+ min-height:calc(100vh - 76px);height:100%;align-self:stretch;overflow:visible;
+ display:flex;flex-direction:column;gap:3px;padding:18px 11px!important;
+ background:#0B1930!important;box-shadow:none!important;border:0!important;border-radius:0!important;
+}
+.sy-account-page:has(.sy-analytics) .sy-dashboard-side-brand{display:flex;align-items:center;gap:10px;color:white;padding:5px 9px 17px;border-bottom:1px solid #26394B;margin-bottom:10px;min-width:0}
+.sy-account-page:has(.sy-analytics) .sy-side-mark{width:37px;height:37px;flex:0 0 37px;display:grid;place-items:center;color:white;border-radius:11px;background:linear-gradient(135deg,#1CB88D,#007B60);font-size:23px;font-weight:900}
+.sy-account-page:has(.sy-analytics) .sy-dashboard-side-brand>span:last-child{display:grid;gap:3px;min-width:0}
+.sy-account-page:has(.sy-analytics) .sy-dashboard-side-brand strong{font-size:16px;color:#fff;letter-spacing:.5px;line-height:1.1}
+.sy-account-page:has(.sy-analytics) .sy-dashboard-side-brand small{color:#5FDEB9;font-size:9px;letter-spacing:1.1px;font-weight:850}
+.sy-account-page:has(.sy-analytics) .sy-account-identity{display:flex;align-items:center;color:white;border-bottom:1px solid #22374B;padding:4px 7px 14px;margin-bottom:9px;gap:10px;min-width:0}
+.sy-account-page:has(.sy-analytics) .sy-account-identity strong{color:#F0F7FB;font-size:12px}
+.sy-account-page:has(.sy-analytics) .sy-account-identity small{display:block;max-width:154px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#99B1C1;font-size:10px}
+.sy-account-page:has(.sy-analytics) .sy-account-identity .sy-avatar{background:#143E41;color:#A7EBD6}
+.sy-account-page:has(.sy-analytics) .sy-account-sidebar>button:not(.sy-sidebar-primary){
+ display:flex!important;align-items:center;gap:11px;border:0!important;border-left:0!important;
+ background:transparent!important;color:#BDCDDA!important;border-radius:9px!important;
+ padding:11px 13px!important;min-height:43px!important;font-size:12px!important;font-weight:550!important;
+ text-align:left;transition:background .17s,color .17s;
+}
+.sy-account-page:has(.sy-analytics) .sy-account-sidebar>button:not(.sy-sidebar-primary):hover{background:#1B3447!important;color:#fff!important}
+.sy-account-page:has(.sy-analytics) .sy-account-sidebar>button.active:not(.sy-sidebar-primary){
+ background:linear-gradient(105deg,#088A74,#007B60)!important;color:#fff!important;font-weight:800!important;
+ box-shadow:0 4px 12px #006C5930;
+}
+.sy-account-page:has(.sy-analytics) .sy-account-sidebar>button.sy-sidebar-primary{
+ margin:5px 2px 11px!important;background:#0C4C45!important;color:#D8FFF1!important;
+ border:1px solid #217A69!important;border-radius:10px!important;min-height:43px!important;font-size:11px!important;
+ padding:10px 11px!important;
+}
+.sy-account-page:has(.sy-analytics) .sy-dashboard-content{background:#F7F9FB;display:block;padding:28px clamp(16px,2.15vw,32px);min-width:0}
+.sy-analytics{display:grid;gap:20px;min-width:0;width:100%;color:#152C40}
+.sy-analytics :is(button,select){font-family:inherit}
+.sy-analytics button{cursor:pointer}
+.sy-analytics-toolbar{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.sy-analytics-eyebrow,.sy-analytics-card-overline{display:block;font-size:10px;font-weight:850;letter-spacing:1px;color:#078A71}
+.sy-analytics-title h2{font-size:clamp(21px,2.25vw,29px);letter-spacing:-.8px;line-height:1.17;margin:7px 0 5px;color:#122639}
+.sy-analytics-title h2 span{color:#00866B}
+.sy-analytics-title p{margin:0;font-size:12px;color:#7B8D9B;line-height:1.5}
+.sy-analytics-period{display:flex;align-items:center;gap:8px;background:white;border:1px solid #DAE4EB;padding:0 11px;border-radius:10px;min-height:42px;color:#4C6575;font-size:12px}
+.sy-analytics-period select{border:0;background:transparent;color:#233A4C;font-weight:750;font-size:12px;outline:none;appearance:none;cursor:pointer}
+.sy-analytics-tabs{display:flex;gap:23px;border-bottom:1px solid #DBE5EC;overflow-x:auto;scrollbar-width:thin;white-space:nowrap}
+.sy-analytics-tabs button{position:relative;border:0;background:transparent;color:#667C8B;font-size:12px;font-weight:700;padding:11px 2px 14px;white-space:nowrap}
+.sy-analytics-tabs button.active{color:#007B60}
+.sy-analytics-tabs button.active:after{content:"";position:absolute;bottom:0;left:0;right:0;height:3px;border-radius:5px 5px 0 0;background:#007B60}
+.sy-analytics-demo-strip{display:flex;align-items:flex-start;gap:9px;padding:11px 12px;border-radius:10px;background:#EFF7F6;border:1px solid #D4EAE4;color:#526E69;font-size:11px;line-height:1.5}
+.sy-analytics-demo-strip svg{color:#007B60;flex:none;margin-top:1px}
+.sy-analytics-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.sy-analytics-stat{display:flex;flex-direction:column;align-items:stretch;text-align:left;gap:9px;min-width:0;min-height:134px;border:1px solid #E0E8EE!important;border-radius:13px!important;padding:15px 16px!important;background:#fff!important;color:#172C40!important;box-shadow:0 3px 13px #0B19300A;transition:box-shadow .18s,transform .18s}
+.sy-analytics-stat:hover{box-shadow:0 8px 23px #0B193019;transform:translateY(-1px)}
+.sy-analytics-stat-head{display:flex;align-items:center;gap:8px;min-width:0}
+.sy-analytics-icon{display:grid;place-items:center;width:31px;height:31px;flex:0 0 31px;background:#EAF7F2;color:#007B60;border-radius:8px}
+.sy-analytics-stat-head>span:nth-child(2){flex:1;min-width:0;font-size:11px;font-weight:750;color:#4D6473;line-height:1.4}
+.sy-analytics-arrow{color:#92A3AD;opacity:.65}
+.sy-analytics-stat>strong{font-size:clamp(20px,2vw,27px);font-weight:850;letter-spacing:-.7px;line-height:1.1;overflow-wrap:anywhere}
+.sy-analytics-stat>small{font-size:10px;color:#8A99A4;line-height:1.4}
+.sy-analytics-stat.sy-analytics-featured{border-color:#007B60!important;background:linear-gradient(125deg,#05977A,#007B60)!important;color:white!important}
+.sy-analytics-stat.sy-analytics-featured :is(.sy-analytics-stat-head>span:nth-child(2),.sy-analytics-arrow,.sy-analytics-icon,.sy-analytics-stat>small){color:#E6FFF5}
+.sy-analytics-stat.sy-analytics-featured .sy-analytics-icon{background:#FFFFFF23}
+.sy-analytics-charts,.sy-analytics-bottom{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:15px;min-width:0}
+.sy-analytics-panel{border:1px solid #E0E8EE;border-radius:14px;background:white;box-shadow:0 3px 15px #0B193009;min-width:0;padding:19px;overflow:hidden}
+.sy-analytics-panel>header{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.sy-analytics-panel>header svg{color:#76918D}
+.sy-analytics-panel h3{color:#172D41;font-size:15px;letter-spacing:-.2px;margin:5px 0}
+.sy-analytics-panel>header p{color:#8494A0;font-size:10px;line-height:1.5;margin:0}
+.sy-analytics-chart-number{display:flex;align-items:baseline;gap:10px;margin:12px 0 0}
+.sy-analytics-chart-number strong{font-size:29px;color:#172C40;line-height:1}
+.sy-analytics-chart-number small{font-size:10px;color:#879BA4}
+.sy-analytics-line-chart{margin:10px 0 0;min-width:0}
+.sy-analytics-line-chart svg{width:100%;height:170px;display:block}
+.sy-analytics-month-labels{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px;padding:0 10px}
+.sy-analytics-month-labels span{font-size:10px;text-align:center;color:#80929D}
+.sy-analytics-ring-wrap{display:flex;align-items:center;justify-content:center;gap:24px;padding:26px 0 18px}
+.sy-analytics-donut{width:155px;aspect-ratio:1;border-radius:50%;flex:none;display:grid;place-items:center}
+.sy-analytics-donut>div{background:white;border-radius:50%;width:100px;aspect-ratio:1;display:grid;place-content:center;justify-items:center;gap:3px}
+.sy-analytics-donut strong{font-size:23px;color:#17334B}
+.sy-analytics-donut small{font-size:10px;color:#748996}
+.sy-analytics-legend{display:grid;gap:15px;min-width:100px;flex:1}
+.sy-analytics-legend span{display:flex;gap:8px;align-items:center;color:#587182;font-size:11px;min-width:0}
+.sy-analytics-legend span b{margin-left:auto;color:#173449}
+.sy-analytics-legend i{display:block;width:10px;height:10px;border-radius:3px;flex:none}
+.sy-legend-rfq{background:#007B60}.sy-legend-quote{background:#2DBAA2}.sy-legend-order{background:#C8EBE1}
+.sy-analytics-disclaimer{color:#8C9DA7;font-size:10px;line-height:1.55;background:#F8FAFB;padding:10px;border-radius:9px;margin:4px 0 0}
+.sy-analytics-bar-key{display:flex;gap:12px;flex-wrap:wrap}
+.sy-analytics-bar-key span{display:flex;align-items:center;gap:5px;color:#6E8491;font-size:10px}
+.sy-analytics-bar-key i{width:9px;height:9px;border-radius:2px;background:#007B60}
+.sy-analytics-bar-key span:last-child i{background:#79D8BE}
+.sy-analytics-bars-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;align-items:end;height:175px;margin-top:18px;border-bottom:1px solid #E5ECF0;background:repeating-linear-gradient(to top,transparent 0,transparent calc(25% - 1px),#E9EFF2 calc(25% - 1px),#E9EFF2 25%)}
+.sy-analytics-bar-month{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:end;gap:10px;min-width:0}
+.sy-analytics-bar-pair{display:flex;align-items:end;gap:5px;height:135px;width:min(65px,100%)}
+.sy-analytics-bar-pair span{flex:1;min-width:2px;background:#007B60;border-radius:4px 4px 0 0}
+.sy-analytics-bar-pair span:last-child{background:#79D8BE}
+.sy-analytics-bar-month small{color:#718694;font-size:10px}
+.sy-analytics-view-all{display:inline-flex;align-items:center;gap:5px;background:transparent!important;border:0!important;color:#007B60!important;font-size:11px;font-weight:750;white-space:nowrap;padding:3px!important}
+.sy-analytics-activity-list{display:grid;margin-top:12px}
+.sy-analytics-activity-item{display:flex;gap:10px;align-items:center;text-align:left;padding:10px 0!important;border:0!important;border-bottom:1px solid #EDF2F5!important;background:white!important;min-width:0}
+.sy-analytics-activity-item:last-child{border-bottom:0!important}
+.sy-analytics-activity-icon{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;flex:none;background:#EAF7F2;color:#007B60}
+.sy-analytics-activity-name{min-width:0;flex:1;display:grid;gap:3px}
+.sy-analytics-activity-name strong{color:#203B4E;font-size:11px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.sy-analytics-activity-name small{color:#7A8E9A;font-size:10px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.sy-analytics-activity-date{color:#8998A2;font-size:10px;white-space:nowrap}
+.sy-analytics-empty{display:grid;justify-items:center;text-align:center;gap:7px;padding:24px 10px;color:#007B60}
+.sy-analytics-empty strong{color:#1C394C;font-size:13px}
+.sy-analytics-empty p{font-size:11px;color:#80919C;line-height:1.5;margin:0}
+.sy-analytics-empty button{border:1px solid #B8DFD0!important;border-radius:9px;background:#EFF9F4!important;color:#007B60!important;padding:8px 11px!important;display:flex;align-items:center;gap:6px;font-size:11px;font-weight:750;margin-top:4px}
+.sy-analytics-inline-actions{display:flex;gap:9px;flex-wrap:wrap}
+.sy-analytics-inline-actions button{display:inline-flex;align-items:center;gap:7px;border:1px solid #C9E5DA!important;background:white!important;color:#007B60!important;padding:9px 12px!important;border-radius:9px;font-size:11px;font-weight:750}
+.sy-analytics-footer{display:flex;gap:15px;align-items:center;justify-content:space-between;background:#0B1930;border-radius:14px;padding:18px 20px;color:white}
+.sy-analytics-footer>div{display:flex;align-items:center;gap:13px;min-width:0}
+.sy-analytics-footer>div>svg{color:#65DCB6;flex:none}
+.sy-analytics-footer>div>span{display:grid;gap:5px}
+.sy-analytics-footer strong{font-size:13px;color:#F3F9FB}
+.sy-analytics-footer small{color:#A7C3C9;font-size:10px;line-height:1.5}
+.sy-analytics-footer>button{display:flex;align-items:center;gap:7px;border:0!important;border-radius:9px;background:#DDF7EC!important;color:#075E4C!important;font-size:11px;font-weight:800;padding:11px 13px!important;flex:none}
+@media(min-width:1920px){
+ .sy-account-page:has(.sy-analytics)>.sy-account-layout{max-width:2100px;grid-template-columns:270px minmax(0,1fr)}
+ .sy-analytics{gap:23px}.sy-analytics-kpis{gap:16px}
+ .sy-analytics-stat{padding:20px!important;min-height:150px}
+ .sy-analytics-stat-head>span:nth-child(2){font-size:13px}
+ .sy-analytics-panel{padding:23px}
+}
+@media(max-width:1250px){
+ .sy-account-page:has(.sy-analytics)>.sy-account-layout{grid-template-columns:205px minmax(0,1fr)}
+ .sy-analytics-kpis{grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+ .sy-analytics-stat{padding:13px!important}
+ .sy-analytics-ring-wrap{gap:12px}.sy-analytics-donut{width:116px}.sy-analytics-donut>div{width:76px}
+}
+@media(max-width:1050px){
+ .sy-analytics-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .sy-analytics-charts,.sy-analytics-bottom{grid-template-columns:minmax(0,1fr)}
+ .sy-analytics-ring-wrap{justify-content:flex-start;gap:23px}
+}
+@media(max-width:700px){
+ .sy-account-page:has(.sy-analytics)>.sy-account-layout{display:block;border:0;min-height:0}
+ .sy-account-page:has(.sy-analytics) .sy-account-sidebar{min-height:0;height:auto;display:flex;flex-direction:row;align-items:center;overflow-x:auto;overflow-y:hidden;gap:5px;padding:8px 9px!important;scrollbar-width:thin;border-radius:0!important}
+ .sy-account-page:has(.sy-analytics) .sy-account-sidebar>.sy-dashboard-side-brand,.sy-account-page:has(.sy-analytics) .sy-account-sidebar>.sy-account-identity{display:none}
+ .sy-account-page:has(.sy-analytics) .sy-account-sidebar>button:not(.sy-sidebar-primary){flex:none;width:auto;min-width:max-content;padding:8px 11px!important;min-height:38px!important;font-size:11px!important}
+ .sy-account-page:has(.sy-analytics) .sy-account-sidebar>.sy-sidebar-primary{flex:none;width:auto;white-space:nowrap;margin:0 7px 0 0!important;min-height:38px!important}
+ .sy-account-page:has(.sy-analytics) .sy-dashboard-content{padding:15px 11px 100px!important}
+ .sy-analytics{gap:13px}
+ .sy-analytics-toolbar{gap:10px}
+ .sy-analytics-title h2{font-size:21px}
+ .sy-analytics-title p{font-size:11px}
+ .sy-analytics-period{min-height:38px}
+ .sy-analytics-tabs{gap:19px}
+ .sy-analytics-demo-strip{font-size:10px;padding:10px}
+ .sy-analytics-kpis{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ .sy-analytics-stat{padding:12px!important;min-height:116px;gap:7px;border-radius:11px!important}
+ .sy-analytics-stat-head{gap:6px}.sy-analytics-stat-head>span:nth-child(2){font-size:10px}
+ .sy-analytics-icon{width:26px;height:26px;flex-basis:26px}
+ .sy-analytics-icon svg{width:16px;height:16px}
+ .sy-analytics-stat>strong{font-size:20px}
+ .sy-analytics-stat>small{font-size:9px}
+ .sy-analytics-panel{padding:13px;border-radius:11px}
+ .sy-analytics-panel h3{font-size:14px}
+ .sy-analytics-line-chart svg{height:142px}
+ .sy-analytics-charts,.sy-analytics-bottom{grid-template-columns:minmax(0,1fr);gap:11px}
+ .sy-analytics-ring-wrap{padding:20px 0;gap:18px}
+ .sy-analytics-footer{padding:13px;gap:10px;flex-wrap:wrap}
+ .sy-analytics-footer>button{width:100%;justify-content:center}
+}
+@media(max-width:350px){.sy-analytics-kpis{gap:7px}.sy-analytics-stat{padding:9px!important}.sy-analytics-stat>strong{font-size:18px}.sy-analytics-ring-wrap{gap:12px}.sy-analytics-donut{width:105px}.sy-analytics-legend span{font-size:10px}}
