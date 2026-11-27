@@ -1,7 +1,7 @@
 "use client";
 import {useEffect,useMemo,useState} from "react";
 import {Building2,Check,CheckCircle2,ChevronRight,FileText,Globe2,LockKeyhole,Pencil,Save,Settings2,ShieldCheck,UserRound} from "lucide-react";
-import {CountryFlag,CountryField} from "@/components/CountryFlag";
+import {CountryFlag,CountryField,getDialingCode} from "@/components/CountryFlag";
 
 type Profile={name:string;email:string;company:string;country:string;role:"buyer"|"supplier";joined:string};
 type Details={
@@ -51,6 +51,7 @@ export function BuyerProfileEditor({profile,onUpdate}:{profile:Profile;onUpdate:
  }
  return <form className="sy-profile-modern" onSubmit={save}>
   <div className="sy-profile-title"><div><span className="sy-mini-overline">SYLUTION / {profile.role==="supplier"?"SELLER":"BUYER"} WORKSPACE</span><h2>{profile.role==="supplier"?"Seller Store Profile":"My business profile"}</h2><p>{profile.role==="supplier"?"Present your wholesale company, store visuals and contact information.":"Present your sourcing business clearly and manage how suppliers may reach you."}</p></div><span className="sy-profile-preview-badge"><ShieldCheck size={14}/> Demo · Not verified</span></div>
+  <div className="sy-account-origin-hint"><CountryFlag country={identity.country} compact/><span>Account country: <strong>{identity.country||"Not selected"}</strong>{getDialingCode(identity.country)?" · Calling code "+getDialingCode(identity.country):""}. Saved changes to your country will update related forms across this browser.</span></div>
   <div className="sy-profile-grid">
    <div className="sy-profile-main">
     <section className="sy-profile-summary-card">
@@ -68,9 +69,9 @@ export function BuyerProfileEditor({profile,onUpdate}:{profile:Profile;onUpdate:
       <label className="sy-profile-field"><span>Company name *</span><input disabled={!editing} value={identity.company} placeholder="Not added" onChange={e=>setIdentity(v=>({...v,company:e.target.value}))}/></label>
       <label className="sy-profile-field"><span>Country of registration *</span><CountryField value={identity.country} disabled={!editing} onChange={value=>setIdentity(v=>({...v,country:value}))} label="Country of registration"/></label>
       {field("businessType","",["Buying Office","Importer","Wholesaler","Distributor","Manufacturer","Retailer","Trading company","Other"])}
-      {field("registration","e.g. CAC registration number")}
+      {field("registration","Enter your official company registration ID")}
       {field("website","https://example.com")}
-      {field("phone","+234 ...")}
+      {field("phone",getDialingCode(identity.country)?getDialingCode(identity.country)+" business phone number":"Business phone number")}
       {field("established","e.g. 2024")}
       {field("employees","",["","1–10","11–50","51–200","201–500","500+"])}
       {field("revenue","",["","Not disclosed","Below $100K","$100K–$1M","$1M–$10M","Above $10M"])}
