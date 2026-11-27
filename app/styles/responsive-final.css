@@ -236,3 +236,54 @@ body{overflow-x:clip;-webkit-text-size-adjust:100%;text-size-adjust:100%}
   transition-duration:0s!important;animation-duration:0s!important;
  }
 }
+
+/* Compact messaging: don't let long filenames or chat bubbles force horizontal page scroll. */
+.sy-account-page .sy-inbox-shell,
+.sy-account-page .sy-conversation-shell,
+.sy-account-page .sy-conversation-detail,
+.sy-account-page .sy-inbox-content,
+.sy-account-page .sy-supplier-inbox,
+.sy-account-page .sy-supplier-inbox-layout,
+.sy-account-page .sy-supplier-inbox-detail,
+.sy-account-page .sy-chat-thread,
+.sy-account-page .sy-conversation-messages{min-width:0;max-width:100%}
+.sy-account-page :is(.sy-chat-bubble,.sy-conversation-exchange,.sy-draft-message,.sy-supplier-buyer-bubble,.sy-supplier-own-bubble){overflow-wrap:anywhere;word-break:break-word}
+@media(max-width:720px){
+ .sy-account-page.sy-messages-page .sy-inbox-shell.sy-conversation-shell{
+  max-width:100vw!important;min-height:calc(100dvh - env(safe-area-inset-bottom,0px))!important;
+ }
+ .sy-account-page.sy-messages-page .sy-conversation-messages{
+  overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
+ }
+ .sy-account-page.sy-messages-page .sy-chat-composer{
+  padding-bottom:max(10px,env(safe-area-inset-bottom,0px))!important;
+ }
+ .sy-account-page.sy-messages-page :is(textarea,input){font-size:16px!important}
+}
+/* iPad/iOS Safari: prevent keyboard zoom on data entry, keep dialogs usable. */
+@media(max-width:1024px){
+ .sy-account-page :is(input:not([type="checkbox"]),textarea,select),
+ .catalog-home :is(input:not([type="checkbox"]),textarea,select),
+ .product-page :is(input:not([type="checkbox"]),textarea,select),
+ .sy-store-page :is(input:not([type="checkbox"]),textarea,select),
+ .si-quote :is(input:not([type="checkbox"]),textarea,select),
+ .sy-contact-dialog :is(input:not([type="checkbox"]),textarea,select){
+  font-size:16px!important;
+ }
+ .catalog-filter-dialog[open],.si-quote[open],.sy-contact-dialog[open]{
+  max-height:calc(100dvh - 16px);
+ }
+}
+/* Tablet + phone modal content remains scrollable even with virtual keyboard. */
+@media(max-width:768px){
+ .catalog-filter-dialog,.si-quote,.sy-contact-dialog{
+  max-height:calc(100dvh - 16px);
+  overscroll-behavior:contain;
+ }
+ .sy-account-page .sv-upload-zone{max-width:100%}
+ .sy-account-page .sy-product-photo-upload{max-width:100%}
+ .sy-account-page .sy-rfq-image-field{min-width:0;max-width:100%}
+ .sy-account-page .sy-trade-form-total{flex-wrap:wrap;gap:7px}
+ .sy-account-page .sy-account-region{max-width:100%}
+ .sy-account-page .sy-account-region>span{overflow-wrap:anywhere}
+}
