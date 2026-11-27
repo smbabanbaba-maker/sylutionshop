@@ -1,0 +1,312 @@
+/* SYLUTION TRADE — customer-selected AliExpress-style retail palette.
+   Own independent layout and identity; not another company's logos or artwork.
+   Primary Red #FF4747; Secondary Orange #FF9320; White #FFFFFF;
+   Text #222222; Surface #F7F7F7.
+   Status semantics stay independent: error = deeper red; success = green;
+   warning = amber; info = blue. Red brand buttons DO NOT imply errors.
+   This file deliberately loads last to override older teal/navy brand styles.
+*/
+:root{
+ --sy-primary:#FF4747;
+ --sy-primary-hover:#D93232;
+ --sy-primary-soft:#FFF0F0;
+ --sy-secondary:#FF9320;
+ --sy-secondary-hover:#D97300;
+ --sy-secondary-soft:#FFF3E6;
+ --sy-background:#FFFFFF;
+ --sy-surface:#F7F7F7;
+ --sy-text:#222222;
+ --sy-muted:#606060;
+ --sy-border:#E6E6E6;
+ --sy-color-ink:#222222;
+ --sy-color-ink-soft:#414141;
+ --sy-color-muted:#626262;
+ --sy-color-brand:#FF4747;
+ --sy-color-brand-hover:#D93232;
+ --sy-color-brand-soft:#FFF0F0;
+ --sy-color-brand-ring:#FFAAAA;
+ --sy-color-navy:#222222;
+ --sy-color-surface:#FFFFFF;
+ --sy-color-canvas:#F7F7F7;
+ --sy-color-surface-soft:#FAFAFA;
+ --sy-color-border:#E6E6E6;
+ --sy-brand:#FF4747;
+ --sy-brand-dark:#D93232;
+ --sy-brand-pale:#FFF0F0;
+ --sy-green:#FF4747;
+ --sy-green-hover:#D93232;
+ --sy-teal:#FF9320;
+ --sy-navy:#222222;
+ --sy-ink:#222222;
+ --sy-ui-ink:#222222;
+ --sy-ui-muted:#646464;
+ --sy-ui-line:#E6E6E6;
+ --sy-ui-brand:#FF4747;
+ --sy-ui-background:#F7F7F7;
+ --sy-ui-border:#E6E6E6;
+ --sy-ui-soft:#F7F7F7;
+ --sy-ui-navy:#222222;
+ --sy-ui-green:#FF4747;
+ --sy-premium-ink:#222222;
+ --sy-premium-navy:#222222;
+ --sy-premium-brand:#FF4747;
+ --sy-premium-brand-hover:#D93232;
+ --sy-premium-surface:#FFFFFF;
+ --sy-premium-canvas:#F7F7F7;
+ --sy-premium-muted:#686868;
+ --sy-premium-border:#E5E5E5;
+ --sy-premium-focus:#FF9320;
+ --sy-supplier:#D93232;
+ --sy-supplier-pale:#FFF0F0;
+ --sy-buyer:#D93232;
+ --sy-buyer-pale:#FFF0F0;
+ --sy-trade:#D93232;
+ --sy-trade-pale:#FFF0F0;
+ --sy-profile:#C73535;
+ --sy-profile-pale:#FFF0F0;
+ --sy-verify:#C73535;
+ --sy-verify-pale:#FFF0F0;
+ --sy-analytics-navy:#222222;
+ --sy-analytics-teal:#FF4747;
+ --sy-analytics-ink:#222222;
+ accent-color:#FF4747;
+}
+body{background:#F7F7F7;color:#222222}
+:where(.catalog-home,.product-page,.sy-account-page,.sy-store-page,.sy-public-profile){
+ color:#222222;
+}
+:where(.catalog-home,.product-page,.sy-account-page,.sy-store-page,.sy-public-profile) :is(h1,h2,h3,h4){
+ color:#222222;
+}
+:where(.catalog-home,.product-page,.sy-account-page,.sy-store-page,.sy-public-profile)
+ :is(input,select,textarea){color:#222222}
+:where(.catalog-home,.product-page,.sy-account-page,.sy-store-page,.sy-public-profile)
+ :is(button,a,input,textarea,select):focus-visible{
+ outline:2px solid #E46E13!important;outline-offset:2px;
+}
+/* App framework and global navigation. */
+.site-header,.sy-account-header,.sy-store-topbar{background:#FFF!important;border-color:#E6E6E6!important}
+.site-header .brand strong,.sy-account-logo strong{color:#222!important}
+.site-header .brand em{color:#FF4747!important}
+.site-header .brand small,.sy-account-logo small{color:#666!important}
+.site-header .brand-mark,.sy-account-logo-mark{
+ background:linear-gradient(140deg,#FF4747,#FF9320)!important;
+ color:#FFF!important;box-shadow:0 4px 13px #FF474729!important;
+}
+.site-header .search-submit,.site-header .header-search button,
+.reference-hero .hero-search-button{
+ background:#FF4747!important;border-color:#FF4747!important;color:white!important;
+}
+.site-header .search-submit:hover,.reference-hero .hero-search-button:hover{background:#D93232!important}
+.site-header .header-search,.catalog-search-form{border-color:#E3E3E3!important}
+.site-header .header-actions a:hover,.site-header .mobile-menu a:hover,
+.trade-bottom-nav a:hover,.trade-bottom-nav a:focus-visible{color:#E03838!important}
+.announcement{background:#FFF0F0;color:#8C2525}
+.announcement span{color:#FF9320}
+.trade-bottom-nav{background:#FFF!important;border-top-color:#E7E7E7!important}
+.trade-bottom-nav a{color:#515151}
+.trade-bottom-nav a[aria-current="page"]{color:#FF4747!important}
+/* Homepage: product catalog, cards, category selection, search and offers. */
+.catalog-home{background:#F7F7F7;color:#222}
+.catalog-home :is(.catalog-controls,.catalog-feature,.catalog-tools,.catalog-categories,.catalog-shortcuts,.catalog-listing,.catalog-toolbar){border-color:#E6E6E6}
+.catalog-home .catalog-toolbar{background:#F7F7F7}
+.catalog-home .catalog-results-head h2,.catalog-home .catalog-feature h3,
+.catalog-home .product-name{color:#222!important}
+.catalog-home .product-card,.catalog-home .catalog-feature,.catalog-home .side-panel{
+ background:#FFF!important;border-color:#E7E7E7!important;
+}
+.catalog-home .product-card:hover{border-color:#FFC1C1!important;box-shadow:0 8px 22px #B4233814!important}
+.catalog-home .product-price,.catalog-home .product-name:hover,
+.catalog-home .catalog-text-button,.catalog-home .catalog-primary:not(:disabled){color:#FF4747}
+.catalog-home .product-price{color:#E03B3B!important}
+.catalog-home .catalog-primary,.catalog-home .catalog-search-form button[type="submit"],
+.catalog-home .catalog-search-button,.catalog-home .product-card .inquiry-btn{
+ background:#FF4747!important;border-color:#FF4747!important;color:white!important;
+}
+.catalog-home .catalog-primary:hover,.catalog-home .product-card .inquiry-btn:hover{
+ background:#D93232!important;color:white!important;
+}
+.catalog-home .category-tabs button.selected,
+.catalog-home .catalog-category-row button[aria-pressed="true"],
+.catalog-home .catalog-controls button[aria-pressed="true"]{
+ background:#FFF0F0!important;border-color:#FF4747!important;color:#C63131!important;
+}
+.catalog-home .new-chip,.catalog-home .catalog-offer-chip,.catalog-home .catalog-deal-badge,
+.catalog-home .catalog-promotion-badge{
+ background:#FF9320!important;color:#222!important;
+}
+.catalog-home .sample-pill{background:#F2F2F2!important;color:#606060!important}
+.catalog-home .favorite.active{color:#FF4747!important}
+.catalog-home .catalog-hero,.reference-hero{
+ background-image:linear-gradient(100deg,#681B20ED,#A33B29D7 65%,#FF932093),url("https://images.unsplash.com/photo-1494412519320-aa613dfb7738?w=1800&q=80")!important;
+ background-color:#7F2424!important;
+}
+.reference-hero .hero-eyebrow{background:#FFFFFF25!important;color:#FFF!important;border-color:#FFFFFF77!important}
+.reference-hero h1,.reference-hero p{color:white}
+.catalog-home .catalog-shortcuts a:hover{border-color:#FFADAD!important}
+/* Product details, gallery and direct buyer/seller inquiry. */
+.product-page{background:#F7F7F7!important;color:#222!important}
+.product-page :is(.product-primary-card,.detail-section,.detail-supplier-card,.product-detail-aside){
+ background:#FFF;border-color:#E8E8E8!important;
+}
+.product-page :is(.product-offer h1,.detail-section h2,.supplier-profile-header h2){color:#222!important}
+.product-page .offer-price,.product-page .product-price,
+.product-page .product-breadcrumbs a,.product-page .product-review-line a{color:#E03B3B!important}
+.product-page .detail-action-green,.product-page .product-detail-aside .detail-action-green,
+.product-page .detail-mobile-quote .detail-action-green{
+ background:#FF4747!important;border-color:#FF4747!important;color:white!important;
+}
+.product-page .detail-action-green:hover{background:#D93232!important}
+.product-page .product-sticky-bar{background:#FFF!important;border-color:#E6E6E6}
+.product-page .gallery-thumbnails button[aria-pressed="true"],
+.product-page .gallery-thumbnails button.active{border-color:#FF4747!important}
+.product-page .brand-share-section :is(a,button):focus-visible{outline-color:#FF9320!important}
+.product-page .product-demo-banner{background:#FFF3E6!important;border-color:#F5C188!important;color:#814600!important}
+/* Buyer/seller workspace. */
+.sy-account-page{background:#F7F7F7!important;color:#222!important}
+.sy-account-page :is(.sy-panel,.sy-profile-summary-card,.sy-profile-detail-card,.sy-rfq-builder,.sv-card,.sy-trade-card,.sy-trade-form){
+ background:#FFF;border-color:#E8E8E8!important;
+}
+.sy-account-page .sy-content-topline h2,.sy-account-page .sy-panel h3,
+.sy-account-page .sy-workspace-heading h2{color:#222!important}
+.sy-account-page .sy-account-sidebar{background:#FFF!important;border-color:#E6E6E6!important}
+.sy-account-page .sy-account-sidebar>button.active:not(.sy-sidebar-primary){
+ background:#FFF0F0!important;color:#CF3030!important;border-left-color:#FF4747!important;
+}
+.sy-account-page .sy-account-sidebar>button:hover:not(.sy-sidebar-primary){
+ background:#FFF3F0!important;color:#C63131!important;
+}
+.sy-account-page .sy-account-sidebar>button.sy-sidebar-primary,
+.sy-account-page .sy-green-action,.sy-account-page .sy-profile-edit-btn,
+.sy-account-page .sy-account-performance-note button{
+ background:#FF4747!important;border-color:#FF4747!important;color:#FFF!important;
+}
+.sy-account-page .sy-account-sidebar>button.sy-sidebar-primary:hover,
+.sy-account-page .sy-green-action:hover{
+ background:#D93232!important;color:white!important;
+}
+.sy-account-page .sy-preview-tag{background:#F2F2F2!important;color:#606060!important;border-color:#DADADA!important}
+.sy-account-page .sy-free-plan,.sy-account-page .sy-product-form-status,
+.sy-account-page .sy-draft-tab{border-radius:20px}
+.sy-account-page .sy-profile-tabs button.active,
+.sy-account-page .sy-manager-tabs button.active{border-bottom-color:#FF4747!important;color:#D93232!important}
+.sy-account-page .sy-profile-meter>div,.sy-account-page .sy-score-progress>div{background:#FF9320!important}
+.sy-account-page .sy-recommended-card b,.sy-account-page .sy-fav-card b{color:#E03B3B!important}
+.sy-account-page :is(.sy-recommended-card,.sy-fav-card):hover{border-color:#FFB5B5!important}
+.sy-account-page .sy-demo-alert{background:#FFF4DB!important;color:#895600!important}
+/* Charts and analytics: same new brand color, demo figures remain factual. */
+.sy-account-page:has(.sy-analytics){
+ background:#F7F7F7!important;color:#222!important;
+ --sy-analytics-navy:#222;--sy-analytics-teal:#FF4747;--sy-analytics-ink:#222;
+}
+.sy-account-page:has(.sy-analytics) .sy-account-sidebar{
+ background:#222!important;
+}
+.sy-account-page:has(.sy-analytics) .sy-dashboard-content{background:#F7F7F7!important}
+.sy-account-page:has(.sy-analytics) .sy-side-mark{
+ background:linear-gradient(135deg,#FF4747,#FF9320)!important;
+}
+.sy-account-page:has(.sy-analytics) .sy-dashboard-side-brand small{color:#FFB76B!important}
+.sy-account-page:has(.sy-analytics) .sy-account-sidebar>button.active:not(.sy-sidebar-primary){
+ background:#FF4747!important;color:white!important;border-color:transparent!important;
+}
+.sy-account-page:has(.sy-analytics) .sy-account-sidebar>button:hover:not(.sy-sidebar-primary){
+ background:#3B3030!important;color:#FFF!important;
+}
+.sy-account-page:has(.sy-analytics) .sy-account-sidebar>button.sy-sidebar-primary{
+ background:#5E302C!important;border-color:#9B5250!important;color:#FFF!important;
+}
+.sy-account-page .sy-analytics-stat{border-color:#E8E8E8!important}
+.sy-account-page .sy-analytics-icon,
+.sy-account-page .sy-analytics-activity-icon{color:#E03B3B!important;background:#FFF0F0!important}
+.sy-account-page .sy-analytics-featured{
+ background:linear-gradient(120deg,#FF4747,#F06B30)!important;border-color:#FF4747!important;color:#FFF!important;
+}
+.sy-account-page .sy-analytics-featured .sy-analytics-icon{background:#FFFFFF30!important;color:white!important}
+.sy-account-page .sy-analytics-eyebrow,.sy-account-page .sy-analytics-card-overline,
+.sy-account-page .sy-analytics-title h2 span,
+.sy-account-page .sy-analytics-tabs button.active,
+.sy-account-page .sy-analytics-view-all{color:#E03B3B!important}
+.sy-account-page .sy-analytics-tabs button.active:after{background:#FF4747!important}
+.sy-account-page .sy-analytics-panel,.sy-account-page .sy-analytics-stat{background-color:#FFF}
+.sy-account-page .sy-analytics-bar-pair span:first-child,
+.sy-account-page .sy-analytics-bar-key span:first-child i,
+.sy-account-page .sy-legend-rfq{background:#FF4747!important}
+.sy-account-page .sy-analytics-bar-pair span:last-child,
+.sy-account-page .sy-analytics-bar-key span:last-child i,
+.sy-account-page .sy-legend-quote{background:#FF9320!important}
+.sy-account-page .sy-legend-order{background:#FFD0D0!important}
+.sy-account-page .sy-analytics-donut{background:#FF4747}
+.sy-account-page .sy-analytics-empty{color:#FF4747}
+.sy-account-page .sy-analytics-inline-actions button,
+.sy-account-page .sy-analytics-empty button,
+.sy-account-page .sy-analytics-footer>button{
+ background:#FFF0F0!important;color:#B62C2C!important;border-color:#FFC4C4!important;
+}
+.sy-account-page .sy-analytics-footer{background:#222!important}
+.sy-account-page .sy-analytics-footer>div>svg{color:#FF9320!important}
+/* Seller storefront, KYC and communication. */
+.sy-store-page{background:#F7F7F7!important;color:#222!important;--store-brand:#FF4747;--store-ink:#222}
+.sy-store-page :is(.sy-store-product,.sy-store-tabs,.sy-store-content,.sy-store-topbar){
+ border-color:#E6E6E6!important;
+}
+.sy-store-page .sy-store-hero{
+ background:linear-gradient(120deg,#842222,#D94337 65%,#FF9320)!important;
+}
+.sy-store-page .sy-store-tabs button.active,
+.sy-store-page .sy-store-bottom button.active{color:#E03B3B!important;border-color:#FF4747!important}
+.sy-store-page .sy-store-product-price,
+.sy-store-page .sy-store-product b{color:#E03B3B!important}
+.sy-store-page .sy-store-product button,.sy-store-page .sy-store-contact button{
+ border-color:#FF4747!important;
+}
+.sy-account-page .sv-icon{background:#FFF0F0!important;color:#C73535!important}
+.sy-account-page .sv-global-phone-action{
+ border-color:#FF4747!important;color:#C73535!important;background:white!important;
+}
+.sy-account-page .sv-global-phone-action:hover{background:#FFF0F0!important}
+.sy-account-page .sy-profile-edit-btn:hover,.sy-account-page .sy-trade-actions button:not(.danger-text):hover{
+ background:#D93232!important;color:#FFF!important;
+}
+/* Contact forms and search filters. */
+.catalog-filter-dialog,.si-quote,.sy-contact-dialog{background:#FFF!important;color:#222!important}
+.catalog-filter-dialog :is(h2,h3),.si-quote :is(h2,h3),.sy-contact-dialog :is(h2,h3){color:#222!important}
+.catalog-filter-dialog .catalog-primary,
+.si-quote .si-submit,.sy-contact-dialog .sy-contact-primary{
+ background:#FF4747!important;border-color:#FF4747!important;color:white!important;
+}
+.catalog-filter-dialog .catalog-primary:hover,
+.si-quote .si-submit:hover,.sy-contact-dialog .sy-contact-primary:hover{background:#D93232!important}
+.si-quote .si-product-price{color:#E03B3B!important}
+/* Meaning, not decorative color: neutral, blue, green and warning statuses stay distinct. */
+.sy-semantic-notice[data-tone="error"],.sy-status-error{color:var(--sy-status-error)!important}
+.sy-semantic-notice[data-tone="success"],.sy-status-success{color:var(--sy-status-success)!important}
+.sy-semantic-notice[data-tone="warning"],.sy-status-warning{color:var(--sy-status-warning)!important}
+.sy-semantic-notice[data-tone="info"],.sy-status-info{color:var(--sy-status-info)!important}
+.sy-account-page .sv-status-verified{color:var(--sy-status-success)!important}
+.sy-account-page .sv-status-unverified,.sy-account-page .sv-status-rejected{color:var(--sy-status-error)!important}
+.sy-account-page .sv-status-pending{color:var(--sy-status-warning)!important}
+.sy-account-page .sy-analytics-stat[data-tone="error"]>strong{color:var(--sy-status-error)!important}
+.sy-account-page .sy-analytics-stat[data-tone="error"] .sy-analytics-icon{
+ color:var(--sy-status-error)!important;background:var(--sy-status-error-bg)!important;
+}
+.sy-account-page .sy-analytics-stat[data-tone="warning"] .sy-analytics-icon{
+ color:var(--sy-status-warning)!important;background:var(--sy-status-warning-bg)!important;
+}
+.sy-account-page .sy-trade-status.success{color:var(--sy-status-success)!important}
+.sy-account-page .sy-trade-status.danger{color:var(--sy-status-error)!important}
+.sy-account-page .sy-trade-status.pending{color:var(--sy-status-warning)!important}
+.sy-account-page .sy-trade-status.info{color:var(--sy-status-info)!important}
+/* Mobile and tablet: keep existing responsive grid and safe area behavior. */
+@media(max-width:768px){
+ .sy-account-page:has(.sy-analytics) .sy-account-sidebar{background:#222!important}
+ .site-header .mobile-menu{background:#FFF}
+ .catalog-home .product-card .inquiry-btn{background:#FF4747!important;color:white!important}
+ .sy-account-page .sy-account-sidebar>button.active:not(.sy-sidebar-primary){border-left-color:#FF4747!important}
+ .sy-account-page:has(.sy-analytics) .sy-account-sidebar>button.active:not(.sy-sidebar-primary){
+  background:#FF4747!important;color:white!important;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ .catalog-home .product-card,.sy-account-page .sy-analytics-stat{transition:none!important}
+}
