@@ -338,3 +338,49 @@ body{overflow-x:clip;-webkit-text-size-adjust:100%;text-size-adjust:100%}
   min-height:42px;
  }
 }
+
+/* Buying requests: on phones display real table rows as compact readable cards,
+   not a 650px-wide sideways-scrolling table. Full desktop table is unchanged. */
+@media(max-width:600px){
+ .sy-account-page .sy-manager:has(.trade-requests){overflow:visible}
+ .sy-account-page .sy-manager .trade-requests{
+  display:block!important;min-width:0!important;width:100%!important;table-layout:auto;
+ }
+ .sy-account-page .trade-requests thead{display:none}
+ .sy-account-page .trade-requests tbody{display:grid;gap:9px;width:100%}
+ .sy-account-page .trade-requests tr.trade-request-row{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:7px 10px;background:#fff;border:1px solid #DCE6EC;
+  border-radius:12px;padding:12px;min-width:0;
+ }
+ .sy-account-page .trade-requests tr.trade-request-row>td{
+  display:block;min-width:0;border:0;padding:0;
+  color:#274458;font-size:11px;line-height:1.5;
+ }
+ .sy-account-page .trade-requests tr.trade-request-row>td:first-child,
+ .sy-account-page .trade-requests tr.trade-request-row>td:last-child{
+  grid-column:1/-1;
+ }
+ .sy-account-page .trade-requests tr.trade-request-row>td:first-child strong{
+  font-size:13px;color:#15374B;overflow-wrap:anywhere;
+ }
+ .sy-account-page .trade-requests .trade-cell-label{display:inline;font-weight:700;color:#647F8F}
+ .sy-account-page .trade-requests .trade-request-actions{
+  display:flex!important;flex-wrap:wrap;gap:8px;margin-top:4px;
+ }
+ .sy-account-page .trade-requests .trade-request-actions button{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-height:40px;min-width:40px;margin:0;
+ }
+ .sy-account-page .trade-requests tr.trade-request-detail{
+  display:block;background:#F2F8F7;border:1px solid #D8E7E0;
+  border-radius:10px;padding:10px;min-width:0;
+ }
+ .sy-account-page .trade-requests tr.trade-request-detail[hidden]{display:none!important}
+ .sy-account-page .trade-requests tr.trade-request-detail>td{
+  display:block;width:100%;padding:0;border:0;min-width:0;
+ }
+ .sy-account-page .trade-requests tr.trade-request-detail :is(p,li,dd){
+  overflow-wrap:anywhere;line-height:1.55;
+ }
+}
