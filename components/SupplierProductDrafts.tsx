@@ -33,7 +33,7 @@ export function SupplierProductDrafts({country,email}:{country:string;email:stri
  useEffect(()=>{try{const value:unknown=JSON.parse(localStorage.getItem(storageKey)||"[]");if(Array.isArray(value))setDrafts(value.filter((v):v is ProductDraft=>Boolean(v)&&typeof v==="object"&&typeof v.name==="string"));}catch{setDrafts([])}},[storageKey]);
  useEffect(()=>{const raw=new URLSearchParams(window.location.search).get("edit");if(raw===null)return;const index=Number(raw);if(!Number.isInteger(index)||index<0||index>=drafts.length)return;const chosen=drafts[index];setEditIndex(index);setSelection(chosen);setOrigin(chosen.country||country);setFormKey(v=>v+1);},[drafts,country]);
  useEffect(()=>{const urls=images.map(file=>URL.createObjectURL(file));setImageUrls(urls);return()=>urls.forEach(url=>URL.revokeObjectURL(url));},[images]);
- function reset(){setEditIndex(null);setSelection(null);setImages([]);setOrigin(country);setFormKey(v=>v+1);}
+ function reset(){const url=new URL(window.location.href);if(url.searchParams.has("edit")){url.searchParams.delete("edit");window.history.replaceState(null,"",url.pathname+url.search);}setEditIndex(null);setSelection(null);setImages([]);setOrigin(country);setFormKey(v=>v+1);}
  function saveDraft(event:React.FormEvent<HTMLFormElement>){
   event.preventDefault();
   const form=event.currentTarget;
