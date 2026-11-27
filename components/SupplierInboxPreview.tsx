@@ -1,6 +1,6 @@
 "use client";
 import {useEffect,useState} from "react";
-import {MessageSquare,Search,Send,Package} from "lucide-react";
+import {MessageSquare,Search,Send,Package,ArrowLeft} from "lucide-react";
 import {MESSAGE_DRAFT_KEY,type SupplierMessageDraft} from "@/components/SupplierContactModal";
 
 const load=():SupplierMessageDraft[]=>{try{const rows=JSON.parse(localStorage.getItem(MESSAGE_DRAFT_KEY)||"[]");return Array.isArray(rows)?rows:[]}catch{return []}};
@@ -10,6 +10,7 @@ export function SupplierInboxPreview({company}:{company:string}){
  const [reply,setReply]=useState("");
  const [query,setQuery]=useState("");
  const [notice,setNotice]=useState("");
+ const [mobileOpen,setMobileOpen]=useState(false);
  useEffect(()=>{
   const refresh=()=>setMessages(load());
   refresh();window.addEventListener("sylution-message-drafts-change",refresh);window.addEventListener("storage",refresh);
@@ -18,8 +19,10 @@ export function SupplierInboxPreview({company}:{company:string}){
  const normalized=company.trim().toLocaleLowerCase();
  // A locally switched buyer/supplier must not see another supplier's drafts.
  const inbox=normalized?messages.filter(m=>m.supplier.trim().toLocaleLowerCase()===normalized):[];
- const matching=inbox.filter(m=>[m.product,m.message,m.subject].join(" ").toLowerCase().includes(query.toLowerCase()));
- const active=matching.find(m=>m.id===selected)||matching[0];
+ const conversations=Array.from(inbox.reduce((map,m)=>{const key=m.productId||m.product;const items=map.get(key)||[];items.push(m);map.set(key,items);return map;},new Map<string,SupplierMessageDraft[]>()).entries()).map(([key,items])=>({key,records:[...items].sort((a,b)=>b.createdAt.localeCompare(a.createdAt))})).sort((a,b)=>b.records[0].createdAt.localeCompare(a.records[0].createdAt));
+ const matching=conversations.filter(c=>c.records.some(m=>[m.product,m.message,m.subject].join(" ").toLowerCase().includes(query.toLowerCase())));
+ const activeGroup=matching.find(c=>c.key===selected)||matching[0];
+ const active=activeGroup?.records[0];
  function saveReply(){
   if(!active||reply.trim().length<2){setNotice("Write a reply first.");return;}
   try{
@@ -30,26 +33,24 @@ export function SupplierInboxPreview({company}:{company:string}){
    setMessages(next);setReply("");setNotice("Demo reply saved on this browser only. The buyer was not notified.");
   }catch{setNotice("Browser storage blocked this demo reply.");}
  }
- return <section className="sy-supplier-inbox" aria-label="Supplier message preview">
-   <div className="sy-supplier-inbox-header"><div><span className="sy-mini-overline">SUPPLIER WORKSPACE / MESSAGES</span><h2>Buyer Messages</h2><p>Read buyer enquiries and prepare a reply in one place.</p></div><span className="sy-supplier-inbox-count">{inbox.length} local drafts</span></div>
-   <p className="sy-supplier-demo-warning">Preview only: messages and replies are stored on this device. Buyers and sellers on different devices cannot exchange messages until secure accounts and a database are connected.</p>
-   {!normalized?<div className="sy-supplier-inbox-empty"><MessageSquare size={32}/><strong>Add a company name to your supplier profile</strong><p>The demo matches messages using the supplier company name.</p></div>:
-   <div className="sy-supplier-inbox-layout">
-     <div className="sy-supplier-inbox-list">
-       <label className="sy-inbox-search"><Search size={17}/><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search buyer messages" aria-label="Search buyer messages"/></label>
-       {matching.length?matching.map(m=><button key={m.id} onClick={()=>{setSelected(m.id);setReply("");setNotice("")}} type="button" className={"sy-supplier-message-row"+(active?.id===m.id?" active":"")}>
-         <span><MessageSquare size={16}/><strong>{m.product}</strong></span><small>{m.reply?"Replied · Local demo":"New · Local demo"}</small><p>{m.message}</p>
-       </button>):<div className="sy-supplier-inbox-empty"><MessageSquare size={30}/><strong>No buyer messages</strong><p>Messages addressed to <b>{company}</b> will appear here in this browser preview.</p></div>}
-     </div>
-     <div className="sy-supplier-inbox-detail">
-       {active?<><span className="sy-mini-overline"><Package size={14}/> PRODUCT ENQUIRY</span><h3>{active.product}</h3>
-       <div className="sy-supplier-buyer-bubble">{active.message}</div>
-       {active.reply&&<div className="sy-supplier-own-bubble"><small>Your saved reply</small>{active.reply}</div>}
-       <label>Reply to buyer<textarea rows={4} value={reply} onChange={e=>setReply(e.target.value)} placeholder="Hello, thank you for your interest. The product is available..."/></label>
-       {notice&&<p role="status" className="sy-supplier-demo-warning">{notice}</p>}
-       <button type="button" className="sy-green-action" onClick={saveReply}><Send size={16}/> Save demo reply</button></>:
-       <div className="sy-supplier-inbox-empty"><MessageSquare size={30}/><strong>Select a message</strong><p>Your buyer conversations will appear here when messaging launches.</p></div>}
-     </div>
+ return <section className="sy-supplier-inbox" aria-label="Supplier messages">
+  <div className="sy-supplier-inbox-header"><div><span className="sy-mini-overline">SUPPLIER WORKSPACE</span><h2>Messages</h2><p>One clean conversation per product enquiry.</p></div><span className="sy-supplier-inbox-count">{conversations.length} conversations</span></div>
+  <p className="sy-supplier-demo-warning">This is a local demonstration. A real buyer on another device cannot reach you until secure messaging is connected.</p>
+  {!normalized?<div className="sy-supplier-inbox-empty"><MessageSquare size={32}/><strong>Set your supplier company name</strong><p>Only matching demo enquiries will appear here.</p></div>:
+   <div className={"sy-supplier-inbox-layout sy-conversation-shell"+(mobileOpen?" sy-show-chat":"")}>
+    <div className="sy-supplier-inbox-list">
+      <label className="sy-inbox-search"><Search size={17}/><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search conversations" aria-label="Search conversations"/></label>
+      {matching.length?<div className="sy-conversation-list">{matching.map(c=><button key={c.key} onClick={()=>{setSelected(c.key);setReply("");setNotice("");setMobileOpen(true)}} type="button" className={"sy-conversation-row"+(activeGroup?.key===c.key?" active":"")}>
+        <span className="sy-conversation-avatar"><Package size={18}/></span><span className="sy-conversation-summary"><strong>{c.records[0].product}</strong><small>{c.records[0].message}</small></span><span className="sy-conversation-date">{c.records.length} msg</span>
+      </button>)}</div>:<div className="sy-supplier-inbox-empty"><MessageSquare size={30}/><strong>No conversations</strong><p>Messages addressed to {company} will appear here.</p></div>}
+    </div>
+    <div className="sy-supplier-inbox-detail">
+      {active&&activeGroup?<div className="sy-conversation-detail">
+        <header className="sy-conversation-chat-head"><button className="sy-conversation-back" onClick={()=>setMobileOpen(false)} aria-label="Back to inbox"><ArrowLeft size={18}/></button><span className="sy-conversation-avatar"><Package size={18}/></span><div><strong>{active.product}</strong><small>Buyer enquiry · Demo conversation</small></div></header>
+        <div className="sy-conversation-messages">{[...activeGroup.records].reverse().map(m=><div className="sy-conversation-exchange" key={m.id}><div className="sy-chat-bubble seller"><span>Buyer message · Local draft</span><p>{m.message}</p></div>{m.reply&&<div className="sy-chat-bubble buyer"><span>Your demo reply</span><p>{m.reply}</p></div>}</div>)}</div>
+        <form className="sy-chat-composer" onSubmit={e=>{e.preventDefault();saveReply()}}><label htmlFor="sy-supplier-reply">Reply to buyer</label><div><textarea id="sy-supplier-reply" rows={2} value={reply} onChange={e=>setReply(e.target.value)} placeholder="Type a reply..."/><button type="submit" className="sy-green-action" disabled={!reply.trim()} aria-label="Save demo reply"><Send size={17}/></button></div>{notice&&<small role="status">{notice}</small>}<small>Saved only on this browser. The buyer is not notified.</small></form>
+      </div>:<div className="sy-supplier-inbox-empty"><MessageSquare size={30}/><strong>Select a conversation</strong><p>Your enquiries will appear here.</p></div>}
+    </div>
    </div>}
  </section>;
 }
