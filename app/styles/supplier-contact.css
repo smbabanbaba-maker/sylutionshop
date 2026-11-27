@@ -854,3 +854,25 @@
   padding-bottom:0!important;
  }
 }
+
+
+/* Direct-to-Messages experience: no dashboard introduction or extra
+   explanatory panel between tapping Messages and the conversation. */
+.sy-account-page.sy-messages-page > .sy-account-banner,
+.sy-account-page.sy-messages-page .sy-content-topline{
+ display:none!important;
+}
+.sy-messages-page .sy-dashboard-content{
+ min-width:0!important;
+}
+.sy-messages-page .sy-inbox-shell.sy-conversation-shell{
+ margin-top:0!important;
+}
+.sy-messages-page .sy-inbox-none p,
+.sy-messages-page .sy-conversation-empty p{
+ display:none!important;
+}
+@media(max-width:720px){
+ .sy-messages-page .sy-conversation-list-head{margin-bottom:0!important}
+ .sy-messages-page .sy-inbox-list .sy-inbox-none{margin-top:30px!important}
+}
